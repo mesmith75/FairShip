@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 // -------------------------------------------------------------------------
 // -----                       ShipStack source file                   -----
 // -------------------------------------------------------------------------
@@ -19,6 +22,9 @@
 
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, etc
+
+#include "TVirtualMC.h"
+#include "TVirtualMCStack.h"
 
 using std::cout;
 using std::endl;
@@ -227,6 +233,8 @@ void ShipStack::FillTrackArray()
 
   LOG(debug) << "ShipStack: Filling MCTrack array...";
 
+  Int_t evtNo = gMC->CurrentEvent();
+
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
   fNTracks = 0;
@@ -251,6 +259,8 @@ void ShipStack::FillTrackArray()
         pair<Int_t, Int_t> a(iPart, iDet);
         track->SetNPoints(iDet, fPointsMap[a]);
       }
+      track->SetTrackID(fNTracks);
+      track->SetEventID(evtNo);
       fNTracks++;
     } else { fIndexMap[iPart] = -2; }
 

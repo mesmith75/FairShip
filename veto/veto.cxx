@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
 // 09/07/2024
 // SBT software contact: anupama.reghunath@cern.ch
@@ -470,10 +472,6 @@ void veto::AddBlock(TGeoVolumeAssembly* tInnerWall,
     double tZ = 0;
     TString name("");
 
-    double idX = 0;
-    double idY = 0;
-    double idZ = 0;
-
     /// inner wall
     TString nameInnerWall = (TString)tInnerWall->GetName() + "_" + blockName;
     TGeoVolume* TIW =
@@ -832,9 +830,6 @@ TGeoVolume* veto::MakeSegments()
     double z1 = 0 * m;
     double z2 = 800 * mm;
     double wz = (z2 - z1);
-
-    double slX = (wx(z2) - wx(z1)) / 2 / wz;
-    double slY = (wy(z2) - wy(z1)) / 2 / wz;
 
     double Zshift = wz / 2;   // calibration of Z position
 

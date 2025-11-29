@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef SPLITCAL_SPLITCALPOINT_H_
 #define SPLITCAL_SPLITCALPOINT_H_
 
@@ -33,19 +36,19 @@ class splitcalPoint : public FairMCPoint
     /** Destructor **/
     virtual ~splitcalPoint();
 
+    /** Copy constructor **/
+    splitcalPoint(const splitcalPoint& point) = default;
+    splitcalPoint& operator=(const splitcalPoint& point) = default;
+
     /** Output to screen **/
     /* virtual void Print(const Option_t* opt) const; */
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
 
   private:
-    /** Copy constructor **/
     Int_t fPdgCode;
-    splitcalPoint(const splitcalPoint& point);
-    splitcalPoint operator=(const splitcalPoint& point);
 
-    ClassDef(splitcalPoint,2)
-
+    ClassDef(splitcalPoint, 3)
 };
 
 #endif  // SPLITCAL_SPLITCALPOINT_H_

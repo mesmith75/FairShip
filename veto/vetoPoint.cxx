@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "vetoPoint.h"
 
 #include "FairLogger.h"   // for FairLogger, etc
@@ -20,11 +23,12 @@ vetoPoint::vetoPoint(Int_t trackID,
                      Double_t eLoss,
                      Int_t pdgcode,
                      TVector3 Lpos,
-                     TVector3 Lmom)
-    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
+                     TVector3 Lmom,
+                     Int_t eventID)
+    : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss, eventID)
     , fPdgCode(pdgcode)
-    , fLpos(Lpos)
-    , fLmom(Lmom)
+    , fLpos{Lpos.X(), Lpos.Y(), Lpos.Z()}
+    , fLmom{Lmom.X(), Lmom.Y(), Lmom.Z()}
 {}
 // -------------------------------------------------------------------------
 

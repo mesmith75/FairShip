@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef SHIPGEN_NTUPLEGENERATOR_H_
 #define SHIPGEN_NTUPLEGENERATOR_H_
 

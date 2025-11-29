@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef SND_MTC_MTCDETHIT_H_
 #define SND_MTC_MTCDETHIT_H_ 1
 
@@ -25,8 +28,8 @@ class MTCDetHit : public ShipHit
 
     /** Output to screen **/
     void Print();
-    Float_t GetSignal() { return signals; };
-    Float_t GetTime() { return time; };
+    Float_t GetSignal() const { return signals; };
+    Float_t GetTime() const { return time; };
     /*
     Example of fiberID: 123051820, where:
       - 1: MTC unique ID
@@ -45,9 +48,9 @@ class MTCDetHit : public ShipHit
     Int_t GetChannelID() const { return fDetectorID; }
     Int_t GetLayer() const { return static_cast<int>(fDetectorID / 1000000) % 100; }
     Int_t GetStationType() const { return static_cast<int>(fDetectorID / 100000) % 10; }
-    Int_t GetSiPM() { return (static_cast<int>(fDetectorID / 1000) % 10); }
-    Int_t GetSiPMChan() { return (fDetectorID % 1000); }
-    Float_t GetEnergy();
+    Int_t GetSiPM() const { return (static_cast<int>(fDetectorID / 1000) % 10); }
+    Int_t GetSiPMChan() const { return (fDetectorID % 1000); }
+    Float_t GetEnergy() const;
     void setInvalid() { flag = false; }
     bool isValid() const { return flag; }
     /*

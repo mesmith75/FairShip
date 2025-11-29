@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 // $Id: muonShieldBackgroundLinkDef.h,v 1  Thomas Ruf 13/6/2917 $
 
 #ifdef __CINT__
@@ -8,5 +11,4 @@
 
 #pragma link C++ class  exitHadronAbsorber+;
 #pragma link C++ class  pyFairModule+;
-#pragma link C++ class  simpleTarget+;
 #endif

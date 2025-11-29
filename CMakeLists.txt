@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 # The name of our project is "ShipRoot".  CMakeLists files in this project can
 # refer to the root source directory of the project as ${ShipRoot_SOURCE_DIR} or
 # as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
@@ -10,7 +13,6 @@ cmake_minimum_required(VERSION 3.12.0 FATAL_ERROR)
 foreach(p CMP0028 # double colon for imported and alias targets
           CMP0074 # use _ROOT env variables
           CMP0144 # use <PACKAGENAME>_ROOT variables
-          CMP0167 # FindBoost module removed
 )
   if(POLICY ${p})
     cmake_policy(SET ${p} NEW)
@@ -143,19 +145,24 @@ find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
 
-if(DEFINED ${BOOST_ROOT})
-  set(Boost_NO_SYSTEM_PATHS TRUE)
-  set(Boost_NO_BOOST_CMAKE TRUE)
-endif(DEFINED ${BOOST_ROOT})
-# set(Boost_DEBUG TRUE)
-if(DEFINED ${BOOST_ROOT})
-  set(BOOST_ROOT $ENV{BOOST_ROOT})
-endif(DEFINED ${BOOST_ROOT})
+# Configure TPythia6 interface based on ROOT version
+# ROOT < 6.32: TPythia6 is built into libEG (no external dependency needed)
+# ROOT >= 6.32: TPythia6 removed from ROOT, use external EGPythia6 package
+if(ROOT_VERSION VERSION_LESS "6.32")
+  # For older ROOT versions, TPythia6 is built-in
+  message(STATUS "Using built-in TPythia6 from ROOT ${ROOT_VERSION}")
+  set(USE_EXTERNAL_TPYTHIA6 OFF)
+else()
+  # For ROOT >= 6.32, we need external EGPythia6
+  message(STATUS "ROOT ${ROOT_VERSION} requires external EGPythia6")
+  set(USE_EXTERNAL_TPYTHIA6 ON)
+  find_package(ROOTEGPythia6 REQUIRED)
+  message(STATUS "Found ROOTEGPythia6 via CMake config")
+endif()
+
 if(DEFINED $ENV{GSL_ROOT})
   set(GSL_DIR $ENV{GSL_ROOT})
 endif(DEFINED $ENV{GSL_ROOT})
-
-find_package(Boost 1.70 REQUIRED)
 
 # set a variable which should be used in all CMakeLists.txt Defines all basic
 # include directories from fairbase
@@ -213,11 +220,10 @@ add_subdirectory(veto)
 add_subdirectory(TimeDet)
 add_subdirectory(UpstreamTagger)
 add_subdirectory(strawtubes)
-add_subdirectory(muon)
 add_subdirectory(shipgen)
 add_subdirectory(field)
-add_subdirectory(pid)
 add_subdirectory(muonShieldOptimization)
+add_subdirectory(tests)
 
 add_custom_target(
   geometry.link ALL

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "splitcalCluster.h"
 #include "TMath.h"
 
@@ -22,23 +25,9 @@
 splitcalCluster::splitcalCluster()
 {
 }
-// -----   constructor from splitcalHit   ------------------------------------------
-splitcalCluster::splitcalCluster(splitcalHit* h)
-{
-  _vectorOfHits.push_back(h);
-
-  if ( _vectorOfHits.size() == 1){ //first element added to the cluster
-    SetStartPoint(h);
-    SetEndPoint(h);
-  } else {
-    if (_start.Z() > h->GetZ()) SetStartPoint(h); // start point is the hit with the smalllest z
-    if (_end.Z() < h->GetZ()) SetEndPoint(h); // end point is the hit with the largest z
-  }
-
-}
 
 
-void splitcalCluster::ComputeEtaPhiE()
+void splitcalCluster::ComputeEtaPhiE(const std::vector<splitcalHit>& hits)
 {
 
 
@@ -55,27 +44,29 @@ void splitcalCluster::ComputeEtaPhiE()
 
   // loop over hits to compute cluster energy sum and to compute the coordinates weighted average per layer
   double energy = 0.;
-  for (auto hit : _vectorOfHits){
-    energy += hit->GetEnergyForCluster(_index);
-    int layer = hit->GetLayerNumber();
+  for (size_t i = 0; i < _hitIndices.size(); ++i){
+    const auto& hit = hits[_hitIndices[i]];
+    double hitEnergy = hit.GetEnergy() * _hitWeights[i];  // Use weight from cluster
+    energy += hitEnergy;
+    int layer = hit.GetLayerNumber();
     // hits from high precision layers give both x and y coordinates --> use if-if instead of if-else
-    if (hit->IsX()){
+    if (hit.IsX()){
       if (mapLayerWeigthedX.count(layer)==0) { //if key is not yet in map, initialise element to 0
 	mapLayerWeigthedX[layer] = 0.;
 	mapLayerSumWeigthsX[layer] = 0.;
       }
-      mapLayerWeigthedX[layer] += hit->GetX()*hit->GetEnergyForCluster(_index);
-      mapLayerSumWeigthsX[layer] += hit->GetEnergyForCluster(_index);
-      mapLayerZ1[layer] = hit->GetZ();
+      mapLayerWeigthedX[layer] += hit.GetX() * hitEnergy;
+      mapLayerSumWeigthsX[layer] += hitEnergy;
+      mapLayerZ1[layer] = hit.GetZ();
     }
-    if (hit->IsY()){
+    if (hit.IsY()){
       if (mapLayerWeigthedY.count(layer)==0) { //if key is not yet in map, initialise element to 0
 	mapLayerWeigthedY[layer] = 0.;
 	mapLayerSumWeigthsY[layer] = 0.;
       }
-      mapLayerWeigthedY[layer] += hit->GetY()*hit->GetEnergyForCluster(_index);
-      mapLayerSumWeigthsY[layer] += hit->GetEnergyForCluster(_index);
-      mapLayerZ2[layer] = hit->GetZ();
+      mapLayerWeigthedY[layer] += hit.GetY() * hitEnergy;
+      mapLayerSumWeigthsY[layer] += hitEnergy;
+      mapLayerZ2[layer] = hit.GetZ();
     }
   }//end loop on hit
 
@@ -110,9 +101,10 @@ void splitcalCluster::ComputeEtaPhiE()
 
   SetEndPoint(maxX, maxY, maxZ);
 
-  // get direction vector from end-strat vector difference
-  TVector3 direction;
-  direction = _end - _start;
+  // get direction vector from end-start vector difference
+  TVector3 start(_start[0], _start[1], _start[2]);
+  TVector3 end(_end[0], _end[1], _end[2]);
+  TVector3 direction = end - start;
   double eta = direction.Eta();
   double phi = direction.Phi();
   SetEtaPhiE(eta, phi, energy);
@@ -206,15 +198,6 @@ regression splitcalCluster::LinearRegression(std::vector<double >& x, std::vecto
 }
 
 
-void splitcalCluster::SetStartPoint(splitcalHit*& h) {
-  SetStartPoint(h->GetX(),h->GetY(),h->GetZ());
-}
-
-void  splitcalCluster::SetEndPoint(splitcalHit*& h) {
-  SetEndPoint(h->GetX(),h->GetY(),h->GetZ());
-}
-
-
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
@@ -231,13 +214,13 @@ void splitcalCluster::Print() const
 	   << _phi << " ,  "
 	   << _energy << std::endl;
   std::cout<< "    start(x,y,z) = "
-	   << _start.X() << " ,  "
-	   << _start.Y() << " ,  "
-	   << _start.Z() << std::endl;
+	   << _start[0] << " ,  "
+	   << _start[1] << " ,  "
+	   << _start[2] << std::endl;
   std::cout<< "    end(x,y,z) = "
-	   << _end.X() << " ,  "
-	   << _end.Y() << " ,  "
-	   << _end.Z() << std::endl;
+	   << _end[0] << " ,  "
+	   << _end[1] << " ,  "
+	   << _end[2] << std::endl;
    std::cout<< "------- " <<std::endl;
 }
 // -------------------------------------------------------------------------

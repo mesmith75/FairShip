@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 //
 //  Target.h
 //
@@ -96,7 +99,7 @@ class Target : public FairDetector
     virtual void Reset();
 
     /**      This method is an example of how to add your own point
-     *       of type muonPoint to the clones array
+     *       of type TargetPoint to the clones array
      */
 
     TargetPoint* AddHit(Int_t trackID,

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 # Create a library called "libField” which includes the source files given in
 # the array . The extension is already found.  Any number of sources could be
 # listed here.
@@ -23,7 +26,6 @@ set(SRCS
     ShipBFieldMap.cxx
     ShipCompField.cxx
     ShipFieldMaker.cxx
-    ShipGoliathField.cxx
     FairShipFields.cxx)
 
 set(LINKDEF LinkDef.h)

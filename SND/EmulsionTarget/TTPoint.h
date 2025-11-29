@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef SND_EMULSIONTARGET_TTPOINT_H_
 #define SND_EMULSIONTARGET_TTPOINT_H_
 
@@ -39,6 +42,10 @@ class TTPoint : public FairMCPoint
     /** Destructor **/
     virtual ~TTPoint();
 
+    /** Copy constructor **/
+    TTPoint(const TTPoint& point) = default;
+    TTPoint& operator=(const TTPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
@@ -47,12 +54,7 @@ class TTPoint : public FairMCPoint
   private:
     Int_t fPdgCode;
 
-    /** Copy constructor **/
-
-    TTPoint(const TTPoint& point);
-    TTPoint operator=(const TTPoint& point);
-
-    ClassDef(TTPoint, 2)
+    ClassDef(TTPoint, 3)
 };
 
 #endif   // SND_EMULSIONTARGET_TTPOINT_H_

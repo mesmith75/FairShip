@@ -1,8 +1,12 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "splitcalHit.h"
 #include "splitcal.h"
 #include "TVector3.h"
 #include "FairRun.h"
 #include "FairRunSim.h"
+#include "FairLogger.h"
 #include "TMath.h"
 #include "TRandom1.h"
 #include "TRandom3.h"
@@ -32,19 +36,31 @@ splitcalHit::splitcalHit(Int_t detID, Float_t tdc)
 {
  flag = true;
 }
-// -----   constructor from splitcalPoint   ------------------------------------------
-splitcalHit::splitcalHit(splitcalPoint* p, Double_t t0)
+// -----   constructor from vector of splitcalPoints   ------------------------------------------
+splitcalHit::splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0)
   : ShipHit()
 {
 
   flag = true;
 
-  double pointX =  p->GetX();
-  double pointY =  p->GetY();
-  double pointZ =  p->GetZ();
-  double pointT =  p->GetTime();
-  double pointE =  p->GetEnergyLoss();
-  int detID =  p->GetDetectorID();
+  // Empty vector check
+  if (points.empty()) {
+    LOG(error) << "splitcalHit constructor called with empty splitcalPoint vector";
+    return;
+  }
+
+  // Use first point for geometry lookup and detector ID
+  const auto& firstPoint = points[0];
+  double pointX =  firstPoint.GetX();
+  double pointY =  firstPoint.GetY();
+  double pointZ =  firstPoint.GetZ();
+  int detID =  firstPoint.GetDetectorID();
+
+  // Sum energy from all points
+  double pointE = 0.0;
+  for (const auto& point : points) {
+    pointE += point.GetEnergyLoss();
+  }
 
   //fdigi = t0 + t;
   fdigi = t0 ;
@@ -172,29 +188,6 @@ void splitcalHit::Decoder(int& id, int& isPrecision, int& nLayer, int& nModuleX,
 
   std::string encodedID = GetPaddedString(id);
   Decoder(encodedID, isPrecision, nLayer, nModuleX, nModuleY, nStrip);
-
-}
-
-
-double splitcalHit::GetEnergyWeightForIndex(int index){
-
-  int iw = 0;
-  for(size_t i=0; i<_vecClusterIndices.size(); i++) {
-    if (_vecClusterIndices.at(i) == index) {
-      iw = i;
-      break;
-    }
-  }
-  return _vecEnergyWeights.at(iw);
-}
-
-
-double splitcalHit::GetEnergyForCluster(int i){
-
-  double unweightedEnergy = GetEnergy();
-  double weight = GetEnergyWeightForIndex(i);
-  double energy = unweightedEnergy*weight;
-  return energy;
 
 }
 

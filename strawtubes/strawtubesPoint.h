@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef STRAWTUBES_STRAWTUBESPOINT_H_
 #define STRAWTUBES_STRAWTUBESPOINT_H_
 
@@ -29,19 +32,19 @@ class strawtubesPoint : public FairMCPoint
     /** Destructor **/
     virtual ~strawtubesPoint();
 
+    /** Copy constructor **/
+    strawtubesPoint(const strawtubesPoint& point) = default;
+    strawtubesPoint& operator=(const strawtubesPoint& point) = default;
+
     /** Output to screen **/
     virtual void Print() const;
     Int_t PdgCode() const {return fPdgCode;}
     Double_t dist2Wire() const {return fdist2Wire;}
 
   private:
-    /** Copy constructor **/
-    strawtubesPoint(const strawtubesPoint& point);
-    strawtubesPoint operator=(const strawtubesPoint& point);
-
     Int_t fPdgCode;
     Double_t fdist2Wire;
-    ClassDef(strawtubesPoint, 3);
+    ClassDef(strawtubesPoint, 4);
 };
 
 #endif  // STRAWTUBES_STRAWTUBESPOINT_H_

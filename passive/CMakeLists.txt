@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 # Create a library called "libPassive" which includes the source files given in
 # the array . The extension is already found.  Any number of sources could be
 # listed here.
@@ -19,8 +22,7 @@ set(SRCS
     ShipTargetStation.cxx
     ShipMuonShield.cxx
     ShipPassiveContFact.cxx
-    ShipTAUMagneticSpectrometer.cxx
-    ShipGoliath.cxx)
+    ShipTAUMagneticSpectrometer.cxx)
 
 set(LINKDEF LinkDef.h)
 set(LIBRARY_NAME ShipPassive)

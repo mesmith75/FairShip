@@ -1,4 +1,7 @@
 #!/usr/bin/env python -i
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import ROOT
 import os
 import tkinter
@@ -30,7 +33,12 @@ def evExit():
 atexit.register(evExit)
 
 fMan = None
+
+fMan = ROOT.FairEventManager()
 fRun = None
+
+# -----   Reconstruction run   -------------------------------------------
+fRun = ROOT.FairRunAna()
 pdg = ROOT.TDatabasePDG.Instance()
 g = ROOT.gROOT
 gEnv = ROOT.gEnv
@@ -63,7 +71,10 @@ transparentMaterials = {
 parser = ArgumentParser()
 
 parser.add_argument(
-    "-f", "--inputFile", dest="InputFile", help="Input file", required=True
+    "-f", "--inputFile", dest="InputFile", help="Input file (MC simulation)", required=True
+)
+parser.add_argument(
+    "-r", "--recoFile", dest="recoFile", help="Reconstruction file (will be used as friend tree)", required=False
 )
 parser.add_argument(
     "-g", "--geoFile", dest="geoFile", help="ROOT geofile", required=True
@@ -102,6 +113,15 @@ parser.add_argument(
 options = parser.parse_args()
 if options.InputFile.find("_D") > 0:
     withGeo = True
+
+# Determine reconstruction file
+if not options.recoFile:
+    # Default: replace .root with _rec.root, or if already _rec.root use as-is
+    if options.InputFile.find('_rec.root') > 0:
+        options.recoFile = options.InputFile
+        options.InputFile = options.InputFile.replace('_rec.root', '.root')
+    else:
+        options.recoFile = options.InputFile.replace('.root', '_rec.root')
 
 
 def printMCTrack(n, MCTrack):
@@ -403,7 +423,6 @@ class DrawTracks(ROOT.FairTask):
             # loop over all sensitive volumes to find hits
             for P in [
                 "vetoPoint",
-                "muonPoint",
                 "strawtubesPoint",
                 "ShipRpcPoint",
                 "TargetPoint",
@@ -1176,13 +1195,12 @@ def debugStraw(n):
 
 # ----Load the default libraries------
 from basiclibs import *
-
-# -----   Reconstruction run   -------------------------------------------
-fRun = ROOT.FairRunAna()
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
 inFile = ROOT.FairFileSource(options.InputFile)
+# Add reconstruction file as friend tree
+inFile.AddFriend(options.recoFile)
 fRun.SetSource(inFile)
 if options.OutputFile is None:
     options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
@@ -1193,8 +1211,6 @@ if options.ParFile:
     parInput1 = ROOT.FairParRootFileIo()
     parInput1.open(options.ParFile)
     rtdb.setFirstInput(parInput1)
-
-fMan = ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
 fMan.SetEvtMaxEnergy(
@@ -1233,9 +1249,6 @@ else:
     )
     mcHits["StrawPoints"] = ROOT.FairMCPointDraw(
         "strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle
-    )
-    mcHits["MuonPoints"] = ROOT.FairMCPointDraw(
-        "muonPoint", ROOT.kYellow, ROOT.kFullSquare
     )
     mcHits["RpcPoints"] = ROOT.FairMCPointDraw(
         "ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare

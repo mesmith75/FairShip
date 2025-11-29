@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import ROOT
 import os
 import shipunit as u
@@ -479,7 +482,7 @@ def configure(run, ship_geo):
         run.SetField(fMagField)
 
     exclusionList = []
-    # exclusionList = ["Muon","Ecal","Hcal","strawtubes","TargetTrackers","NuTauTarget",\
+    # exclusionList = ["strawtubes","TargetTrackers","NuTauTarget",\
     #                 "SiliconTarget","Veto","Magnet","MuonShield","TargetStation", "TimeDet", "UpstreamTagger"]
 
     for x in detectorList:

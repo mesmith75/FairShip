@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import os
 import sys
 import ROOT
@@ -671,7 +674,6 @@ if options.muonback:
  branches.Add(ROOT.TObjString('TTPoint'))
  branches.Add(ROOT.TObjString('ScoringPoint'))
  branches.Add(ROOT.TObjString('strawtubesPoint'))
- branches.Add(ROOT.TObjString('smuonPoint'))
  branches.Add(ROOT.TObjString('TimeDetPoint'))
  branches.Add(ROOT.TObjString('MCEventHeader'))
  branches.Add(ROOT.TObjString('UpstreamTaggerPoint'))

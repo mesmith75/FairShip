@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "vetoHit.h"
 
 #include "FairLogger.h"   // for FairLogger, etc
@@ -36,7 +39,7 @@ vetoHit::vetoHit(Int_t detID, Float_t adc)
 vetoHit::~vetoHit() {}
 // -------------------------------------------------------------------------
 
-TVector3 vetoHit::GetXYZ()
+TVector3 vetoHit::GetXYZ() const
 {
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();
     TGeoNode* node = GetNode();
@@ -49,22 +52,22 @@ TVector3 vetoHit::GetXYZ()
     return pos;
 }
 
-Double_t vetoHit::GetX()
+Double_t vetoHit::GetX() const
 {
     TVector3 pos = GetXYZ();
     return pos.X();
 }
-Double_t vetoHit::GetY()
+Double_t vetoHit::GetY() const
 {
     TVector3 pos = GetXYZ();
     return pos.Y();
 }
-Double_t vetoHit::GetZ()
+Double_t vetoHit::GetZ() const
 {
     TVector3 pos = GetXYZ();
     return pos.Z();
 }
-TGeoNode* vetoHit::GetNode()
+TGeoNode* vetoHit::GetNode() const
 {
     TGeoNode* node;
     TGeoNavigator* nav = gGeoManager->GetCurrentNavigator();

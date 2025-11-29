@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "ShipFieldCreator.h"
 
 #include "ShipFieldPar.h"
@@ -17,9 +20,7 @@ static ShipFieldCreator gShipFieldCreator;
 ShipFieldCreator::ShipFieldCreator()
   :FairFieldFactory(),
    fFieldPar(NULL)
-{
-	fCreator=this;
-}
+{}
 
 ShipFieldCreator::~ShipFieldCreator()
 {

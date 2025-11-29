@@ -1,4 +1,7 @@
 #!/bin/python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 
 # Python script to convert a B field map from an ascii text file into
 # a ROOT file for FairShip. The field map needs to use a regular
@@ -234,5 +237,7 @@ def findRanges(inFileName, cmScale):
 
 if __name__ == "__main__":
 
-    run('GoliathFieldMap.txt', 'GoliathFieldMap.root', 0.1, True)
-    #run('BFieldTest.txt', 'BFieldTest.root', 1.0)
+    # Example usage (Goliath field map removed):
+    # run('GoliathFieldMap.txt', 'GoliathFieldMap.root', 0.1, True)
+    # run('BFieldTest.txt', 'BFieldTest.root', 1.0)
+    pass

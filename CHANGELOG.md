@@ -14,6 +14,11 @@ it in future.
 
 ### Added
 
+* Add EventId and TrackID for MCTrack and HAPoint #944
+* **Data classes now support ROOT RNtuple I/O**
+  All FairShip data classes (Hits, Points, Tracks, Particles) have been refactored for ROOT RNtuple compatibility. Changes include: public copy constructors, const-correct getter methods, replacement of TVector3 storage with std::array, and complete refactoring of ShipParticle to remove TParticle inheritance. Comprehensive RNtuple I/O tests verify all 20 data classes can be written to and read from RNtuple format.
++ Add option for an additional sensitive plane around the target in run_fixedTarget
+* Add CI job to run fixed target simulation (run_fixedTarget.py)
 * feat(python): Add experimental script to compare histograms
 * feat(python): Add experimental script to check overlaps quickly
 * **Corrections in MuonDIS simulation**
@@ -49,6 +54,7 @@ it in future.
 * Add EvtGenDecayer for decaying J/psi (and other particles in future) when specifying the --EvtGenDecayer option
 * Add enough straws to cover aperture entirely
 * Add SST frame option (4 = aluminium, 10 = steel [default])
+* Fix EvtGen library linking order for old autotools-based EvtGen installations
 * feat: Unified beam smearing implementation across all generators
   - Updated `HNLPythia8Generator` to use consistent Gaussian beam smearing and circular beam painting, replacing the previous uniform square implementation
   - Added beam smearing and painting support to `FixedTargetGenerator`
@@ -67,10 +73,15 @@ it in future.
 - Enclose target in steel (316L) cylinder
 * First version of SND/SiliconTarget, this layout for this iteration consists of 120 3.5mm W planes with pairs of silicon planes placed 1mm from the surface of the tungsten. As a temporary solution, the detector is placed within the second last magnet of the muon shield. Configuration of detector in simScript is coupled to the SND_design == 2 along with the MTC.
 * Add visualization methods to SciFiMapping.py to visualize Sci-Fi in MTC, including draw_channel(), draw_channel_XY(), and draw_combined_scifi_views()
+* Support using TPythia6 provided by ROOTEGPythia6 for ROOT ≥ 6.32
 
+* Added initial implementation for ACTS based track reconstruction. This iteration includes independent tracking geometries for SiliconTarget, MTC, and Strawtubes.
 
 ### Fixed
 
+* refactor(splitcal): Replace splitcalPoint* constructor with vector-based constructor
+* fix(splitcal): Move energy weights from Hit to Cluster, eliminating internal vectors
++ Fix FixedTargetGenerator to ensure it works with newer versions of Pythia
 * fix(eventDisplay): Fix event display crash caused by premature ROOT object initialization
 * Remove SIMPATH dependency, replaced with EVTGENDATA for EvtGen data files (#648)
 * fix(digi): Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
@@ -109,6 +120,7 @@ it in future.
 * Fix the condition in the sipm channel <-> fiber mapping that stopped looping over channels because of the distance between a fiber and a channel. Setting a flexible condition that depends on the aggregated channel size.
 * Add flags for `python/ScifiMapping.py`
 * Fixed SiliconTarget detector identifier.
+* fix(muon): Make muonHit copy constructor public for std::vector compatibility
 
 ### Changed
 
@@ -120,9 +132,15 @@ it in future.
   - Updated naming from "Strawtubes" to "strawtubes" for consistency
   - Changed branch name from "Digi_StrawtubesHits" to "Digi_strawtubesHits"
 * Rename MtcDetPoint and MtcDetHit classes to MTCDetPoint and MTCDetHit for consistency with detector naming conventions
-* Refactor digitisation to use detector classes for MTC, muon, time, SBT, and UpstreamTagger detectors
+* Complete refactoring of all digitisation to use BaseDetector pattern (MTC, muon, time, SBT, UpstreamTagger, strawtubes, splitcal)
 * Make BaseDetector an abstract base class to enforce interface contract
+* Remove TClonesArray support from digitisation framework. BaseDetector now exclusively uses std::vector, removing branchType parameter
 * Rewrite UpstreamTaggerHit for simplified scoring plane detector, remove RPC-specific code (#701, #354, #355)
+* Complete migration from TClonesArrays to STL vectors for all detectors (timeDetector, muonDetector, vetoHitOnTrack, strawtubes, splitcal)
+* Integrate splitcal cluster reconstruction into splitcalDetector class
+* refactor(splitcal): Use value storage for both hits and clusters instead of pointer storage
+* refactor(splitcal): Replace TVector3 with std::array and hit pointers with indices in splitcalCluster for RNtuple compatibility
+* refactor(digi): Use maximum splitting (99) for vector branches instead of no splitting (-1)
 * Don't special case EOS paths (fix #566)
 * Setting up the Muon shield geometry by ROOT files is completely replaced with the temporary solution of dict in the `geometry/geometry_config.py`.
 * Set up of the shield name is now done using the `--shieldName` flag instead of `--scName`.
@@ -174,6 +192,7 @@ it in future.
 * Move SST geometry parameters to yaml
 * Update strawtubes class
 * Change SST gas mixture to Ar/CO2 80%/20% at 1 bar
+* FairShip is now licensed under LGPLv3+
 * UBT box dimensions (BoxX, BoxY, BoxZ) are now configurable via geometry_config.py instead of hardcoded
 * Configuration storage modernized from pickle to JSON
   - Geometry configurations are now saved as JSON strings (using `std::string`) instead of pickled Python objects in ROOT files
@@ -181,9 +200,19 @@ it in future.
 * Change the logic of SiPM channel encoding in MTC. Now the number of SiPM is 1 and has a number of channels that fits the width of the plane. If the number of channels exceeds 1000, iterating a SiPM digit to 1 and distributing channels among new number of SiPMs.
 * Set default parameters of MTC to 60x60 cm^2 and 4 aggregated channels according to Sep 2025 CM.
 * Placement of SiliconTarget has been shifted by 10 cm to bring the final layer to within 10 cm of the MTC.
+* Modernise data classes by removing obsolete BOOST serialisation (Tracklet, vetoHitOnTrack, ShipHit, TrackInfo)
+  - Replace BOOST serialisation with native ROOT 6 serialisation
+  - Modernise Tracklet constructor to accept `std::vector<unsigned int>` indices
+  - Update vetoHitOnTrack to use parameterised constructor in Python code
+  - Add const correctness to TrackInfo accessor methods
+  - Update Python code in shipDigiReco.py to use modern constructors
+  - Bump ClassDef versions to 2 for schema evolution
+  - Add TrackInfo to RNTuple I/O test suite
 
 ### Removed
 
+* Remove BOOST dependency from CMake build system - no longer required as ROOT 6 provides native serialisation
+* Remove Goliath magnet geometry and field implementation (ShipGoliath, ShipGoliathField, and associated field maps)
 * fix: Remove unused, unrunnable shipPatRec_prev.py
 * feat(geometry): Dropped support for old geometries without DecayVolumeMedium explicitly set(pre 24.11 release case).
 * MS: Removed old options 7, 9, 10
@@ -210,136 +239,124 @@ it in future.
 * Remove tankDesign variable, options
 * Remove target versions older than CDR
 * Remove hadron absorber in ShipTargetStation.cxx
-* Remove old ecal and hcal in all of FairSHiP, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
+* Remove old ecal and hcal in all of FairShip, affected files are notably the entire ecal and hcal directories as well as macro/run_anaEcal.py and python/shipPid.py. geometry/geometry_config.py, muonShieldOptimization/ana_ShipMuon.py, macro/ShipReco.py, macro/ShipAna.py, python/shipStrawTracking.py and python/shipPid.py.
+* Remove unused files for FLUKA
+* Remove unused CMake modules
 * Remove globalDesigns dictionary from run_simScript.py and create_field_perturbation.py, use inline defaults instead
 * Remove unused CaloDesign parameter from geometry configuration (only splitCal supported after ECAL/HCAL removal)
 * Removed unused class ShipChamber (leftover from TP design)
 * Removed unused run_simPgun.py
 * Remove ecal and hcal geometry files
+* Remove simpleTarget and personal study study_muEloss.py
+* Remove TTCluster.py
+* Remove pid class
+* Remove muon system
 
 ## 25.01
 
 ### Added
 
-* New analysis toolkit prototype added as part of the 'experimental' package.
-* Simple analysis example script now available in 'examples/'
+- Add prototype of a new analysis toolkit in the `experimental` package.
+- Add a simple analysis example script in the `examples/` directory.
 
 ### Fixed
 
-* Use ConstructedAt + std::swap to replace removed pythonization for TCA
-* Octant symmetry was incorrect for B_z when using field maps (reported and fixed by M. Ferro-Luzzi)
-* Tof calculation corrected in GenieGenerator.cxx, wrong units previously used.
-* Genfit measurements now give the correct detector ID
-* Fix TEvePointSetPrintOut
-* Event Display: Fix drawing of MC and Geo tracks
-* AddressOf is outdated function in ROOT, changed with addressof (in field/)
+- Use `ConstructedAt` and `std::swap` to replace removed pythonization for `TClonesArray`.
+- Correct B_z octant symmetry for field maps.
+- Correct time-of-flight calculation in `GenieGenerator.cxx` by using correct units.
+- Ensure Genfit measurements provide the correct detector ID.
+- Fix `TEvePointSetPrintOut`.
+- Fix drawing of Monte Carlo and geometry tracks in the event display.
+- Replace outdated `AddressOf` ROOT function with `addressof` in the `field/` directory.
 
 ### Changed
-* Changed the dimension of the cave (ref. https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf):
-	1) Updated dimensions of TCC8 and ECN3.
-	2) Added a step in ECN3.
-	3) Removed the coat of the absorber.
-	4) Modified the dimensions of the HA and absorber.
 
-* Set Decay Volume Medium as helium (previously vacuums),can be explicitly switched to vacuum with --vacuums.
-* Medium of SST boxes will be the same as DecayVolumeMedium (previously, always vacuum)
-* Don't prune tracks (before we were using the CFL option to Track::prune, see https://github.com/GenFit/GenFit/blob/e81adeb07c8643301a1d9f7ae25048557cc72dff/core/include/Track.h#L298)
-* **EventCalc LLP event generator**
-This modification to the EventCalc interface accommodates for generic N-body LLP decays.
+- Update cavern dimensions, including TCC8 and ECN3, and add a step in ECN3. The absorber coat has been removed, and the dimensions of the HA and absorber have been modified. For further details, see the presentation [here](https://indico.cern.ch/event/1507466/contributions/6345273/attachments/3003438/5293503/Quick%20Update%20on%20FAIRSHIP%20geometry-1.pdf).
+- Set the decay volume medium to helium by default, with an option to switch to vacuum using the `--vacuums` flag.
+- The medium of the SST boxes now matches the decay volume medium.
+- Disable track pruning (see #533).
+- Accommodate generic N-body LLP decays in the EventCalc interface.
 
 ### Removed
 
-* Remove Millepede
-* Remove outdated example shipEvent_ex.py
-* Remove ALPACA generator
+- Remove Millepede.
+- Remove the outdated `shipEvent_ex.py` example.
+- Remove the ALPACA generator.
 
 ## 24.11
 
-Release after first round of breaking changes. Requires CVMFS release ≥ 24.10.
-Tagged for launch of background simulations.
+This release follows the first round of breaking changes and is tagged for the launch of background simulations. It requires a CVMFS release of 24.10 or later.
 
 ### Added
 
-* **EventCalc LLP event generator**
-  This modification introduces a first implementation of the EventCalc decay
-  event sampler in FairShip for inclusive final states. For further details,
-  consult the dedicated presentation at the 30th SHiP CM
-  [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
-* Add a conversion script `FairShip/macro/convertEvtCalc.py` to convert the
-  EventCalc output sampled kinematics (.dat) as input to the simulation script
-  (.root). _Remark_: This will eventually become unnecessary when this
-  conversion is implemented within the EventCalc tool itself.
+- Introduce the EventCalc LLP event generator, a decay event sampler for inclusive final states. For further details, consult the dedicated presentation at the 30th SHiP CM [here](https://indico.cern.ch/event/1448055/contributions/6142341/attachments/2939894/5165450/SHiP_collaboration_meeting_talk_MFerrillo.pdf). See also #528.
+- Add a conversion script, `FairShip/macro/convertEvtCalc.py`, to convert EventCalc's output kinematics to a format compatible with the simulation script.
 
 ### Fixed
 
-* Fix missing includes in ecalMatch and ecalReco
-* Fix compilation warnings due to unused or uninitiliazed variables #481
+- Add missing includes in `ecalMatch` and `ecalReco`.
+- Fix compilation warnings for unused or uninitialized variables (see #481).
 
 ### Changed
 
-* shipStrawTracking: Move to argparse
-* CMake: Use external genfit2
-* shipStrawTracking, shipDigiReco, shipVertex: Make compatible with current genfit
+- Migrate `shipStrawTracking` to use `argparse`.
+- Update CMake to use an external `genfit2`.
+- Ensure `shipStrawTracking`, `shipDigiReco`, and `shipVertex` are compatible with the current version of `genfit`.
 
 ### Removed
 
-* Remove obsolete renaming scripts
-* Remove online, please see charmdet and muflux branches for respective versions
-* Remove charmdet, please see charmdet branch for latest version
-* Remove preshower and CaloDesign 1 (TP+Preshower)
-* Remove bundled genfit
-* Remove conditions DB, will almost certainly look different, copy in git
-  history for reference
+- Remove obsolete renaming scripts.
+- Remove the `online` directory. For respective versions, see the `charmdet` and `muflux` branches.
+- Remove the `charmdet` directory. For the latest version, see the `charmdet` branch.
+- Remove the preshower and CaloDesign 1 (TP+Preshower).
+- Remove the bundled `genfit`.
+- Remove the conditions database.
 
 ## 24.10 - Freiburg
 
-Tag release to prepare for breaking changes. Last release to include charm
-cross-section measurement code, and obsolete detector configurations.
+This release prepares for breaking changes and is the last to include charm cross-section measurement code and obsolete detector configurations.
 
 ### Added
 
-* Add option for helium-filled decay volume
-* Add pre-commit config: This will be phased in to improve code quality and
-  spot issues as early as possible. Status visible in README and CI enabled for
-  new pull requests.
-* Add CHANGELOG.md
-* Add `.git-blame-ignore-revs` to allow automatic reformatting etc. without
-  polluting git blame
-* Automatically built documentation using Doxygen
-* Add CODEOWNERS file to automatically trigger reviews by the relevant experts
-* Add different configuration files for vacuum /helium for the Decay Vessel
-* Add option to enable/disable SND
+- Add an option for a helium-filled decay volume.
+- Add a pre-commit configuration to improve code quality and identify issues early.
+- Add a `CHANGELOG.md` file.
+- Add a `.git-blame-ignore-revs` file to ignore automatic reformatting in git blame.
+- Add automatically built documentation using Doxygen.
+- Add a `CODEOWNERS` file to automate review requests.
+- Add separate configuration files for vacuum and helium in the decay vessel.
+- Add an option to enable or disable the SND.
 
 ### Fixed
 
-* Remove trailing whitespace and fix line endings
-* Fix compilation warnings due to deprecations #469
-* Fix issue with SST parameters #489
-* Cleaned up Veto Implementation
-* Fix crash of event display, PID when no entrance lid present
-* Close ShipReco.py output file
-* Remove unused (silently ignored!) argument for MuDISGenerator::SetPositions
+- Remove trailing whitespace and fix line endings.
+- Fix compilation warnings from deprecations (see #469).
+- Fix an issue with SST parameters (see #489).
+- Clean up the Veto implementation.
+- Fix a crash in the event display and PID when the entrance lid is missing.
+- Ensure the `ShipReco.py` output file is closed correctly.
+- Remove an unused argument for `MuDISGenerator::SetPositions`.
 
 ### Changed
 
-* Update getGeoInformation command line interface
-* Update SST geometry constants #483
-* Housekeeping: Use same clang-format and clang-tidy config as FairRoot
-* Decay Vessel configuration now imported from a yaml file
-* Geometry of Decay Vessel updated to new design
-* Housekeeping: Bump minimum CMake version to 3.12
-* Housekeeping: Use FairRoot's `find_package2` to find ROOT, VMC, fmt
-* Housekeeping: Bump minimum ROOT version to 6.26
-* Housekeeping: Use find_package to find BOOST
-* Housekeeping: Set FairLogger dep instead of manual includes
+- Update the `getGeoInformation` command-line interface.
+- Update SST geometry constants (see #483).
+- Use the same `clang-format` and `clang-tidy` configurations as FairRoot.
+- Import the decay vessel configuration from a YAML file.
+- Update the decay vessel geometry to the new design.
+- Increase the minimum required CMake version to 3.12.
+- Use FairRoot's `find_package2` to find ROOT, VMC, and fmt.
+- Increase the minimum required ROOT version to 6.26.
+- Use `find_package` to find Boost.
+- Set the FairLogger dependency instead of using manual includes.
 
 ### Removed
 
-* Remove obsolete files related to old ways of installing or testing FairShip
-* Remove uses of future and past modules #473
-* Remove Geant3 dependency
-* Remove unimplemented event display functions (see #497)
-* Disable SND by default
-* Housekeeping: Don't use CMake commands no longer provided by FairRoot 19
-* Housekeeping: Remove old CMake for ROOT 5
-* Remove old, outdated tracking script
+- Remove obsolete installation and testing files.
+- Remove uses of `future` and `past` modules (see #473).
+- Remove the Geant3 dependency.
+- Remove unimplemented event display functions (see #497).
+- Disable the SND by default.
+- Remove CMake commands no longer provided by FairRoot 19.
+- Remove old CMake files for ROOT 5.
+- Remove an old, outdated tracking script.

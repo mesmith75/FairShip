@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef STRAWTUBES_STRAWTUBESHIT_H_
 #define STRAWTUBES_STRAWTUBESHIT_H_ 1
 
@@ -23,10 +26,10 @@ class strawtubesHit : public ShipHit
     virtual ~strawtubesHit();
 
     /** Accessors **/
-    Int_t GetStationNumber();
-    Int_t GetViewNumber();
-    Int_t GetLayerNumber();
-    Int_t GetStrawNumber();
+    Int_t GetStationNumber() const;
+    Int_t GetViewNumber() const;
+    Int_t GetLayerNumber() const;
+    Int_t GetStrawNumber() const;
 
     /** Output to screen **/
     virtual void Print() const;

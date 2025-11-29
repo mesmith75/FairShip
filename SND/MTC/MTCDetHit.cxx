@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "MTCDetHit.h"
 
 #include "FairRunSim.h"
@@ -104,7 +107,7 @@ MTCDetHit::~MTCDetHit() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method GetEnergy   -------------------------------------------
-Float_t MTCDetHit::GetEnergy()
+Float_t MTCDetHit::GetEnergy() const
 {
     // to be calculated from digis and calibration constants, missing!
     return signals;

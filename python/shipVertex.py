@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 # simple vertex reconstruction with errors
 import ROOT,sys,os
 import global_variables
@@ -10,11 +13,12 @@ from array import array
 
 class Task:
  "initialize"
- def __init__(self,hp,sTree):
+ def __init__(self,hp,sTree,mcTree=None):
   self.sTree = sTree
-  self.fPartArray  = ROOT.TClonesArray("ShipParticle")
+  self.mcTree = mcTree if mcTree is not None else sTree
+  self.fPartArray = ROOT.std.vector("ShipParticle")()
   if not self.sTree.GetBranch("Particles"):
-   self.Particles   = self.sTree.Branch("Particles",  self.fPartArray,32000,-1)
+      self.Particles = self.sTree.Branch("Particles", self.fPartArray)
   else:
    self.Particles = self.sTree.Particles
   self.reps,self.states,self.newPosDir = {},{},{}
@@ -74,11 +78,10 @@ class Task:
   return
 
  def TwoTrackVertex(self):
-  self.fPartArray.Delete()
+  self.fPartArray.clear()
   fittedTracks = getattr(self.sTree,self.fitTrackLoc)
   goodTracks = getattr(self.sTree,self.goodTracksLoc)
   if goodTracks.size() < 2: return
-  particles    = self.fPartArray
   PosDirCharge,CovMat,scalFac = {},{},{}
   for tr in goodTracks:
    fitStatus = fittedTracks[tr].getFitStatus()
@@ -140,9 +143,9 @@ class Task:
      #print "     ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
 #   HNL true
      if  self.sTree.GetBranch("fitTrack2MC"):
-      mctrack = self.sTree.MCTrack[self.sTree.fitTrack2MC[t1]]
-      mctrack2 = self.sTree.MCTrack[self.sTree.fitTrack2MC[t2]]
-      mcHNL = self.sTree.MCTrack[mctrack.GetMotherId()]
+      mctrack = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t1]]
+      mctrack2 = self.mcTree.MCTrack[self.sTree.fitTrack2MC[t2]]
+      mcHNL = self.mcTree.MCTrack[mctrack.GetMotherId()]
       #print "true vtx: ",mctrack.GetStartX(),mctrack.GetStartY(),mctrack.GetStartZ()
       #print "reco vtx: ",HNLPos[0],HNLPos[1],HNLPos[2]
       #self.h['Vzpull'].Fill( (mctrack.GetStartZ()-HNLPos[2])/ROOT.TMath.Sqrt(covX[2][2]) )
@@ -358,8 +361,7 @@ class Task:
      particle.SetCovV(covV)
      particle.SetCovP(covP)
      particle.SetDoca(doca)
-     nParts   = particles.GetEntries()
-     particles[nParts] = particle
+     self.fPartArray.push_back(particle)
 
      #self.h['dMFit'].Fill( (1.-P.M()) )
      #self.h['MpullFit'].Fill( (1.-P.M())/ROOT.TMath.Sqrt(covP[3][3]) )

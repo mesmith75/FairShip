@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import ROOT,os,sys,time,shipRoot_conf
 import shipunit as u
 import geometry_config
@@ -39,8 +42,8 @@ def get_work_dir(run_number,tag=None):
 logger.info("SHiP proton-on-taget simulator (C) Thomas Ruf, 2017")
 
 ap = argparse.ArgumentParser(description='Run SHiP "pot" simulation')
-ap.add_argument('-d', '--debug', action=argparse.BooleanOptionalAction, default=True)
-ap.add_argument('-f', '--force', action=argparse.BooleanOptionalAction, default=True, help="force overwriting output directory")
+ap.add_argument('-d', '--debug', action='store_true')
+ap.add_argument('-f', '--force', action='store_true', help="force overwriting output directory")
 ap.add_argument('-r', '--run-number', type=int, dest='runnr', default=1)
 ap.add_argument('-e', '--ecut', type=float, help="energy cut", default=0.5)  # GeV   with 1 : ~1sec / event, with 2: 0.4sec / event, 10: 0.13sec
 ap.add_argument('-n', '--num-events', type=int, help="number of events to generate", dest='nev', default=100)
@@ -48,7 +51,6 @@ ap.add_argument('-G', '--G4only', action=argparse.BooleanOptionalAction, default
                 help="Whether or not to use Geant4 directly, no Pythia8 (--no-G4only or --G4only). Default set to False.")
 ap.add_argument('-P', '--pythiaDecay', action=argparse.BooleanOptionalAction, default=False,
                 help="Whether or not to use Pythia8 for decays (--no-PythiaDecay or --PythiaDecay). Default set to False.")
-# ap.add_argument('-V', '--EvtGen', action='store_true', dest='withEvtGen', default=withEvtGen, help="use EvtGen for decays")
 ap.add_argument('-t', '--tau-only', action=argparse.BooleanOptionalAction, dest='tauOnly', default=False)
 ap.add_argument('-J', '--Jpsi-mainly', action=argparse.BooleanOptionalAction, dest='JpsiMainly', default=False)
 ap.add_argument('-b', '--boostDiMuon', type=float, default=1., help="boost Di-muon branching ratios")
@@ -61,7 +63,7 @@ ap.add_argument('-D', '--4darkPhoton', action=argparse.BooleanOptionalAction, de
 # for charm production
 ap.add_argument('-cc', '--chicc', default=1.7e-3, help="ccbar over mbias cross section")
 ap.add_argument('-bb', '--chibb', default=1.6e-7, help="bbbar over mbias cross section")
-ap.add_argument('-p', '--pot', default=5E13, help="number of protons on target per spill to normalize on")
+ap.add_argument('-p', '--pot', default=4E13, help="number of protons on target per spill to normalize on")
 ap.add_argument('-S', '--nStart', type=int, help="first event of input file to start", dest='nStart', default=0)
 ap.add_argument('-I', '--InputFile', type=str, dest='charmInputFile', default=ROOT.gSystem.Getenv("EOSSHIP")+"/eos/experiment/ship/data/Charm/Cascade-parp16-MSTP82-1-MSEL4-76Mpot_1.root", help="input file for charm/beauty decays")
 ap.add_argument('-o', '--output', type=str, help="output directory", dest='work_dir', default=None)
@@ -70,10 +72,17 @@ ap.add_argument('--DecayVolumeMedium', help='Set Decay Volume Medium. Choices ar
 ap.add_argument('--shieldName', help='Name of the shield in the database. New_HA_Design or warm_opt.', default='New_HA_Design', choices=['New_HA_Design', 'warm_opt'])
 ap.add_argument('--AddMuonShield', help='Whether or not to add the muon shield. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
 ap.add_argument('--AddMuonShieldField', help='Whether or not to add the muon shield magnetic field. Default set to False.', default=False, action=argparse.BooleanOptionalAction)
-ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to False.', default=True, action=argparse.BooleanOptionalAction)
+ap.add_argument('--AddHadronAbsorberOnly', help='Whether to only add the hadron absorber part of the muon shield. Default set to True.', default=True, action=argparse.BooleanOptionalAction)
 
 ap.add_argument('--z-offset', type=float, dest='z_offset', default=-84., help="z-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--x-offset', type=float, dest='x_offset', default=0., help="x-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--y-offset', type=float, dest='y_offset', default=0., help="y-offset for the FixedTargetGenerator [mm]")
+ap.add_argument('--beam-smear', type=float, dest='beam_smear', default=16., help="beam smearing for the FixedTargetGenerator [mm]")
+ap.add_argument('--beam-paint', type=float, dest='beam_paint', default=50., help="beam painting radius for the FixedTargetGenerator [mm]")
 ap.add_argument('--TARGET_YAML', dest='TARGET_YAML', help='File for target configuration', default=os.path.expandvars('$FAIRSHIP/geometry/target_config_Jun25.yaml'))
+
+ap.add_argument('--AddCylindricalSensPlane', action='store_true', help="Whether or not to add cylindrical sensitive plane around the target. False by default.")
+ap.add_argument('--AddPostTargetSensPlane', action='store_true', help="Whether or not to add sensitive plane after the target. False by default.")
 
 args = ap.parse_args()
 if args.debug:
@@ -126,8 +135,6 @@ ship_geo_kwargs = {'Yheight': dy,
                    'DecayVolumeMedium': args.DecayVolumeMedium, 'shieldName': args.shieldName,
                    'TARGET_YAML': args.TARGET_YAML
                    }
-if args.AddMuonShield or args.AddHadronAbsorberOnly:
-    ship_geo_kwargs['muShieldDesign'] = ds
 ship_geo = geometry_config.create_config(**ship_geo_kwargs)
 
 txt = 'pythia8_Geant4_'
@@ -164,6 +171,24 @@ TargetStation.SetLayerPosMat(d=ship_geo.target.xy, L=ship_geo.target.slices_leng
 run.AddModule(TargetStation)
 
 
+if args.AddPostTargetSensPlane:
+    sensPlanePostT = ROOT.exitHadronAbsorber()
+    sensPlanePostT.SetEnergyCut(args.ecut*u.GeV)
+    sensPlanePostT.SetVetoPointName("PlanePostT")
+    # by default, if the z-position is not set, the positioning is behind the hadron abosorber and the tracks are stopped when they hit the sens plane
+    # if the z-position is set and has a reasonable value (below 1E8), then the tracks are not stopped and continue to the last plane after the hadron absorber
+    sensPlanePostT.SetZposition(ship_geo.target.length + 7.6*u.cm + 300*u.mm)  # target length + vessel shift + shielding length
+    sensPlanePostT.SetUseCaveCoordinates()  # position set from the cave to avoid extrusions since the plane is larger than the target vacuum box
+
+    if args.storeOnlyMuons:
+        sensPlanePostT.SetOnlyMuons()
+    if args.skipNeutrinos:
+        sensPlanePostT.SkipNeutrinos()
+    if args.FourDP:
+        sensPlanePostT.SetOpt4DP()
+    run.AddModule(sensPlanePostT)
+
+
 if args.AddMuonShield or args.AddHadronAbsorberOnly:
     n_magnets = 7
     n_params = 13
@@ -178,18 +203,47 @@ if args.AddMuonShield or args.AddHadronAbsorberOnly:
                                      SC_key=ship_geo.SC_mag)
     # MuonShield.SetSupports(False) # otherwise overlap with sensitive Plane
     run.AddModule(MuonShield) # needs to be added because of magn hadron shield.
-sensPlane = ROOT.exitHadronAbsorber()
-sensPlane.SetEnergyCut(args.ecut*u.GeV)
-if args.storeOnlyMuons: sensPlane.SetOnlyMuons()
-if args.skipNeutrinos: sensPlane.SkipNeutrinos()
-if args.FourDP: sensPlane.SetOpt4DP()  # in case a ntuple should be filled with pi0,etas,omega
-# sensPlane.SetZposition(0.0001*u.cm)  # if not using automatic positioning behind default magnetized hadron absorber
-run.AddModule(sensPlane)
+
+
+sensPlaneHA = ROOT.exitHadronAbsorber()
+sensPlaneHA.SetEnergyCut(args.ecut*u.GeV)
+sensPlaneHA.SetVetoPointName("PlaneHA")
+
+if args.AddCylindricalSensPlane:  # add additional sensitive plane around target
+    sensPlaneT = ROOT.exitHadronAbsorber()
+    sensPlaneT.SetEnergyCut(args.ecut*u.GeV)
+    sensPlaneT.SetVetoPointName("PlaneT")
+    sensPlaneT.SetCylindricalPlane()
+    # by default, if the z-position is not set, the positioning is behind the hadron abosorber and the tracks are stopped when they hit the sens plane
+    # if the z-position is set and has a reasonable value (below 1E8), then the tracks are not stopped and continue to the last plane after the hadron absorber
+    sensPlaneT.SetZposition(ship_geo.target.length)
+
+if args.storeOnlyMuons:
+    sensPlaneHA.SetOnlyMuons()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SetOnlyMuons()
+if args.skipNeutrinos:
+    sensPlaneHA.SkipNeutrinos()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SkipNeutrinos()
+if args.FourDP:  # in case a ntuple should be filled with pi0,etas,omega
+    sensPlaneHA.SetOpt4DP()
+    if args.AddCylindricalSensPlane:
+        sensPlaneT.SetOpt4DP()
+
+run.AddModule(sensPlaneHA)
+
+if args.AddCylindricalSensPlane:
+    run.AddModule(sensPlaneT)
 
 # -----Create PrimaryGenerator--------------------------------------
 primGen = ROOT.FairPrimaryGenerator()
 P8gen = ROOT.FixedTargetGenerator()
 P8gen.SetZoffset(args.z_offset*u.mm)
+P8gen.SetXoffset(args.x_offset*u.mm)
+P8gen.SetYoffset(args.y_offset*u.mm)
+P8gen.SetSmearBeam(args.beam_smear*u.mm)
+P8gen.SetPaintRadius(args.beam_paint*u.mm)
 # Use geometry constants instead of fragile TGeo navigation
 P8gen.SetTargetCoordinates(ship_geo.target.z0, ship_geo.target.z0 + ship_geo.target.length)
 P8gen.SetMom(400.*u.GeV)
@@ -289,7 +343,7 @@ sTree = t.CloneTree(0)
 nEvents = 0
 for n in range(t.GetEntries()):
     rc = t.GetEvent(n)
-    if t.vetoPoint.GetEntries() > 0:
+    if (t.PlaneHAPoint.GetEntries() > 0) or (args.AddCylindricalSensPlane and t.PlaneTPoint.GetEntries() > 0):
         rc = sTree.Fill()
         nEvents += 1
     #t.Clear()

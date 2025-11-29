@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -11,6 +14,5 @@
 #pragma link C++ class ShipBFieldMap+;
 #pragma link C++ class ShipCompField+;
 #pragma link C++ class ShipFieldMaker+;
-#pragma link C++ class ShipGoliathField+;
 #pragma link C++ class FairShipFields+;
 #endif

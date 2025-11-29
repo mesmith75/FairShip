@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 import ROOT
 import shipunit as u
 import  eveGlobal
@@ -25,7 +28,7 @@ def collect_hits(lsOfGlobals, checked_muons):
   hitlist = {}
   hitlist[fPos.Z()] = [fPos.X(), fPos.Y(), fT.GetP()]
 # loop over all sensitive volumes to find hits
-  for P in ["vetoPoint", "muonPoint",
+  for P in ["vetoPoint",
             "strawtubesPoint", "ShipRpcPoint", "TargetPoint"]:
     if not sTree.GetBranch(P):
       continue

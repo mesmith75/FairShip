@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 from ctypes import c_double
 
 import ROOT
@@ -21,9 +24,6 @@ def MCTrackPrintOut(x):
   return txt
 def vetoHitPrintOut(x):
   txt = '("vetoHit") detID:%7i  ADC:%5.2F TDC:%5.2F'%(x.GetDetectorID(),x.GetADC(),x.GetTDC())
-  return txt
-def muonHitPrintOut(x):
-  txt = '("muonHit") detID:%7i  TDC:%5.2F  isValid:%r'%(x.GetDetectorID(),x.GetDigi(),x.isValid())
   return txt
 def TimeDetHitPrintOut(x):
   t = x.GetMeasurements()
@@ -85,6 +85,5 @@ def apply_decorators():
     ROOT.ShipParticle.__repr__ = ShipParticlePrintOut
     ROOT.TEvePointSet.__repr__ = TEvePointSetPrintOut
     ROOT.vetoHit.__repr__ = vetoHitPrintOut
-    ROOT.muonHit.__repr__ = muonHitPrintOut
     ROOT.TimeDetHit.__repr__ = TimeDetHitPrintOut
     ROOT.TLorentzVector.__repr__ = TLorentzVectorPrintOut

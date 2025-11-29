@@ -14,6 +14,7 @@
     - [Docker instructions](#docker-instructions)
     - [Troubleshooting information](#troubleshooting-information)
     - [Documentation](#documentation)
+    - [License](#license)
     - [Contributing code](#contributing-code)
 
 <!-- markdown-toc end -->
@@ -149,11 +150,15 @@ python $FAIRSHIP/macro/ShipReco.py -f ship.conical.Pythia8-TGeant4.root -g geofi
 >> [...]
 >> finished writing tree
 >> Exit normally
+>> (This creates ship.conical.Pythia8-TGeant4_rec.root with digitisation and reconstruction data)
 
-python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/ShipAna.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 >> finished making plots
 >> Exit normally
 ```
+
+**Note**: ShipReco now creates a separate reconstruction file (`*_rec.root`) containing only digitisation and reconstruction branches. The original simulation file is not modified. ShipAna uses both files via ROOT's friend tree mechanism to access both MC truth and reconstruction data.
+
 Alternatively, you can make use of the experimental `analysis_toolkit` to run a simple pre-selection check on the events. An example script can be found in `$FAIRSHIP/examples/analysis_example.py`.
 
 Simulate MC signal events with EventCalc:
@@ -169,7 +174,7 @@ python $FAIRSHIP/macro/run_simScript.py --evtcalc -n 1 -o test_folder -f test_fo
 Run the event display:
 
 ```bash
-python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
+python -i $FAIRSHIP/macro/eventDisplay.py -f ship.conical.Pythia8-TGeant4.root -r ship.conical.Pythia8-TGeant4_rec.root -g geofile_full.conical.Pythia8-TGeant4.root
 // use SHiP Event Display GUI
 Use quit() or Ctrl-D (i.e. EOF) to exit
 ```
@@ -207,6 +212,12 @@ Please see the wiki for [FAQ](https://github.com/ShipSoft/FairShip/wiki/FAQ-and-
 ## Documentation
 
 An [automatic class reference](https://shipsoft.github.io/FairShip/) is built using Doxygen from comments in the C++ code. Improving the comments will improve this documentation.
+
+## License
+
+FairShip is distributed under the GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later). See the [LICENSE](LICENSE) file for details.
+
+Copyright is held by CERN for the benefit of the SHiP Collaboration. Some components are distributed under different licenses and copyrights - see the individual file headers and the [LICENSES](LICENSES/) directory for details. This project follows the [REUSE specification](https://reuse.software/) for licensing information.
 
 ## Contributing code
 

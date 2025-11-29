@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #ifndef SPLITCAL_SPLITCALHIT_H_
 #define SPLITCAL_SPLITCALHIT_H_
 
@@ -6,6 +9,7 @@
 #include "splitcalPoint.h"
 #include "TObject.h"
 #include "TVector3.h"
+#include <vector>
 
 class splitcalHit : public ShipHit
 {
@@ -20,7 +24,7 @@ class splitcalHit : public ShipHit
      *@param flag      True/False, false if there is another hit with smaller tdc
      **/
     splitcalHit(Int_t detID, Float_t tdc);
-    splitcalHit(splitcalPoint* p, Double_t t0);
+    splitcalHit(const std::vector<splitcalPoint>& points, Double_t t0);
     /** Destructor **/
     virtual ~splitcalHit();
 
@@ -43,50 +47,36 @@ class splitcalHit : public ShipHit
     void SetIsY(bool y) {_isY = y;}
     void SetIsUsed(int u) {_isUsed = u;}
     void SetXYZErrors(double xError, double yError, double zError) {_xError = xError; _yError = yError; _zError = zError;}
-    /* void SetClusterIndex(int i) {_clusterIndex = i;} */
-    /* void SetEnergyWeight(double w) {_energyWeight = w;} */
-    void AddClusterIndex(int i) {_vecClusterIndices.push_back(i);}
-    void AddEnergyWeight(double w) {_vecEnergyWeights.push_back(w);}
 
-    double GetX() {return _x;}
-    double GetY() {return _y;}
-    double GetZ() {return _z;}
-    double GetEnergy() {return _energy;}
-    double GetEnergyForCluster(int i);
-    int GetIsPrecisionLayer() {return _isPrecisionLayer;}
-    int GetLayerNumber() {return _nLayer;}
-    int GetModuleXNumber() {return _nModuleX;}
-    int GetModuleYNumber() {return _nModuleY;}
-    int GetStripNumber() {return _nStrip;}
-    bool IsX() {return _isX;}
-    bool IsY() {return _isY;}
-    int IsUsed() {return _isUsed;}
-    double GetXError() {return _xError;}
-    double GetYError() {return _yError;}
-    double GetZError() {return _zError;}
-    /* double GetEnergyWeight() {return _energyWeight;} */
-    /* int GetClusterIndex() {return _clusterIndex;} */
-    std::vector<int > GetClusterIndices() {return _vecClusterIndices;}
-    std::vector<double > GetEnergyWeights() {return _vecEnergyWeights;}
-    bool IsShared() {return GetClusterIndices().size()>1; }
-    double GetEnergyWeightForIndex(int index);
+    double GetX() const { return _x; }
+    double GetY() const { return _y; }
+    double GetZ() const { return _z; }
+    double GetEnergy() const { return _energy; }
+    int GetIsPrecisionLayer() const { return _isPrecisionLayer; }
+    int GetLayerNumber() const { return _nLayer; }
+    int GetModuleXNumber() const { return _nModuleX; }
+    int GetModuleYNumber() const { return _nModuleY; }
+    int GetStripNumber() const { return _nStrip; }
+    bool IsX() const { return _isX; }
+    bool IsY() const { return _isY; }
+    int IsUsed() const { return _isUsed; }
+    double GetXError() const { return _xError; }
+    double GetYError() const { return _yError; }
+    double GetZError() const { return _zError; }
 
     /** Copy constructor **/
-    splitcalHit(const splitcalHit& point);
-    splitcalHit operator=(const splitcalHit& point);
+    splitcalHit(const splitcalHit& point) = default;
+    splitcalHit& operator=(const splitcalHit& point) = default;
 
   private:
 
     Float_t flag;
     double _x, _y, _z, _xError, _yError, _zError;
-    double _energy;// _energyWeight;
-    /* std::string _nameSubDetector;  */
-    int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;// _clusterIndex;
+    double _energy;
+    int _isPrecisionLayer, _nLayer, _nModuleX, _nModuleY, _nStrip, _isUsed;
     bool _isX, _isY;
-    std::vector<double > _vecEnergyWeights;
-    std::vector<int > _vecClusterIndices;
 
-    ClassDef(splitcalHit,3);
+    ClassDef(splitcalHit,5);
 
 
 };

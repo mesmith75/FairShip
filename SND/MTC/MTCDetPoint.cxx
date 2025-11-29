@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+
 #include "MTCDetPoint.h"
 
 #include <iostream>
@@ -39,12 +42,12 @@ void MTCDetPoint::Print() const
 }
 // -------------------------------------------------------------------------
 
-Int_t MTCDetPoint::GetLayer()
+Int_t MTCDetPoint::GetLayer() const
 {
     return (fDetectorID / 100000) % 100;
 }
 
-Int_t MTCDetPoint::GetLayerType()
+Int_t MTCDetPoint::GetLayerType() const
 {
     return fDetectorID / 10000000;
 }
