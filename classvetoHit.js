@@ -1,0 +1,26 @@
+var classvetoHit =
+[
+    [ "vetoHit", "classvetoHit.html#a1791cec3ef66d0f4b927cc4856c0577f", null ],
+    [ "vetoHit", "classvetoHit.html#a1d44d7dcf43d8f89b8d5543dda0a7a0d", null ],
+    [ "~vetoHit", "classvetoHit.html#abfe4b714c3d35c5e057c5d9c5819b86a", null ],
+    [ "vetoHit", "classvetoHit.html#ab175a0d700526b9ca4611b4bfbd67516", null ],
+    [ "ClassDef", "classvetoHit.html#a3472ffa73af9b08c8a95811c10ac0b22", null ],
+    [ "GetADC", "classvetoHit.html#a24f871c8ff5286470451080a9c0cbed3", null ],
+    [ "GetEloss", "classvetoHit.html#acc59e65dc99ccd1c2078c8d970ab527a", null ],
+    [ "GetNode", "classvetoHit.html#ac85226d3bdd855cabfb589ff9983a54e", null ],
+    [ "GetTDC", "classvetoHit.html#aeb6cafbb07d8379296a9b687fc5dd333", null ],
+    [ "GetX", "classvetoHit.html#a33992eb16a5fada4299767224c04fd3a", null ],
+    [ "GetXYZ", "classvetoHit.html#a9218ccf1aac64809630111df37738014", null ],
+    [ "GetY", "classvetoHit.html#ad6f626737403bcc1d0438f291cd6ff10", null ],
+    [ "GetZ", "classvetoHit.html#a8934e3284171c1b158749334d99ed7ed", null ],
+    [ "isValid", "classvetoHit.html#a9e7c32279ce9d6fe142ab42c2293f035", null ],
+    [ "operator=", "classvetoHit.html#a4390033cf8b1f68910f3375050fb780e", null ],
+    [ "Print", "classvetoHit.html#ae558418d02986544eaaa5898d3c7c5a4", null ],
+    [ "Print", "classvetoHit.html#aed0c193a3159e56cda7377012272d233", null ],
+    [ "SetEloss", "classvetoHit.html#ace3e27270dc49e73580d1f299e9c2c31", null ],
+    [ "setInvalid", "classvetoHit.html#a05b5dab70909e140e471d910e4e3810a", null ],
+    [ "setIsValid", "classvetoHit.html#aae48832a3b89dfa73b17d595ca03ccc0", null ],
+    [ "SetTDC", "classvetoHit.html#a02dd768411f15085a2a0ab97fc250a68", null ],
+    [ "flag", "classvetoHit.html#a0eba79d46341d7448729a86e949c768c", null ],
+    [ "ft", "classvetoHit.html#a5ee40a489b0d2248c9c8cdcea37aead8", null ]
+];
