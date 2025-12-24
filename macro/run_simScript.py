@@ -591,17 +591,20 @@ if options.print_fields:
 # Plot the field example
 #fieldMaker.plotField(1, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-300.0, 300.0, 6.0), 'Bzx.png')
 #fieldMaker.plotField(2, ROOT.TVector3(-9000.0, 6000.0, 50.0), ROOT.TVector3(-400.0, 400.0, 6.0), 'Bzy.png')
-
+print("ABOUT TO RUN")
 # -----Start run----------------------------------------------------
 run.Run(options.nEvents)
+print("RUN OVER: KNACKERED")
 # -----Runtime database---------------------------------------------
-kParameterMerged = ROOT.kTRUE
-parOut = ROOT.FairParRootFileIo(kParameterMerged)
-parOut.open(parFile)
-rtdb.setOutput(parOut)
-rtdb.saveOutput()
-rtdb.printParamContexts()
+#kParameterMerged = ROOT.kTRUE
+#parOut = ROOT.FairParRootFileIo(kParameterMerged)
+#parOut.open(parFile)
+#rtdb.setOutput(parOut)
+#rtdb.saveOutput()
+#rtdb.printParamContexts()
 getattr(rtdb,"print")()
+
+print("ABOUT TO GEMOFILE")
 # ------------------------------------------------------------------------
 run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
 # save ShipGeo dictionary in geofile

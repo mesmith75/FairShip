@@ -424,6 +424,11 @@ def create_config(
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
+    c.UBTStation1 = AttrDict(z = c.decayVolume.z0 - 25*u.cm)
+    c.UBTStation2 = AttrDict(z = c.decayVolume.z0 - 20*u.cm)
+    c.UBTStation3 = AttrDict(z = c.decayVolume.z0 - 15*u.cm)
+    c.UBTStation4 = AttrDict(z = c.decayVolume.z0 - 10*u.cm)
+
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
     c.Bfield.max = 0  # 1.4361*u.kilogauss  # was 1.15 in EOI
@@ -537,7 +542,7 @@ def create_config(
     c.UpstreamTagger = AttrDict()
     c.UpstreamTagger.BoxX = 4.4 * u.m  # X dimension (width)
     c.UpstreamTagger.BoxY = 6.4 * u.m  # Y dimension (height)
-    c.UpstreamTagger.BoxZ = 16.0 * u.cm  # Z dimension (thickness)
+    c.UpstreamTagger.BoxZ = 2.0 * u.cm  # Z dimension (thickness)
     c.UpstreamTagger.Z_Position = (
         -25.400 * u.m + c.decayVolume.z
     )  # Relative position of UBT to decay vessel centre

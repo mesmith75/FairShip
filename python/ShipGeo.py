@@ -14,11 +14,17 @@ def zPositions():
   for x in ShipGeo:
    if hasattr(eval('ShipGeo.'+x),'z'): print(x,'z=',eval('ShipGeo.'+x+'.z'))
 
-vetoStation   = ShipGeo(-2390.*u.cm)
+#vetoStation   = ShipGeo(-2390.*u.cm)
 TrackStation1 = ShipGeo(1510.*u.cm)
 TrackStation2 = ShipGeo(1710.*u.cm)
 TrackStation3 = ShipGeo(2150.*u.cm)
 TrackStation4 = ShipGeo(2370.*u.cm)
+
+UBTStation1 = ShipGeo(2390.*u.cm)
+UBTStation2 = ShipGeo(2395.*u.cm)
+UBTStation3 = ShipGeo(2400.*u.cm)
+UBTStation4 = ShipGeo(2405.*u.cm)
+
 
 z = TrackStation2.z + 0.5 * (TrackStation3.z - TrackStation2.z)
 Bfield = ShipGeo(z)
