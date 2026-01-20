@@ -424,10 +424,7 @@ def create_config(
         c.Chamber1 = AttrDict(z=z4 - 4666.0 * u.cm - magnetIncrease - extraVesselLength)
         c.Chamber6 = AttrDict(z=z4 + 30.0 * u.cm + windowBulge / 2.0)
 
-    c.UBTStation1 = AttrDict(z = c.decayVolume.z0 - 25*u.cm)
-    c.UBTStation2 = AttrDict(z = c.decayVolume.z0 - 20*u.cm)
-    c.UBTStation3 = AttrDict(z = c.decayVolume.z0 - 15*u.cm)
-    c.UBTStation4 = AttrDict(z = c.decayVolume.z0 - 10*u.cm)
+    c.UBTStation1 = AttrDict(z = c.decayVolume.z0 - 50*u.cm)
 
     c.Bfield = AttrDict()
     c.Bfield.z = c.z
