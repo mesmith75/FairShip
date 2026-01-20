@@ -332,9 +332,9 @@ class DrawTracks(ROOT.FairTask):
         self.comp.DestroyElements()
         self.comp.OpenCompound()
         if sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR"):
-            if sTree.FitTracks.GetEntries() > 0:
+            if len(sTree.FitTracks) > 0:
                 self.DrawFittedTracks()
-        if not sTree.FindBranch("GeoTracks") and sTree.MCTrack.GetEntries() > 0:
+        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0:
             if globals()["withMCTracks"]:
                 if top.GetNode("Tunnel_1"):
                     DrawSimpleMCTracks()  # for sndlhc, until more details are simulated
@@ -1194,7 +1194,16 @@ def debugStraw(n):
 
 
 # ----Load the default libraries------
-from basiclibs import *
+# Load basic libraries used with both Geant3 and Geant4
+# For ROOT >= 6.32, TPythia6 is not included in ROOT and must be loaded from EGPythia6
+# For ROOT < 6.32, TPythia6 is built into libEG
+root_version = ROOT.gROOT.GetVersionInt()
+if root_version >= 63200:
+    # Load external EGPythia6 for ROOT >= 6.32
+    ROOT.gSystem.Load("libEGPythia6.so")
+ROOT.gSystem.Load("libPythia6.so")
+ROOT.gSystem.Load("libpythia8.so")
+
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 

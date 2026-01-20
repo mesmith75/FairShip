@@ -1,20 +1,25 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
-// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
+// SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP
+// Collaboration
 
 #ifndef UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 #define UPSTREAMTAGGER_UPSTREAMTAGGER_H_
 
+#include <map>
+#include <vector>
+
 #include "FairDetector.h"
-#include "TVector3.h"
-#include "TLorentzVector.h"
+#include "ISTLPointContainer.h"
 #include "ShipUnit.h"
+#include "TLorentzVector.h"
+#include "TVector3.h"
 
 class UpstreamTaggerPoint;
 class FairVolume;
 class TClonesArray;
 
-using ShipUnit::m;
 using ShipUnit::cm;
+using ShipUnit::m;
 
 /**
  * @brief Upstream Background Tagger (UBT) detector
@@ -23,11 +28,12 @@ using ShipUnit::cm;
  * It serves as a background tagging device upstream of the decay volume.
  *
  * Historical Note:
- * The UBT was previously implemented as a detailed RPC (Resistive Plate Chamber)
- * with multiple material layers (Glass, PMMA, Freon SF6, FR4, Aluminium, strips).
- * It was simplified to a single vacuum box scoring plane to avoid geometry overlaps
- * and reduce simulation complexity while maintaining its physics purpose.
- * See commits 178787588 and related for the simplification history.
+ * The UBT was previously implemented as a detailed RPC (Resistive Plate
+ * Chamber) with multiple material layers (Glass, PMMA, Freon SF6, FR4,
+ * Aluminium, strips). It was simplified to a single vacuum box scoring plane to
+ * avoid geometry overlaps and reduce simulation complexity while maintaining
+ * its physics purpose. See commits 178787588 and related for the simplification
+ * history.
  *
  * Current Implementation:
  * - Simple vacuum box with configurable dimensions
@@ -36,10 +42,16 @@ using ShipUnit::cm;
  * - Configured via SetZposition() and SetBoxDimensions()
  */
 
-class UpstreamTagger: public FairDetector
-{
-
-  public:
+class UpstreamTagger : public FairDetector, public ISTLPointContainer {
+ public:
+  /**      Name :  Detector Name
+   *       Active: kTRUE for active detectors (ProcessHits() will be called)
+   *               kFALSE for inactive detectors
+   */
+  UpstreamTagger(const char* Name, Bool_t Active);
+  UpstreamTagger& operator=(const UpstreamTagger&);
+  /** default constructor */
+  UpstreamTagger();
 
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -47,39 +59,33 @@ class UpstreamTagger: public FairDetector
     */
 //    UpstreamTagger(const char* Name, Bool_t Active);
     UpstreamTagger(std::string medium);
+  /** destructor */
+  virtual ~UpstreamTagger();
+  /** Initialization of the detector is done here */
+  virtual void Initialize();
 
-    /** default constructor */
-    UpstreamTagger();
+  /**   this method is called for each step during simulation
+   *    (see FairMCApplication::Stepping())
+   */
+  virtual Bool_t ProcessHits(FairVolume* v = 0);
 
-    /** destructor */
-    virtual ~UpstreamTagger();
+  /**       Registers the produced collections in FAIRRootManager. */
+  virtual void Register();
 
-    /** Initialization of the detector is done here */
-    virtual void   Initialize();
+  /** Gets the produced collections */
+  virtual TClonesArray* GetCollection(Int_t iColl) const;
 
-    /**   this method is called for each step during simulation
-     *    (see FairMCApplication::Stepping())
-    */
-    virtual Bool_t ProcessHits( FairVolume* v=0);
+  /** Update track indices in point collection (for std::vector migration) */
+  void UpdatePointTrackIndices(const std::map<Int_t, Int_t>& indexMap);
 
-    /**       Registers the produced collections in FAIRRootManager. */
-    virtual void Register();
+  /** has to be called after each event to reset the containers */
+  virtual void Reset();
 
-    /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const;
+  /** Sets detector position and sizes */
+  void SetZposition(Double_t z) { det_zPos = z; }
 
-    /** has to be called after each event to reset the containers */
-    virtual void Reset();
-
-    /** Sets detector position and sizes */
-    void SetZposition(Double_t z) {det_zPos = z;}
-    void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
-        xbox_fulldet = x;
-        ybox_fulldet = y;
-        zbox_fulldet = z;
-    }
-    void SetzPositions(Double_t z1, Double_t z2, Double_t z3, Double_t z4);
-    void SetApertureArea(Double_t width, Double_t height);
+    void SetzPositions(Double_t z1);
+    void SetApertureArea(Double_t width, Double_t height, Double_t length);
     void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness);
     void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset);
     void SetDeltazLayer(Double_t delta_z_layer);
@@ -87,53 +93,51 @@ class UpstreamTagger: public FairDetector
     void SetWireThickness(Double_t wire_thickness);
     void SetFrameMaterial(TString frame_material);
     void SetDeltazView(Double_t delta_z_view);
-    void SetStationEnvelope(Double_t x, Double_t y, Double_t z);
     static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
     static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
+  /**  Create the detector geometry */
+  void ConstructGeometry();
 
-    /**  Create the detector geometry */
-    void ConstructGeometry();
+  /**      This method is an example of how to add your own point
+   *       of type TimeRpcPoint to the clones array
+   */
+  UpstreamTaggerPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos,
+                              TVector3 mom, Double_t time, Double_t length,
+                              Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
+                              TVector3 Lmom);
 
-    /**      This method is an example of how to add your own point
-     *       of type TimeRpcPoint to the clones array
-    */
-    UpstreamTaggerPoint* AddHit(Int_t trackID, Int_t detID,
-			 TVector3 pos, TVector3 mom,
-			 Double_t time, Double_t length,
-			 Double_t eLoss, Int_t pdgCode,TVector3 Lpos, TVector3 Lmom);
+  virtual void EndOfEvent();
+  virtual void FinishPrimary() { ; }
+  virtual void FinishRun() { ; }
+  virtual void BeginPrimary() { ; }
+  virtual void PostTrack() { ; }
+  virtual void PreTrack() { ; }
+  virtual void BeginEvent() { ; }
 
-    virtual void   EndOfEvent();
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
+  Double_t module[11][3];  // x,y,z centre positions for each module
+  // TODO Avoid 1-indexed array!
 
-    Double_t module[11][3];  // x,y,z centre positions for each module
-    // TODO Avoid 1-indexed array!
+  /** Track information to be stored until the track leaves the active volume.*/
+  Int_t fTrackID;       //!  track index
+  Int_t fVolumeID;      //!  volume id
+  TLorentzVector fPos;  //!  position at entrance
+  TLorentzVector fMom;  //!  momentum at entrance
+  Double_t fTime;       //!  time
+  Double_t fLength;     //!  length
+  Double_t fELoss;      //!  energy loss
 
-    /** Track information to be stored until the track leaves the active volume.*/
-    Int_t          fTrackID;            //!  track index
-    Int_t          fVolumeID;           //!  volume id
-    TLorentzVector fPos;                //!  position at entrance
-    TLorentzVector fMom;                //!  momentum at entrance
-    Double_t       fTime;               //!  time
-    Double_t       fLength;             //!  length
-    Double_t       fELoss;              //!  energy loss
+  /** Detector parameters.*/
 
     Double_t       f_aperture_width;
     Double_t       f_aperture_height;
     Double_t       f_station_length;
-    Double_t       f_station_width;
-    Double_t       f_station_height;
     Double_t       f_straw_pitch;
     Double_t       f_view_angle;
     Double_t       f_offset_layer;
     Double_t       f_inner_straw_diameter;
     Double_t       f_outer_straw_diameter;
     Double_t       f_wire_thickness;
-    Double_t       f_T1_z,f_T2_z,f_T3_z,f_T4_z;
+    Double_t       f_T1_z;
     Double_t       f_delta_z_view;
     Double_t       f_delta_z_layer;
     TString        f_frame_material;
@@ -141,26 +145,17 @@ class UpstreamTagger: public FairDetector
     /** Detector parameters.*/
 
     Double_t     det_zPos;     //!  z-position of detector (set via SetZposition)
-    // Detector box dimensions (set via SetBoxDimensions, defaults provided below)
-    Double_t xbox_fulldet;// = 4.4 * m;  //!  X dimension (default: 4.4 m)
-    Double_t ybox_fulldet;// = 6.4 * m;  //!  Y dimension (default: 6.4 m)
-    Double_t zbox_fulldet;// = 16.0 * cm; //!  Z dimension/thickness (default: 16 cm)
 
-  private:
+ private:
+  /** container for data points */
+  std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
+
+  Int_t InitMedium(const char* name);
 
     TGeoVolume* UpstreamTagger_plastic;
-    TGeoVolume* UpstreamTagger_fulldet; // Timing_detector_1 object
-    TGeoVolume* UpstreamTagger_fulldet_1; // Timing_detector_1 object
-    TGeoVolume* UpstreamTagger_fulldet_3; // Timing_detector_1 object
 
-    TGeoVolume* scoringPlaneUBText; // new scoring plane
     /** container for data points */
     TClonesArray* fUpstreamTaggerPointCollection;
-
-    UpstreamTagger(const UpstreamTagger&);
-    UpstreamTagger& operator=(const UpstreamTagger&);
-    Int_t InitMedium(const char* name);
-
 
     ClassDef(UpstreamTagger,1)
 };

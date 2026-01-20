@@ -274,13 +274,11 @@ def configure_upstreamTagger(yaml_file, ship_geo):
     ubt = ROOT.UpstreamTagger(ship_geo.ubt_geo.medium)
     ubt.SetzPositions(
         ship_geo.UBTStation1.z,
-        ship_geo.UBTStation2.z,
-        ship_geo.UBTStation3.z,
-        ship_geo.UBTStation4.z,
     )
     ubt.SetApertureArea(
         ship_geo.ubt_geo.width,
         ship_geo.ubt_geo.height,
+        ship_geo.ubt_geo.station_length
     )
     ubt.SetStrawDiameter(
         ship_geo.ubt_geo.outer_straw_diameter,
@@ -295,11 +293,6 @@ def configure_upstreamTagger(yaml_file, ship_geo):
     ubt.SetWireThickness(ship_geo.ubt_geo.wire_thickness)
     ubt.SetDeltazView(ship_geo.ubt_geo.delta_z_view)
     ubt.SetFrameMaterial(ship_geo.ubt_geo.frame_material)
-    ubt.SetStationEnvelope(
-        ship_geo.ubt_geo.station_width,
-        ship_geo.ubt_geo.station_height,
-        ship_geo.ubt_geo.station_length,
-    )
 
 
     #For digitization
