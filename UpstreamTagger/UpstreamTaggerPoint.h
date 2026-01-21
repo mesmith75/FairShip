@@ -44,6 +44,8 @@ class UpstreamTaggerPoint : public FairMCPoint {
   Int_t PdgCode() const { return fPdgCode; }
   TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
   TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
+  Int_t GetLayerID() const { return fSubDetID; };
+
 
  private:
   Int_t fPdgCode;
