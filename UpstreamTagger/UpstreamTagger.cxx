@@ -43,6 +43,36 @@ using ShipUnit::m;
 using std::cout;
 using std::endl;
 
+constexpr uint64_t hash(std::string_view str) {
+    uint64_t hash = 0;
+    for (char c : str) {
+        hash = (hash * 131) + c;
+    }
+    return hash;
+}
+
+constexpr uint64_t operator"" _hash(const char* str, size_t len) {
+    return hash(std::string_view(str, len));
+}
+
+
+constexpr const int detPieces(std::string_view pieceName) noexcept{
+    switch(hash(pieceName)){
+        case "Upstream_Tagger_Plastic"_hash:
+            return 0;
+        case "ubt_gas_UBT1_y2_layer"_hash:
+            return 1;
+        case "ubt_gas_UBT1_v_layer"_hash:
+            return 2;
+        case "ubt_gas_UBT1_u_layer"_hash:
+            return 3;
+        case "ubt_gas_UBT1_y1_layer"_hash:
+            return 4;
+        default:
+            return 10;
+    }
+}
+
 UpstreamTagger::UpstreamTagger()
     : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
       fTrackID(-1),
@@ -141,6 +171,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
     gMC->CurrentVolID(uniqueId);
     const char* volName = gMC->CurrentVolName();
     std::cout<<"volume id: "<<uniqueId<<" - name: "<<volName<<std::endl;
+    int subDetID = detPieces(volName);
     if (uniqueId > 1000000)  // Solid scintillator case
     {
       Int_t vcpy;
@@ -158,7 +189,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
     Double_t ymean = (fPos.Y() + Pos.Y()) / 2.;
     Double_t zmean = (fPos.Z() + Pos.Z()) / 2.;
 
-    AddHit(fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
+    AddHit(fTrackID, uniqueId, subDetID, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -448,11 +479,12 @@ void UpstreamTagger::ConstructGeometry()
 }
 
 UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t trackID, Int_t detID,
+                                            Int_t subDetID,
                                             TVector3 pos, TVector3 mom,
                                             Double_t time, Double_t length,
                                             Double_t eLoss, Int_t pdgCode,
                                             TVector3 Lpos, TVector3 Lmom) {
-  fUpstreamTaggerPoints->emplace_back(trackID, detID, pos, mom, time, length,
+  fUpstreamTaggerPoints->emplace_back(trackID, detID, subDetID, pos, mom, time, length,
                                       eLoss, pdgCode, Lpos, Lmom);
   return &(fUpstreamTaggerPoints->back());
 }
