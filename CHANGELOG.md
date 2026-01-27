@@ -16,8 +16,14 @@ it in future.
 
 ### Changed
 
+
+* Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
+
 ### Fixed
 
+* Fix file-filtering logic to support STL branches
+* Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
+* Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
 

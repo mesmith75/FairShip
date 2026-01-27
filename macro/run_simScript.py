@@ -4,6 +4,7 @@
 
 import os
 import sys
+import uuid
 import ROOT
 
 import shipunit as u
@@ -171,6 +172,7 @@ parser.add_argument(
 )
 parser.add_argument("--noSND", dest="SND", help="Deactivate SND. NOOP, as it currently defaults to off.", action='store_false')
 parser.add_argument("--target-yaml", help="Path to the yaml target config file", default=os.path.expandvars("$FAIRSHIP/geometry/target_config_Jun25.yaml"))
+parser.add_argument("--tag", dest="output_tag", help="Custom tag for output files instead of auto-generated UUID", default=None)
 
 
 
@@ -196,7 +198,6 @@ if options.A != 'c':
 if options.MM:
      motherMode=options.MM
 if options.cosmics:
-     simEngine = "Cosmics"
      Opt_high = int(options.cosmics)
 if options.inputFile:
   if options.inputFile == "none": options.inputFile = None
@@ -257,33 +258,22 @@ ship_geo = geometry_config.create_config(
      TARGET_YAML=options.target_yaml
 )
 
-# Output file name, add dy to be able to setup geometry with ambiguities.
-if options.command == "PG":
-    tag = f"PG_{options.pID}-{mcEngine}"
-elif options.command == "Genie":
-    tag = f"Genie-{mcEngine}"
-    simEngine = "Genie"
-else:
+if not options.command:
     for g in ["pythia8", "evtcalc", "pythia6", "nuradio", "ntuple", "muonback", "mudis", "fixedTarget", "cosmics"]:
         if getattr(options, g):
-            simEngine = g.capitalize()
             break
     else:
-        simEngine = "Pythia8"
         options.pythia8 = True  # Ensure Pythia8 is enabled by default
-    tag = f"{simEngine}-{mcEngine}"
-if charmonly: tag = simEngine+"CharmOnly-"+mcEngine
-if options.eventDisplay: tag = tag+'_D'
-tag = 'conical.'+tag
+
+# Output file name
+# Use custom tag if provided, otherwise use random UUID version 4
+run_identifier = options.output_tag if options.output_tag else str(uuid.uuid4())
 if not os.path.exists(options.outputDir):
   os.makedirs(options.outputDir)
-outFile = f"{options.outputDir}/ship.{tag}.root"
+outFile = f"{options.outputDir}/sim_{run_identifier}.root"
 
-# rm older files !!!
-for x in os.listdir(options.outputDir):
-  if not x.find(tag)<0: os.system(f"rm {options.outputDir}/{x}" )
 # Parameter file name
-parFile=f"{options.outputDir}/ship.params.{tag}.root"
+parFile=f"{options.outputDir}/params_{run_identifier}.root"
 
 # In general, the following parts need not be touched
 # ========================================================================
@@ -489,7 +479,7 @@ if options.muonback:
  MuonBackgen.Init(inputFile, options.firstEvent)
  MuonBackgen.SetPaintRadius(options.PaintBeam*u.cm)
  MuonBackgen.SetSmearBeam(options.SmearBeam*u.cm)
- MuonBackgen.SetPhiRandom(options.phiRandom)
+ MuonBackgen.SetPhiRandomize(options.phiRandom)
  if DownScaleDiMuon:
     testf = ROOT.TFile.Open(inputFile)
     if not testf.FileHeader.GetTitle().find('diMu100.0')<0:
@@ -606,11 +596,12 @@ getattr(rtdb,"print")()
 
 print("ABOUT TO GEMOFILE")
 # ------------------------------------------------------------------------
-run.CreateGeometryFile(f"{options.outputDir}/geofile_full.{tag}.root")
+geofile_name = f"{options.outputDir}/geo_{run_identifier}.root"
+run.CreateGeometryFile(geofile_name)
 # save ShipGeo dictionary in geofile
 import saveBasicParameters
 
-saveBasicParameters.execute(f"{options.outputDir}/geofile_full.{tag}.root",ship_geo)
+saveBasicParameters.execute(geofile_name,ship_geo)
 
 # checking for overlaps
 if options.check_overlaps:
@@ -637,6 +628,7 @@ if "P8gen" in globals() :
 
 print("Output file is ",  outFile)
 print("Parameter file is ",parFile)
+print("Geometry file is ", geofile_name)
 print("Real time ",rtime, " s, CPU time ",ctime,"s")
 
 # remove empty events
@@ -655,18 +647,25 @@ if options.muonback:
 
  sTree = t.CloneTree(0)
  nEvents = 0
+ # Collect branch names containing 'Point' - these are the sensitive detector hit containers
  pointContainers = []
- for x in sTree.GetListOfBranches():
-   name = x.GetName()
-   if not name.find('Point')<0: pointContainers.append('sTree.'+name+'.GetEntries()') # makes use of convention that all sensitive detectors fill XXXPoint containers
- for n in range(t.GetEntries()):
-     rc = t.GetEvent(n)
+ for branch in sTree.GetListOfBranches():
+   name = branch.GetName()
+   if 'Point' in name:
+      pointContainers.append(name)
+
+ # Filter out empty events (events with no hits in any Point container)
+ for event in t:
      empty = True
-     for x in pointContainers:
-        if eval(x)>0: empty = False
+     for containerName in pointContainers:
+        container = getattr(sTree, containerName)
+        if container.size() > 0:
+           empty = False
+           break
+
      if not empty:
-        rc = sTree.Fill()
-        nEvents+=1
+        sTree.Fill()
+        nEvents += 1
 
  branches = ROOT.TList()
  branches.SetName('BranchList')
