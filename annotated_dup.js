@@ -59,9 +59,6 @@ var annotated_dup =
     [ "MTCDetector", "namespaceMTCDetector.html", [
       [ "MTCDetector", "classMTCDetector_1_1MTCDetector.html", "classMTCDetector_1_1MTCDetector" ]
     ] ],
-    [ "rootUtils", "namespacerootUtils.html", [
-      [ "PyListOfLeaves", "classrootUtils_1_1PyListOfLeaves.html", null ]
-    ] ],
     [ "rpvsusy", "namespacerpvsusy.html", [
       [ "constants", "classrpvsusy_1_1constants.html", "classrpvsusy_1_1constants" ],
       [ "RPVSUSY", "classrpvsusy_1_1RPVSUSY.html", "classrpvsusy_1_1RPVSUSY" ],
@@ -75,9 +72,6 @@ var annotated_dup =
     ] ],
     [ "shipDigiReco", "namespaceshipDigiReco.html", [
       [ "ShipDigiReco", "classshipDigiReco_1_1ShipDigiReco.html", "classshipDigiReco_1_1ShipDigiReco" ]
-    ] ],
-    [ "ShipGeo", "namespaceShipGeo.html", [
-      [ "ShipGeo", "classShipGeo_1_1ShipGeo.html", "classShipGeo_1_1ShipGeo" ]
     ] ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", [
       [ "AttrDict", "classShipGeoConfig_1_1AttrDict.html", "classShipGeoConfig_1_1AttrDict" ],
@@ -175,8 +169,8 @@ var annotated_dup =
     [ "UpstreamTagger", "classUpstreamTagger.html", "classUpstreamTagger" ],
     [ "UpstreamTaggerHit", "classUpstreamTaggerHit.html", "classUpstreamTaggerHit" ],
     [ "UpstreamTaggerPoint", "classUpstreamTaggerPoint.html", "classUpstreamTaggerPoint" ],
-    [ "Veto", "classVeto.html", null ],
     [ "veto", "classveto.html", "classveto" ],
+    [ "Veto", "classVeto.html", null ],
     [ "vetoContFact", "classvetoContFact.html", "classvetoContFact" ],
     [ "vetoHit", "classvetoHit.html", "classvetoHit" ],
     [ "vetoHitOnTrack", "classvetoHitOnTrack.html", "classvetoHitOnTrack" ],

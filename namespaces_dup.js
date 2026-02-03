@@ -327,14 +327,6 @@ var namespaces_dup =
       [ "weightMbias", "namespaceextractNeutrinosAndUpdateWeight.html#ada8cdca68067f6a53d1115bf882b2d2c", null ],
       [ "weightMbias1GeV", "namespaceextractNeutrinosAndUpdateWeight.html#ae01b4a5fe37389f539471726e4c843a5", null ]
     ] ],
-    [ "flux_map", "namespaceflux__map.html", [
-      [ "main", "namespaceflux__map.html#a771e745091fb71f923521ce4420f4a8d", null ],
-      [ "format", "namespaceflux__map.html#afc138e0208bc3d989f39f8b7b35a9d5d", null ],
-      [ "gErrorIgnoreLevel", "namespaceflux__map.html#a0a534466aad410c85e90044a42a9fa87", null ],
-      [ "INFO", "namespaceflux__map.html#af2848c3cf881be1cf3ad06823caea97f", null ],
-      [ "level", "namespaceflux__map.html#a726a2761e1c4ab00a305c9eac20a1d6b", null ],
-      [ "log", "namespaceflux__map.html#ae0bc6aa7b464b535cb2abe8f81bcde5d", null ]
-    ] ],
     [ "g4Ex", "namespaceg4Ex.html", "namespaceg4Ex" ],
     [ "g4Ex_args", "namespaceg4Ex__args.html", "namespaceg4Ex__args" ],
     [ "g4Ex_gap", "namespaceg4Ex__gap.html", "namespaceg4Ex__gap" ],
@@ -1041,7 +1033,17 @@ var namespaces_dup =
       [ "configuredDecays", "namespacereadDecayTable.html#ac7b78e10a0805dc3d04baed8475ec3d7", null ],
       [ "pdg", "namespacereadDecayTable.html#a216e0525d0705b0b1690f178c74c2cf9", null ]
     ] ],
-    [ "rootUtils", "namespacerootUtils.html", "namespacerootUtils" ],
+    [ "rootUtils", "namespacerootUtils.html", [
+      [ "bookCanvas", "namespacerootUtils.html#af503556d7d4590fc7e05a537f76d420f", null ],
+      [ "bookHist", "namespacerootUtils.html#aac6f875685fcf5ccb0029c6a87386c0d", null ],
+      [ "bookProf", "namespacerootUtils.html#a79ba33adb72afebbbddbead98dfcc9e5", null ],
+      [ "checkFileExists", "namespacerootUtils.html#a6df9731f95a2aa0122c18f8fc6ee2f4d", null ],
+      [ "errorSummary", "namespacerootUtils.html#a2808d76ca57749e439c50d781c861ea8", null ],
+      [ "readHists", "namespacerootUtils.html#ab2eab36130015c7ae1c4b0e5ea8e9268", null ],
+      [ "reportError", "namespacerootUtils.html#af995ab99f984b0e88bb4063e431b21dc", null ],
+      [ "writeHists", "namespacerootUtils.html#a0c971276ce3f4fd851b1927c88ebd1d1", null ],
+      [ "_error_log", "namespacerootUtils.html#a628bb012f01de710e9155dc4579eba86", null ]
+    ] ],
     [ "rpvsusy", "namespacerpvsusy.html", "namespacerpvsusy" ],
     [ "run_ACTSTracking", "namespacerun__ACTSTracking.html", [
       [ "action", "namespacerun__ACTSTracking.html#afb76210fc78f0dc6654161d27b5e3892", null ],
@@ -1185,30 +1187,6 @@ var namespaces_dup =
       [ "pref", "namespacerun__reco.html#a9dabb00cd6b80021cf8ee4b76b1cab04", null ],
       [ "user", "namespacerun__reco.html#a006fd0bc278889d0f639c7efd723348f", null ],
       [ "xx", "namespacerun__reco.html#a7e74d79c29b7ed5cbb9ac5c9787a66dc", null ]
-    ] ],
-    [ "run_simEcal", "namespacerun__simEcal.html", [
-      [ "boxGen", "namespacerun__simEcal.html#a9645245051a6f84c94278b8a3b08e4a3", null ],
-      [ "ctime", "namespacerun__simEcal.html#a3d747177c03eb87c44d9c595fa9954ee", null ],
-      [ "deepCopy", "namespacerun__simEcal.html#a7dcbeb3ca4645f370911ec8427a54a9f", null ],
-      [ "eventDisplay", "namespacerun__simEcal.html#a29277513572e0ff17f159d46f6d8d2db", null ],
-      [ "fStack", "namespacerun__simEcal.html#ab0800c8ad9f3c1514f801b952798956e", null ],
-      [ "inclusive", "namespacerun__simEcal.html#ac1ee0bf2ab9768d44ed4fe0b23286de2", null ],
-      [ "inputFile", "namespacerun__simEcal.html#a4c5f305488612c246a0fecf3a69c882a", null ],
-      [ "kParameterMerged", "namespacerun__simEcal.html#ab4fa19e6e982f410a1d251490f6514a5", null ],
-      [ "mcEngine", "namespacerun__simEcal.html#a3671b6e7b2da13d0b28067fe7a4018ea", null ],
-      [ "momentum", "namespacerun__simEcal.html#a43b5db65045aec3156fc3ae4167610f3", null ],
-      [ "nEvents", "namespacerun__simEcal.html#a9b2fdc055f8e7394360428df78a48cc4", null ],
-      [ "outFile", "namespacerun__simEcal.html#a56d359d3461025f18f1cc3b27db6c3ad", null ],
-      [ "parFile", "namespacerun__simEcal.html#aebd2228b43b152ce70da948948a21852", null ],
-      [ "parOut", "namespacerun__simEcal.html#a266de7a37da4ec6ec2142e4df35197b9", null ],
-      [ "primGen", "namespacerun__simEcal.html#a40e2343ba1d93939a2032dccdbb625be", null ],
-      [ "rtdb", "namespacerun__simEcal.html#ab781f41883a70d5ba32dbea56c8ad313", null ],
-      [ "rtime", "namespacerun__simEcal.html#a6ed7bfbdf54bb3723ac77489693e8dda", null ],
-      [ "run", "namespacerun__simEcal.html#a4212ccae07e1b69e69c70dc1cd3f95e2", null ],
-      [ "ship_geo", "namespacerun__simEcal.html#ac51658cba900b43c08e5e8edee565674", null ],
-      [ "simEngine", "namespacerun__simEcal.html#a55debef40f0e3918141f43343277a049", null ],
-      [ "theSeed", "namespacerun__simEcal.html#a8bfdefbd6f22a794e72844a0de878dd8", null ],
-      [ "timer", "namespacerun__simEcal.html#aa5bb0c5be4c77be502fb73ea19a57e9a", null ]
     ] ],
     [ "run_simScript", "namespacerun__simScript.html", [
       [ "checkOverlapsWithGeant4", "namespacerun__simScript.html#ac6390391d3c0b2c299be2757e56f72a4", null ],
@@ -1437,7 +1415,6 @@ var namespaces_dup =
       [ "hfile", "namespaceShipAna.html#a83c34068270eedb72f140ca4d2869513", null ],
       [ "i", "namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3", null ],
       [ "inputFile", "namespaceShipAna.html#a003c9a52b06378eb1e2738942a5a00a0", null ],
-      [ "log", "namespaceShipAna.html#ad069f83304b90aa0743facccf08e1d5c", null ],
       [ "measCutFK", "namespaceShipAna.html#ab441839b9fbec1357c26d875b300d796", null ],
       [ "measCutPR", "namespaceShipAna.html#a351edae811c54ec0a13dd3aa4e071529", null ],
       [ "modules", "namespaceShipAna.html#a41cad21d56b950f615f4d40df1e2c4ed", null ],
@@ -1472,7 +1449,6 @@ var namespaces_dup =
     [ "shipgen", "namespaceshipgen.html", [
       [ "MeanMaterialBudget", "namespaceshipgen.html#abc8d24468b45babd8880fb0b38ef103a", null ]
     ] ],
-    [ "ShipGeo", "namespaceShipGeo.html", "namespaceShipGeo" ],
     [ "ShipGeoConfig", "namespaceShipGeoConfig.html", "namespaceShipGeoConfig" ],
     [ "shipPatRec", "namespaceshipPatRec.html", [
       [ "artificial_retina_pat_rec_stereo_views", "namespaceshipPatRec.html#a2d54ac07b407e2d1f95a45c799a57a7f", null ],
@@ -1519,7 +1495,6 @@ var namespaces_dup =
       [ "help", "namespaceShipReco.html#a6425d90b37c7ae2428f3b732fc2d03a4", null ],
       [ "iEvent", "namespaceShipReco.html#ab3f350587696737c07f798e0c105cde7", null ],
       [ "inputFile", "namespaceShipReco.html#af216c8c8b08ff8f49fcb82220bed70c4", null ],
-      [ "log", "namespaceShipReco.html#aa37614fc3f0b1f396df209ddd402d176", null ],
       [ "modules", "namespaceShipReco.html#a4850398ee3476da47f58999b04e3a0e7", null ],
       [ "nEvents", "namespaceShipReco.html#a5d79d13160dfaad7ee80f62adb0ee67e", null ],
       [ "None", "namespaceShipReco.html#a19251702830556320d73755869bd74b3", null ],
@@ -1564,25 +1539,6 @@ var namespaces_dup =
       [ "parser", "namespaceshipStrawTracking.html#a6f1c8ab4a8627d83bd87a950231721c6", null ],
       [ "required", "namespaceshipStrawTracking.html#a33f41ada450d677435ffd880e7462d3a", null ]
     ] ],
-    [ "ShipStyle", "namespaceShipStyle.html", [
-      [ "lhcbstyleSetup", "namespaceShipStyle.html#a2071b36d03cd8b7629e66b64ef7b1c07", null ],
-      [ "printLHCb", "namespaceShipStyle.html#a3e9998af8e04c3cc0a3f2cf457f847ec", null ],
-      [ "black", "namespaceShipStyle.html#aacdcb00481481f9510f8196adc13da43", null ],
-      [ "blue", "namespaceShipStyle.html#a90e8ee15a057ed865466cbfdf471ca84", null ],
-      [ "cyan", "namespaceShipStyle.html#adc603c7968bedf3723679914b710a283", null ],
-      [ "green", "namespaceShipStyle.html#a6f92a0243cca26e68f8b5f8947afbbb7", null ],
-      [ "lhcbFont", "namespaceShipStyle.html#a89fa179be54e9dbf0a70e5409a843aa2", null ],
-      [ "lhcbLabel", "namespaceShipStyle.html#ad9ca9021dae28cb264cf9ddda588922f", null ],
-      [ "lhcbLatex", "namespaceShipStyle.html#ab9488a2a68cb2a58bb24fd5ca41eddd6", null ],
-      [ "lhcbName", "namespaceShipStyle.html#ae61f2cd355a1a4c44243b5fafe340000", null ],
-      [ "lhcbstyle", "namespaceShipStyle.html#a4e027765ff81b5b488e5ad17a5abf1a7", null ],
-      [ "lhcbWidth", "namespaceShipStyle.html#a45335b83a511ba41ea948f5b7c86683c", null ],
-      [ "magenta", "namespaceShipStyle.html#a36a346fe160d2a799d9737e7ff864ca1", null ],
-      [ "purple", "namespaceShipStyle.html#ace960c7b82800552889605f900ef71ff", null ],
-      [ "red", "namespaceShipStyle.html#a3e07ec150a24cd3f2f198c40da828be7", null ],
-      [ "yellow", "namespaceShipStyle.html#a2671a3ad1fd53712bdc05ebd4c87b4db", null ]
-    ] ],
-    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipunit", "namespaceshipunit.html", [
       [ "alpha_rcl2", "namespaceshipunit.html#a852bff5f88f281cab1a9d17abbd90213", null ],
       [ "ampere", "namespaceshipunit.html#ab5bd1c925283ab8ca1bcad2691255c7f", null ],
@@ -1729,6 +1685,7 @@ var namespaces_dup =
       [ "watt", "namespaceshipunit.html#a3a4e38f77301d7b18e00c66be19bc8ea", null ],
       [ "weber", "namespaceshipunit.html#a87b678dd64f162952e6f083c4c42d7cf", null ]
     ] ],
+    [ "ShipUnit", "namespaceShipUnit.html", null ],
     [ "shipVertex", "namespaceshipVertex.html", "namespaceshipVertex" ],
     [ "shipVeto", "namespaceshipVeto.html", "namespaceshipVeto" ],
     [ "splitcalDetector", "namespacesplitcalDetector.html", "namespacesplitcalDetector" ],
@@ -1742,11 +1699,6 @@ var namespaces_dup =
       [ "logfile", "namespacesubmitPyG4prod.html#a425b9ce028a805b9bf14bb359d842e36", null ],
       [ "nevents", "namespacesubmitPyG4prod.html#a39f1bf1b1d59db426b74d7f00ac547ad", null ],
       [ "path", "namespacesubmitPyG4prod.html#a2c8beaa3825810f733065f8b7afe52f5", null ]
-    ] ],
-    [ "tdirectory634", "namespacetdirectory634.html", [
-      [ "_TDirectory_getitem", "namespacetdirectory634.html#ad203e5406feb380dfac0076a50b68f5e", null ],
-      [ "pythonize_tdirectory", "namespacetdirectory634.html#adbc8f78dd2cf88ec72042a64cf3b4738", null ],
-      [ "_cached_items", "namespacetdirectory634.html#af2c8e0ac0cb408377aed4b01f54a391f", null ]
     ] ],
     [ "timeDetector", "namespacetimeDetector.html", "namespacetimeDetector" ],
     [ "TrackExtrapolateTool", "namespaceTrackExtrapolateTool.html", [
