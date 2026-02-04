@@ -16,11 +16,14 @@ it in future.
 
 ### Changed
 
-
+* Bump minimum ROOT version to 6.36
+* Bump minimum CMake version to 3.20 (same as ROOT)
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
 
+* Fix `errorSummary` not printing its header (bare string expression instead of `print`)
+* Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
 * Fix file-filtering logic to support STL branches
 * Update MuonBackGenerator to support both TClonesArray and std::vector input formats for MCTrack and vetoPoint branches
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
@@ -28,6 +31,13 @@ it in future.
 * Set correct trackIDs for exitHadronAbsorber class
 
 ### Removed
+
+* Remove unused ShipStyle, which seems copy-pasted from LHCb
+* Remove old scripts run_simEcal.py and flux_map.py
+* Remove unused functions and dead code from rootUtils: `printout`, `setAttributes`, `container_sizes`, `stripOffBranches`, `findMaximumAndMinimum`, `makeIntegralDistrib`, `PyListOfLeaves`
+* Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
+* Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
+* Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
 
 ## 25.12 - 2025-12-22
 
