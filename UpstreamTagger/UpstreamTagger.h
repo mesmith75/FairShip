@@ -49,13 +49,18 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
    *               kFALSE for inactive detectors
    */
   UpstreamTagger(const char* Name, Bool_t Active);
-
+  UpstreamTagger& operator=(const UpstreamTagger&);
   /** default constructor */
   UpstreamTagger();
 
+    /**      Name :  Detector Name
+     *       Active: kTRUE for active detectors (ProcessHits() will be called)
+     *               kFALSE for inactive detectors
+    */
+//    UpstreamTagger(const char* Name, Bool_t Active);
+    UpstreamTagger(std::string medium);
   /** destructor */
   virtual ~UpstreamTagger();
-
   /** Initialization of the detector is done here */
   virtual void Initialize();
 
@@ -78,19 +83,25 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
 
   /** Sets detector position and sizes */
   void SetZposition(Double_t z) { det_zPos = z; }
-  void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
-    xbox_fulldet = x;
-    ybox_fulldet = y;
-    zbox_fulldet = z;
-  }
 
+    void SetzPositions(Double_t z1);
+    void SetApertureArea(Double_t width, Double_t height, Double_t length);
+    void SetStrawDiameter(Double_t outer_straw_diameter, Double_t wall_thickness);
+    void SetStrawPitch(Double_t straw_pitch, Double_t layer_offset);
+    void SetDeltazLayer(Double_t delta_z_layer);
+    void SetStereoAngle(Double_t stereo_angle);
+    void SetWireThickness(Double_t wire_thickness);
+    void SetFrameMaterial(TString frame_material);
+    void SetDeltazView(Double_t delta_z_view);
+    static std::tuple<Int_t, Int_t, Int_t, Int_t> StrawDecode(Int_t detID);
+    static void StrawEndPoints(Int_t detID, TVector3& top, TVector3& bot);
   /**  Create the detector geometry */
   void ConstructGeometry();
 
   /**      This method is an example of how to add your own point
    *       of type TimeRpcPoint to the clones array
    */
-  UpstreamTaggerPoint* AddHit(Int_t trackID, Int_t detID, TVector3 pos,
+  UpstreamTaggerPoint* AddHit(Int_t trackID, Int_t detID, Int_t subDetID, TVector3 pos,
                               TVector3 mom, Double_t time, Double_t length,
                               Double_t eLoss, Int_t pdgCode, TVector3 Lpos,
                               TVector3 Lmom);
@@ -117,24 +128,36 @@ class UpstreamTagger : public FairDetector, public ISTLPointContainer {
 
   /** Detector parameters.*/
 
-  Double_t det_zPos;  //!  z-position of detector (set via SetZposition)
-  // Detector box dimensions (set via SetBoxDimensions, defaults provided below)
-  Double_t xbox_fulldet = 4.4 * m;  //!  X dimension (default: 4.4 m)
-  Double_t ybox_fulldet = 6.4 * m;  //!  Y dimension (default: 6.4 m)
-  Double_t zbox_fulldet =
-      16.0 * cm;  //!  Z dimension/thickness (default: 16 cm)
+    Double_t       f_aperture_width;
+    Double_t       f_aperture_height;
+    Double_t       f_station_length;
+    Double_t       f_straw_pitch;
+    Double_t       f_view_angle;
+    Double_t       f_offset_layer;
+    Double_t       f_inner_straw_diameter;
+    Double_t       f_outer_straw_diameter;
+    Double_t       f_wire_thickness;
+    Double_t       f_T1_z;
+    Double_t       f_delta_z_view;
+    Double_t       f_delta_z_layer;
+    TString        f_frame_material;
+    std::string        fMedium;
+    /** Detector parameters.*/
+
+    Double_t     det_zPos;     //!  z-position of detector (set via SetZposition)
 
  private:
-  TGeoVolume* UpstreamTagger_fulldet;  // Timing_detector_1 object
-  TGeoVolume* scoringPlaneUBText;      // new scoring plane
   /** container for data points */
   std::vector<UpstreamTaggerPoint>* fUpstreamTaggerPoints;
 
-  UpstreamTagger(const UpstreamTagger&);
-  UpstreamTagger& operator=(const UpstreamTagger&);
   Int_t InitMedium(const char* name);
 
-  ClassDef(UpstreamTagger, 1)
+    TGeoVolume* UpstreamTagger_plastic;
+
+    /** container for data points */
+    TClonesArray* fUpstreamTaggerPointCollection;
+
+    ClassDef(UpstreamTagger,1)
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGER_H_

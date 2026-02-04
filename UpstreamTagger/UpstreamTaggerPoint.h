@@ -27,7 +27,7 @@ class UpstreamTaggerPoint : public FairMCPoint {
    *@param length   Track length since creation [cm]
    *@param eLoss    Energy deposit [GeV]
    **/
-  UpstreamTaggerPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+  UpstreamTaggerPoint(Int_t trackID, Int_t detID, Int_t subDetID, TVector3 pos, TVector3 mom,
                       Double_t tof, Double_t length, Double_t eLoss,
                       Int_t pdgCode, TVector3 Lpos, TVector3 Lmom);
 
@@ -44,9 +44,12 @@ class UpstreamTaggerPoint : public FairMCPoint {
   Int_t PdgCode() const { return fPdgCode; }
   TVector3 LastPoint() const { return TVector3(fLpos[0], fLpos[1], fLpos[2]); }
   TVector3 LastMom() const { return TVector3(fLmom[0], fLmom[1], fLmom[2]); }
+  Int_t GetLayerID() const { return fSubDetID; };
+
 
  private:
   Int_t fPdgCode;
+  Int_t fSubDetID;
   std::array<Double_t, 3> fLpos, fLmom;
 
   ClassDef(UpstreamTaggerPoint, 3)
