@@ -56,6 +56,7 @@ class UpstreamTaggerHit : public ShipHit {
   Double_t fY;     ///< Smeared y position (cm)
   Double_t fZ;     ///< Smeared z position (cm)
   Double_t fTime;  ///< Smeared time (ns)
+  Int_t fSubDetID; ///< Which layer of the UBT is this
 
   ClassDef(UpstreamTaggerHit, 2);
 };
