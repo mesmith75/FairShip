@@ -14,10 +14,21 @@ it in future.
 
 ### Added
 
+* Add Findgenfit2.cmake module to support both upstream GenFit and the fork
+
+* New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
+
 ### Changed
 
+* Add file glob to run_simScript.py input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041
+* Turn warning to debug in MuonBackGenerator to prevent overly verbose output. #1036
+* Changed input file reading to TChain and modified run_simScript.py command line argument to take list of files. #1027
+* UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)
 * Bump minimum ROOT version to 6.36
 * Bump minimum CMake version to 3.20 (same as ROOT)
+* Change function SND in shipDet_conf.py
+* Change disable magnetic field in the MS and remove field map upload in run_fixedTarget.py
+* Change the ShipMuonShield script to accept new magnet configuration: no fixed number of magnets and variable z-gap  between them.
 * Change naming convention for simulation files to `{sim,geo,params}_{uuid4}.root`, with optional `--tag` parameter to specify custom identifier
 
 ### Fixed
@@ -29,8 +40,13 @@ it in future.
 * Fix function call in run_simScript.py to use SetPhiRandomize instead of deprecated SetPhiRandom
 + Update run_fixedTarget to save tracks for hits in post-target sensitive plane
 * Set correct trackIDs for exitHadronAbsorber class
+* Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds
+* Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028
 
 ### Removed
+
+* Remove g4Ex scripts, which are unused and rely on g4py and Geant4 python imports
+* Remove old (CDR) target configuration; Jun25 is now the only supported target
 
 * Remove unused ShipStyle, which seems copy-pasted from LHCb
 * Remove old scripts run_simEcal.py and flux_map.py
@@ -38,6 +54,8 @@ it in future.
 * Remove unused rootUtils imports from `dumpEvent.py` and `extractMuonsAndUpdateWeight.py`
 * Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)
 * Remove unused legacy ShipGeo.py (superseded by ShipGeoConfig)
+* Remove unused create_field_perturbation.py script
+* New_HA_Design and warm_opt muon shield configuration are no longer supported
 
 ## 25.12 - 2025-12-22
 
@@ -171,6 +189,7 @@ it in future.
 * Use STL vectors for SBT digitisation
 * Use maximum splitting (99) for vector branches instead of no splitting (-1)
 * Make TTree branch split level configurable in BaseDetector, set splitLevel=1 for MTC
+* Store channel coordinates in the digi containers to avoid reading geofile
 
 #### Geometry Configuration System
 

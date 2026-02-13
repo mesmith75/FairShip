@@ -40,14 +40,14 @@ Bool_t MuonBackGenerator::Init(const char* fileName) {
   return Init(fileName, 0);
 }
 
-Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames) {
+Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames) {
   return Init(fileNames, 0);
 }
 
-Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
+Bool_t MuonBackGenerator::Init(const std::vector<std::string>& fileNames,
                                const int firstEvent) {
   LOG(info) << "Opening input file " << fileNames.at(0);
-  TFile testFile(fileNames.at(0));
+  TFile testFile(fileNames.at(0).c_str());
   auto testKeys = testFile.GetListOfKeys();
   if (testKeys == nullptr) {
     LOG(fatal) << "Error opening the Signal file: " << fileNames.at(0);
@@ -62,7 +62,7 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
     fTree = new TChain("pythia8-Geant4");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
-      static_cast<TChain*>(fTree)->Add(f);
+      fTree->Add(f.c_str());
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
@@ -94,11 +94,10 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
     }
   } else {
     id = -1;
-    //    fTree = fInputFile->Get<TTree>("cbmsim");
     fTree = new TChain("cbmsim");
     for (auto& f : fileNames) {
       LOG(info) << "Opening input file " << f;
-      static_cast<TChain*>(fTree)->Add(f);
+      fTree->Add(f.c_str());
     }
     fNevents = fTree->GetEntries();
     LOG(info) << "Reading " << fNevents << " entries";
@@ -142,7 +141,7 @@ Bool_t MuonBackGenerator::Init(std::vector<const char*> fileNames,
 
 // -----   Default constructor   -------------------------------------------
 Bool_t MuonBackGenerator::Init(const char* fileName, const int firstEvent) {
-  std::vector<const char*> fileNames = {fileName};
+  std::vector<std::string> fileNames = {fileName};
   return Init(fileNames, firstEvent);
 }
 // -----   Destructor   ----------------------------------------------------
@@ -197,7 +196,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     return fUseSTL ? MCTrack_vec->size() : MCTrack->GetEntries();
   };
 
-  while (fn < fNevents) {
+  while (fn < fNevents - 1) {
     fTree->GetEntry(fn);
     muList.clear();
     moList.clear();
@@ -244,7 +243,7 @@ Bool_t MuonBackGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         }
       }
       if (!found) {
-        LOGF(warn, "No muon found %i", fn - 1);
+        LOGF(debug, "No muon found %i", fn - 1);
       }
       if (found) {
         break;

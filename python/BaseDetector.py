@@ -31,18 +31,12 @@ class BaseDetector(ABC):
         self.mcBranch = None
         if mcBranchName:
             self.MCdet = ROOT.std.vector("std::vector< int >")()
-            self.mcBranch = self.outtree.Branch(
-                mcBranchName, self.MCdet, 32000, splitLevel
-            )
+            self.mcBranch = self.outtree.Branch(mcBranchName, self.MCdet, 32000, splitLevel)
 
         if branchName:
-            self.branch = self.outtree.Branch(
-                f"Digi_{branchName}Hits", self.det, 32000, splitLevel
-            )
+            self.branch = self.outtree.Branch(f"Digi_{branchName}Hits", self.det, 32000, splitLevel)
         else:
-            self.branch = self.outtree.Branch(
-                f"Digi_{name}Hits", self.det, 32000, splitLevel
-            )
+            self.branch = self.outtree.Branch(f"Digi_{name}Hits", self.det, 32000, splitLevel)
 
     def delete(self):
         """Clear detector hit containers."""
@@ -51,10 +45,12 @@ class BaseDetector(ABC):
             self.MCdet.clear()
 
     def fill(self):
-        """Fill detector hit branches."""
-        self.branch.Fill()
-        if self.mcBranch:
-            self.mcBranch.Fill()
+        """Fill detector hit branches.
+
+        Note: This method is now a no-op to prevent double-filling.
+        All branches are filled synchronously by recoTree.Fill() in the main loop.
+        """
+        pass
 
     @abstractmethod
     def digitize(self):

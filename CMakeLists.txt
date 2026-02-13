@@ -11,12 +11,20 @@
 cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 # CMP0028 and CMP0074 are already NEW at cmake_minimum_required 3.20.
+# CMP0118 (3.20): GENERATED sources visible across directories.
+cmake_policy(SET CMP0118 NEW)
 # CMP0144 (3.27): use <PACKAGENAME>_ROOT variables in find_package.
 if(POLICY CMP0144)
   cmake_policy(SET CMP0144 NEW)
 endif()
 
 project(FairShip VERSION 0.0.0 LANGUAGES CXX)
+
+include(GNUInstallDirs)
+
+include(GNUInstallDirs)
+# aliBuild modulefile expects libraries in lib/, not lib64/
+set(CMAKE_INSTALL_LIBDIR lib)
 
 # C++17 required by ROOT 6.36
 set(CMAKE_CXX_STANDARD 17)
@@ -127,16 +135,6 @@ find_package2(PUBLIC FairRoot REQUIRED)
 find_package2(PUBLIC FairLogger REQUIRED)
 find_package2(PUBLIC VMC REQUIRED)
 find_package(genfit2 REQUIRED)
-
-# genfit2Config.cmake only sets directory variables, not a proper target.
-# Create an imported target so dependencies propagate automatically.
-if(NOT TARGET genfit2)
-  add_library(genfit2 SHARED IMPORTED)
-  set_target_properties(genfit2 PROPERTIES
-    IMPORTED_LOCATION "${genfit2_LIBDIR}/${CMAKE_SHARED_LIBRARY_PREFIX}genfit2${CMAKE_SHARED_LIBRARY_SUFFIX}"
-    INTERFACE_INCLUDE_DIRECTORIES "${genfit2_INCDIR}"
-  )
-endif()
 
 # TPythia6 was removed from ROOT in 6.32, use external EGPythia6 package
 find_package(ROOTEGPythia6 REQUIRED)
