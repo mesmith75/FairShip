@@ -101,15 +101,20 @@ Unreleased</h1>
 Added</h2>
 <ul>
 <li>Add Findgenfit2.cmake module to support both upstream GenFit and the fork</li>
+<li>New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
+<li>Add file glob to <a class="el" href="run__simScript_8py.html">run_simScript.py</a> input files to allow for wildcards etc. Also, if nEvents is set to -1, run over everything. #1041</li>
 <li>Turn warning to debug in <a class="el" href="classMuonBackGenerator.html">MuonBackGenerator</a> to prevent overly verbose output. #1036</li>
 <li>Changed input file reading to TChain and modified <a class="el" href="run__simScript_8py.html">run_simScript.py</a> command line argument to take list of files. #1027</li>
 <li>UseGeneralProcess is only set to false when cross-sections need to be changed (in order to access GammaToMuons directly)</li>
 <li>Bump minimum ROOT version to 6.36</li>
 <li>Bump minimum CMake version to 3.20 (same as ROOT)</li>
+<li>Change function SND in <a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a></li>
+<li>Change disable magnetic field in the MS and remove field map upload in <a class="el" href="run__fixedTarget_8py.html">run_fixedTarget.py</a></li>
+<li>Change the <a class="el" href="classShipMuonShield.html">ShipMuonShield</a> script to accept new magnet configuration: no fixed number of magnets and variable z-gap between them.</li>
 <li>Change naming convention for simulation files to <code>{sim,geo,params}_{uuid4}.root</code>, with optional <code>--tag</code> parameter to specify custom identifier</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md4"></a>
@@ -122,6 +127,8 @@ Fixed</h2>
 <li>Fix function call in <a class="el" href="run__simScript_8py.html">run_simScript.py</a> to use SetPhiRandomize instead of deprecated SetPhiRandom</li>
 <li>Update <a class="el" href="namespacerun__fixedTarget.html">run_fixedTarget</a> to save tracks for hits in post-target sensitive plane</li>
 <li>Set correct trackIDs for <a class="el" href="classexitHadronAbsorber.html">exitHadronAbsorber</a> class</li>
+<li>Clamp random seed to PYTHIA8's maximum allowed value (900000000) to prevent out-of-range errors when using time-based seeds</li>
+<li>Fix duplicated events in digitisation output by removing individual branch.Fill() calls; all branches are now filled synchronously by recoTree.Fill() in the main loop. #1028</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Removed</h2>
@@ -134,6 +141,8 @@ Removed</h2>
 <li>Remove unused <a class="el" href="namespacerootUtils.html">rootUtils</a> imports from <code><a class="el" href="dumpEvent_8py.html">dumpEvent.py</a></code> and <code><a class="el" href="extractMuonsAndUpdateWeight_8py.html">extractMuonsAndUpdateWeight.py</a></code></li>
 <li>Remove TDirectory pythonisation backport (now provided by ROOT ≥ 6.32)</li>
 <li>Remove unused legacy ShipGeo.py (superseded by <a class="el" href="namespaceShipGeoConfig.html">ShipGeoConfig</a>)</li>
+<li>Remove unused create_field_perturbation.py script</li>
+<li>New_HA_Design and warm_opt muon shield configuration are no longer supported</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
 25.12 - 2025-12-22</h1>
@@ -439,9 +448,9 @@ MTC and SND</h3>
 <h3><a class="anchor" id="autotoc_md34"></a>
 Muon Shield and Field</h3>
 <ul>
-<li>The fieldmap offset was calibrated with the old version of MS (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
-<li>Changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield (<a class="el" href="ShieldUtils_8py.html">ShieldUtils.py</a>)</li>
-<li>Fix: in <code><a class="el" href="ShieldUtils_8py.html">python/ShieldUtils.py</a></code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
+<li>The fieldmap offset was calibrated with the old version of MS (ShieldUtils.py)</li>
+<li>Changing code to be more pythonic, adding new element in the output tuple &ndash; the list of the Muon Shield magnet z-coordinates, that can be used to set a location of SND inside the Muon Shield (ShieldUtils.py)</li>
+<li>Fix: in <code>python/ShieldUtils.py</code> still used old coordinate system (SND was not correctly positioned in <code><a class="el" href="shipDet__conf_8py.html">python/shipDet_conf.py</a></code>)</li>
 <li>Changing paths to yaml files to more pythonic (<code>os.path.join()</code> now) (<a class="el" href="shipDet__conf_8py.html">shipDet_conf.py</a>)</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md35"></a>
@@ -542,7 +551,7 @@ Build System</h3>
 <ul>
 <li>Remove unused files for FLUKA</li>
 <li>Remove unused CMake modules</li>
-<li>Remove globalDesigns dictionary from <a class="el" href="run__simScript_8py.html">run_simScript.py</a> and <a class="el" href="create__field__perturbation_8py.html">create_field_perturbation.py</a>, use inline defaults instead</li>
+<li>Remove globalDesigns dictionary from <a class="el" href="run__simScript_8py.html">run_simScript.py</a> and create_field_perturbation.py, use inline defaults instead</li>
 <li>build(field,nutaudet): remove unnecessary ROOT_INCLUDE_DIR include</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md47"></a>
