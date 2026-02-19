@@ -469,7 +469,7 @@ void UpstreamTagger::ConstructGeometry()
     // A layer of plastic scintillator detector
     InitMedium("polyvinyltoluene");
     TGeoMedium *Vacuum_box =gGeoManager->GetMedium("polyvinyltoluene");
-    UpstreamTagger_plastic = gGeoManager->MakeBox("Upstream_Tagger_Plastic", Vacuum_box, straw_length, f_aperture_width, 1);
+    UpstreamTagger_plastic = gGeoManager->MakeBox("Upstream_Tagger_Plastic", Vacuum_box, straw_length, f_aperture_height, 1);
     UpstreamTagger_plastic->SetLineColor(kGreen);
     vol->AddNode(UpstreamTagger_plastic, 1, new TGeoTranslation(0.0, 0.0, -30));
     AddSensitiveVolume(UpstreamTagger_plastic);
