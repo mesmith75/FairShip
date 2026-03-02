@@ -350,6 +350,8 @@ shipRoot_conf.configure(0)  # load basic libraries, prepare atexit for python
 
 # Configure FairLogger verbosity based on debug level
 ROOT.gInterpreter.ProcessLine('#include "FairLogger.h"')
+ROOT.gInterpreter.ProcessLine('fair::Logger::SetFileSeverity("fatal");')
+ROOT.gInterpreter.ProcessLine('fair::Logger::SetVerbosity("verylow");')
 if options.debug == 0:
     ROOT.gInterpreter.ProcessLine('fair::Logger::SetConsoleSeverity("info");')
 elif options.debug == 1:
@@ -749,6 +751,8 @@ run.CreateGeometryFile(geofile_name)
 import saveBasicParameters
 
 saveBasicParameters.execute(geofile_name, ship_geo)
+
+ROOT.gErrorIgnoreLevel = ROOT.kFatal
 
 # checking for overlaps
 if options.check_overlaps:

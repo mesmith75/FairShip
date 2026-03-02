@@ -2,7 +2,7 @@
 
 UBT:
   width: 150                   # Aperture width (x) in cm (half length)
-  height: 150                  # Aperture height (y) in cm (half length)
+  height: 300                  # Aperture height (y) in cm (half length)
   wire_thickness: 0.003        # Sense wire thickness in cm
   wall_thickness: 0.0036       # Straw wall thickness in cm
   outer_straw_diameter: 2      # in cm

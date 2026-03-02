@@ -160,6 +160,8 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
 
+//  fELoss += 0.0001;
+
   // Create vetoPoint at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
@@ -170,7 +172,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
     Int_t uniqueId;
     gMC->CurrentVolID(uniqueId);
     const char* volName = gMC->CurrentVolName();
-    std::cout<<"volume id: "<<uniqueId<<" - name: "<<volName<<std::endl;
+//    std::cout<<"volume id: "<<uniqueId<<" - name: "<<volName<<std::endl;
     int subDetID = detPieces(volName);
     if (uniqueId > 1000000)  // Solid scintillator case
     {
