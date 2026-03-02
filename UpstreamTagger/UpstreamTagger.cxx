@@ -75,6 +75,7 @@ constexpr const int detPieces(std::string_view pieceName) noexcept{
 
 UpstreamTagger::UpstreamTagger()
     : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
+      fEventID(-1),
       fTrackID(-1),
       fVolumeID(-1),
       fPos(),
@@ -89,6 +90,7 @@ UpstreamTagger::UpstreamTagger()
 UpstreamTagger::UpstreamTagger(std::string medium)
   : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
     fMedium(medium),
+    fEventID(-1),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -100,16 +102,18 @@ UpstreamTagger::UpstreamTagger(std::string medium)
     fUpstreamTaggerPoints(nullptr) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
-  : FairDetector(name, active, kUpstreamTagger),
-    fTrackID(-1),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    det_zPos(0),
-    fUpstreamTaggerPoints(nullptr) {}
+    : FairDetector(name, active, kUpstreamTagger),
+      fEventID(-1),
+      fTrackID(-1),
+      fVolumeID(-1),
+      fPos(),
+      fMom(),
+      fTime(-1.),
+      fLength(-1.),
+      fELoss(-1),
+      //
+      det_zPos(0),
+      fUpstreamTaggerPoints(nullptr) {}
 
 
 void UpstreamTagger::Initialize()
@@ -167,8 +171,9 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     if (fELoss == 0. ) { return kFALSE; }
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
 
+    fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
+    fEventID = gMC->CurrentEvent();
     Int_t uniqueId;
     gMC->CurrentVolID(uniqueId);
     const char* volName = gMC->CurrentVolName();
@@ -191,7 +196,7 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
     Double_t ymean = (fPos.Y() + Pos.Y()) / 2.;
     Double_t zmean = (fPos.Z() + Pos.Z()) / 2.;
 
-    AddHit(fTrackID, uniqueId, subDetID, TVector3(xmean, ymean, zmean),
+    AddHit(fEventID, fTrackID, uniqueId, TVector3(xmean, ymean, zmean),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
            pdgCode, TVector3(Pos.X(), Pos.Y(), Pos.Z()),
            TVector3(Mom.Px(), Mom.Py(), Mom.Pz()));
@@ -480,13 +485,14 @@ void UpstreamTagger::ConstructGeometry()
     }
 }
 
-UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t trackID, Int_t detID,
-                                            Int_t subDetID,
-                                            TVector3 pos, TVector3 mom,
-                                            Double_t time, Double_t length,
-                                            Double_t eLoss, Int_t pdgCode,
-                                            TVector3 Lpos, TVector3 Lmom) {
-  fUpstreamTaggerPoints->emplace_back(trackID, detID, subDetID, pos, mom, time, length,
-                                      eLoss, pdgCode, Lpos, Lmom);
+
+UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t eventID, Int_t trackID,
+                                            Int_t detID, TVector3 pos,
+                                            TVector3 mom, Double_t time,
+                                            Double_t length, Double_t eLoss,
+                                            Int_t pdgCode, TVector3 Lpos,
+                                            TVector3 Lmom) {
+  fUpstreamTaggerPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
+                                      length, eLoss, pdgCode, Lpos, Lmom);
   return &(fUpstreamTaggerPoints->back());
 }
