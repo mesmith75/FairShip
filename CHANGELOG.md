@@ -12,6 +12,21 @@ it in future.
 
 ## Unreleased
 
+### Fixed
+
+* Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
+* Fix uninitialised gField_ pointer in FairShipFields
+* Fix null dereference in FixedTargetGenerator on missing input file or histogram
+* Fix off-by-one in FixedTargetGenerator target node access
+* Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
+* Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
+
+### Changed
+
+* Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
+* Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
+* Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
+
 ### Added
 
 * Add Findgenfit2.cmake module to support both upstream GenFit and the fork
@@ -19,7 +34,17 @@ it in future.
 * New warm MS option TRY_2025 (Stellatryon v.2) added to the config and its field map
 
 * Created genie_config folder for our XML configuration files. For now, only replacing Pythia6Decayer with Pythia8Decayer
+
+* Add clang-tidy and pyrefly static analysis to CI
+
 ### Changed
+
+* Add type annotations across the Python codebase using pyrefly infer
+* Add mypy pre-commit hook for gradual type checking
+* Fix pickle serialisation file modes in ShipGeoConfig (text → binary)
+* Fix type annotations for physics quantities (axis limits, momentum/IP cuts) from int to float
+
+
 
 * Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
 * Change a const char* in SHiP::Generator to optional<string>. #1053
@@ -39,6 +64,7 @@ it in future.
 
 ### Fixed
 
+* Fix clang-tidy findings: null-check getenv, incorrect rounding, pointer arithmetic on polymorphic type, integer abs on floats, VLA, literal truncation, unused variables, and using-namespace directives
 * Fix `errorSummary` not printing its header (bare string expression instead of `print`)
 * Fix `reportError`/`errorSummary` using fragile `sys.modules['__main__'].log` pattern; use module-level counter instead
 * Fix file-filtering logic to support STL branches

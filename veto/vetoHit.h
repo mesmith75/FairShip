@@ -21,7 +21,7 @@ class vetoHit : public ShipHit {
    **/
   vetoHit(Int_t detID, Float_t adc);
   /** Destructor **/
-  virtual ~vetoHit();
+  ~vetoHit() override = default;
 
   /** Accessors **/
   Double_t GetX() const;
@@ -47,10 +47,10 @@ class vetoHit : public ShipHit {
   vetoHit& operator=(const vetoHit& point) = default;
 
  private:
-  Double_t ft;
-  Float_t flag;  ///< flag
+  Double_t ft{-1.};
+  Bool_t flag{true};  ///< validity flag
 
-  ClassDef(vetoHit, 1);
+  ClassDef(vetoHit, 2);
 };
 
 #endif  // VETO_VETOHIT_H_

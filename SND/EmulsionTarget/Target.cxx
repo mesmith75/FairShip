@@ -18,6 +18,7 @@
 #include <iosfwd>    // for ostream
 #include <iostream>  // for operator<<, basic_ostream,etc
 #include <tuple>
+#include <vector>
 
 #include "FairGeoBuilder.h"
 #include "FairGeoInterface.h"
@@ -60,8 +61,6 @@
 
 using std::cout;
 using std::endl;
-
-using namespace ShipUnit;
 
 Target::Target()
     : FairDetector("Target", "", kTRUE),
@@ -412,11 +411,10 @@ Bool_t Target::ProcessHits(FairVolume* vol) {
 
     // cout<< "detID = " << detID << endl;
     Int_t MaxLevel = gGeoManager->GetLevel();
-    const Int_t MaxL = MaxLevel;
-    // cout << "MaxLevel = " << MaxL << endl;
+    // cout << "MaxLevel = " << MaxLevel << endl;
     // cout << gMC->CurrentVolPath()<< endl;
 
-    Int_t motherV[MaxL];
+    std::vector<Int_t> motherV(MaxLevel);
     Bool_t EmTop = false;
     Int_t NPlate = 0;
     const char* name;
@@ -435,7 +433,7 @@ Bool_t Target::ProcessHits(FairVolume* vol) {
 
     Int_t NWall = 0, NColumn = 0, NRow = 0;
 
-    for (Int_t i = 0; i < MaxL; i++) {
+    for (Int_t i = 0; i < MaxLevel; i++) {
       motherV[i] = gGeoManager->GetMother(i)->GetNumber();
       const char* mumname = gMC->CurrentVolOffName(i);
       if (motherV[0] == 1 && motherV[0] != detID) {

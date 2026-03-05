@@ -71,6 +71,10 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev,
   nEntry = nStart;
   // open input file with charm or beauty
   fin = TFile::Open(fInName);
+  if (!fin) {
+    LOG(fatal) << "Could not open input file: " << fInName.Data();
+    return kFALSE;
+  }
   nTree = dynamic_cast<TNtuple*>(
       fin->FindObjectAny("pythia6"));  // old format, simple ntuple
   nEvents = nTree->GetEntries();
@@ -101,8 +105,13 @@ Bool_t FixedTargetGenerator::InitForCharmOrBeauty(TString fInName, Int_t nev,
   // convert pot to weight corresponding to one spill of 5e13 pot
   // get histogram with number of pot to normalise
   // pot are counted double, i.e. for each signal, i.e. pot/2.
-  Int_t nrcpot = dynamic_cast<TH1F*>(fin->Get("2"))->GetBinContent(1) /
-                 2.;  // number of primary interactions
+  auto* potHist = dynamic_cast<TH1F*>(fin->Get("2"));
+  if (!potHist) {
+    LOG(fatal) << "Histogram '2' not found in input file";
+    return kFALSE;
+  }
+  Int_t nrcpot =
+      potHist->GetBinContent(1) / 2.;  // number of primary interactions
   wspill = nrpotspill * chicc / nrcpot * nEvents / nev;
   LOG(info) << "Input file: " << fInName.Data() << " with " << nEvents
             << " entries, corresponding to nr-pot=" << (nrcpot / chicc);
@@ -315,7 +324,7 @@ Bool_t FixedTargetGenerator::Init() {
     TObjArray* nodes = target->GetVolume()->GetNodes();
     // Get the first and last node of the target to calculate the material seen
     TGeoNode* first = static_cast<TGeoNode*>(nodes->At(0));
-    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetSize()));
+    TGeoNode* last = static_cast<TGeoNode*>(nodes->At(nodes->GetSize() - 1));
     nav->cd(targetName + "/" + first->GetName());
     TGeoBBox* sha = static_cast<TGeoBBox*>(first->GetVolume()->GetShape());
     Double_t dz = sha->GetDZ();
@@ -364,7 +373,6 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t prob2int = -1.;
     Double_t rndm = 0.;
     Double_t sigma;
-    Int_t count = 0;
     Double_t zinterStart = start[2];
     if (Option == "charm" || Option == "beauty") {
       // simulate more downstream interaction points for interactions down in
@@ -383,7 +391,7 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
         bparam = shipgen::MeanMaterialBudget(start, point, mparam);
         Double_t interLength = mparam[8];
         TGeoNode* node = gGeoManager->FindNode(point[0], point[1], point[2]);
-        TGeoMaterial* mat = 0;
+        TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
           Double_t n = mat->GetDensity() / mat->GetA();
@@ -394,7 +402,6 @@ Bool_t FixedTargetGenerator::ReadEvent(FairPrimaryGenerator* cpg) {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
-        count += 1;
       }
       zinterStart = zinter;
       ck -= 1;

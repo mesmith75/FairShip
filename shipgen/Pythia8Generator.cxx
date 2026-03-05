@@ -204,7 +204,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
     Double_t prob2int = -1.;
     Double_t rndm = 0.;
     Double_t sigma;
-    Int_t count = 0;
     Double_t zinterStart = start[2];
     // simulate more downstream interaction points for interactions down in the
     // cascade
@@ -216,7 +215,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
       // if (!subprocCodes[nI]<90){continue;}  //if process is not inelastic, go
       // to next. Changed by taking now collision length
       prob2int = -1.;
-      Int_t intLengthFactor = 1;  // for nucleons
+      Double_t intLengthFactor = 1;  // for nucleons
       if (TMath::Abs(ancestors[nI]) < 1000) {
         intLengthFactor = 1.16;
       }  // for mesons
@@ -232,7 +231,7 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
             mparam[8] * intLengthFactor *
             1.7;  // 1.7 = interaction length / collision length from PDG Tables
         TGeoNode* node = gGeoManager->FindNode(point[0], point[1], point[2]);
-        TGeoMaterial* mat = 0;
+        TGeoMaterial* mat = nullptr;
         if (node && !gGeoManager->IsOutside()) {
           mat = node->GetVolume()->GetMaterial();
           Double_t n = mat->GetDensity() / mat->GetA();
@@ -244,7 +243,6 @@ Bool_t Pythia8Generator::ReadEvent(FairPrimaryGenerator* cpg) {
           prob2int = 0.;
         }
         rndm = gRandom->Uniform(0., 1.);
-        count += 1;
       }
       zinterStart = zinter;
     }
