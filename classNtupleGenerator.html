@@ -130,8 +130,8 @@ Collaboration diagram for NtupleGenerator:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a99f6acb8763351a65c08a44250d3f0c2" id="r_a99f6acb8763351a65c08a44250d3f0c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNtupleGenerator.html#a99f6acb8763351a65c08a44250d3f0c2">NtupleGenerator</a> ()</td></tr>
 <tr class="separator:a99f6acb8763351a65c08a44250d3f0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3551b11b3e020743b1b659a9f66c6ae" id="r_aa3551b11b3e020743b1b659a9f66c6ae"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNtupleGenerator.html#aa3551b11b3e020743b1b659a9f66c6ae">~NtupleGenerator</a> ()</td></tr>
-<tr class="separator:aa3551b11b3e020743b1b659a9f66c6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3708cc20135eb54a0ae0c3abb7cf667f" id="r_a3708cc20135eb54a0ae0c3abb7cf667f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNtupleGenerator.html#a3708cc20135eb54a0ae0c3abb7cf667f">~NtupleGenerator</a> () override</td></tr>
+<tr class="separator:a3708cc20135eb54a0ae0c3abb7cf667f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c572a3f83c58ce9ca1b3ab91319873d" id="r_a3c572a3f83c58ce9ca1b3ab91319873d"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNtupleGenerator.html#a3c572a3f83c58ce9ca1b3ab91319873d">ReadEvent</a> (FairPrimaryGenerator *) override</td></tr>
 <tr class="separator:a3c572a3f83c58ce9ca1b3ab91319873d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb456457d43552cdc495f6233da5abb8" id="r_afb456457d43552cdc495f6233da5abb8"><td class="memItemLeft" align="right" valign="top">Bool_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNtupleGenerator.html#afb456457d43552cdc495f6233da5abb8">Init</a> (const char *, int) override</td></tr>
@@ -234,8 +234,8 @@ Protected Attributes</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa3551b11b3e020743b1b659a9f66c6ae" name="aa3551b11b3e020743b1b659a9f66c6ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3551b11b3e020743b1b659a9f66c6ae">&#9670;&#160;</a></span>~NtupleGenerator()</h2>
+<a id="a3708cc20135eb54a0ae0c3abb7cf667f" name="a3708cc20135eb54a0ae0c3abb7cf667f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3708cc20135eb54a0ae0c3abb7cf667f">&#9670;&#160;</a></span>~NtupleGenerator()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +252,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -488,7 +488,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">   83</span>    <span class="keywordflow">return</span> kFALSE;</div>
 <div class="line"><span class="lineno">   84</span>  }</div>
 <div class="line"><span class="lineno">   85</span>  TDatabasePDG* pdgBase = TDatabasePDG::Instance();</div>
-<div class="line"><span class="lineno">   86</span>  Double_t <a class="code hl_function" href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">mass</a> = pdgBase-&gt;GetParticle(<span class="keywordtype">id</span>)-&gt;Mass();</div>
+<div class="line"><span class="lineno">   86</span>  Double_t <a class="code hl_function" href="namespacehnl.html#a8da545ce4a1f3fdbb0c5eee151176fec">mass</a> = pdgBase-&gt;GetParticle(<span class="keywordtype">id</span>)-&gt;Mass();</div>
 <div class="line"><span class="lineno">   87</span>  Double_t e =</div>
 <div class="line"><span class="lineno">   88</span>      TMath::Sqrt(<a class="code hl_variable" href="classNtupleGenerator.html#afff7ad1827a9cd4b87338f1b636858cc">px</a>[0] * <a class="code hl_variable" href="classNtupleGenerator.html#afff7ad1827a9cd4b87338f1b636858cc">px</a>[0] + <a class="code hl_variable" href="classNtupleGenerator.html#ae5f57a1f6e0c3c9ed65008648d5dcda3">py</a>[0] * <a class="code hl_variable" href="classNtupleGenerator.html#ae5f57a1f6e0c3c9ed65008648d5dcda3">py</a>[0] + <a class="code hl_variable" href="classNtupleGenerator.html#aa7762bfc4432b95a5acd15864a594acf">pz</a>[0] * <a class="code hl_variable" href="classNtupleGenerator.html#aa7762bfc4432b95a5acd15864a594acf">pz</a>[0] + mass * mass);</div>
 <div class="line"><span class="lineno">   89</span>  <a class="code hl_variable" href="classNtupleGenerator.html#aff2399243379e636fb86cbc238e42e1e">tof</a> = 0;</div>
@@ -507,8 +507,8 @@ Protected Attributes</h2></td></tr>
 <div class="line"><span class="lineno">  102</span>  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><span class="lineno">  103</span>}</div>
 <div class="ttc" id="anamespaceShipAna_html_aa4bf87f4d17f9d38b1d8f4d009bb54b3"><div class="ttname"><a href="namespaceShipAna.html#aa4bf87f4d17f9d38b1d8f4d009bb54b3">ShipAna.i</a></div><div class="ttdeci">int i</div><div class="ttdef"><b>Definition</b> <a href="ShipAna_8py_source.html#l00097">ShipAna.py:97</a></div></div>
-<div class="ttc" id="anamespaceana__ShipMuon_html_a9659d4d32a1cb6cfd4a31d22e63b3a06"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">ana_ShipMuon.r2</a></div><div class="ttdeci">r2</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00429">ana_ShipMuon.py:429</a></div></div>
-<div class="ttc" id="anamespacehnl_html_a852c4832dc0d284867e09f9e6b30bf9b"><div class="ttname"><a href="namespacehnl.html#a852c4832dc0d284867e09f9e6b30bf9b">hnl.mass</a></div><div class="ttdeci">mass(particle)</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00054">hnl.py:54</a></div></div>
+<div class="ttc" id="anamespaceana__ShipMuon_html_a9659d4d32a1cb6cfd4a31d22e63b3a06"><div class="ttname"><a href="namespaceana__ShipMuon.html#a9659d4d32a1cb6cfd4a31d22e63b3a06">ana_ShipMuon.r2</a></div><div class="ttdeci">r2</div><div class="ttdef"><b>Definition</b> <a href="ana__ShipMuon_8py_source.html#l00430">ana_ShipMuon.py:430</a></div></div>
+<div class="ttc" id="anamespacehnl_html_a8da545ce4a1f3fdbb0c5eee151176fec"><div class="ttname"><a href="namespacehnl.html#a8da545ce4a1f3fdbb0c5eee151176fec">hnl.mass</a></div><div class="ttdeci">mass(str|None particle)</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00054">hnl.py:54</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
