@@ -125,44 +125,44 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx_source.html',''); ini
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">using </span>std::cout;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">using </span>std::endl;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">   29</a></span>Double_t <a class="code hl_variable" href="splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a> =</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    TMath::C() * 100. / 1000000000.0;  <span class="comment">// from m/sec to cm/ns</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">   32</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>() : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() { <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>; }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a4814c02890a55fe578771ac8ba92d7e8">   34</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>(Int_t detID, Float_t tdc) : <a class="code hl_class" href="classShipHit.html">ShipHit</a>(detID, tdc) {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">namespace </span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">constexpr</span> Double_t <a class="code hl_variable" href="strawtubesHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a> = 29.9792458;  <span class="comment">// TMath::C() * 100 / 1e9, cm/ns</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}  <span class="comment">// namespace</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// -----   Default constructor   -------------------------------------------</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">   33</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>() : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() { <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// -----   Standard constructor   ------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a4814c02890a55fe578771ac8ba92d7e8">   35</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>(Int_t detID, Float_t tdc) : <a class="code hl_class" href="classShipHit.html">ShipHit</a>(detID, tdc) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// -----   constructor from vector of splitcalPoints</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// ------------------------------------------</span></div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a7dbeec0d9339fafe0ee2c1402e67299b">   39</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>(<span class="keyword">const</span> std::vector&lt;splitcalPoint&gt;&amp; points, Double_t t0)</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="comment">// Empty vector check</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordflow">if</span> (points.empty()) {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    LOG(error)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        &lt;&lt; <span class="stringliteral">&quot;splitcalHit constructor called with empty splitcalPoint vector&quot;</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="comment">// Use first point for geometry lookup and detector ID</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; firstPoint = points[0];</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">double</span> pointX = firstPoint.GetX();</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">double</span> pointY = firstPoint.GetY();</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">int</span> detID = firstPoint.GetDetectorID();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="comment">// Sum energy from all points</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">double</span> pointE = 0.0;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; point : points) {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    pointE += point.GetEnergyLoss();</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="comment">// fdigi = t0 + t;</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> = t0;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// -----   constructor from vector of splitcalPoints</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// ------------------------------------------</span></div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="}">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="classsplitcalHit.html#a7dbeec0d9339fafe0ee2c1402e67299b">   40</a></span><a class="code hl_function" href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a>(<span class="keyword">const</span> std::vector&lt;splitcalPoint&gt;&amp; points, Double_t t0)</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    : <a class="code hl_class" href="classShipHit.html">ShipHit</a>() {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_variable" href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">flag</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="comment">// Empty vector check</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordflow">if</span> (points.empty()) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    LOG(error)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        &lt;&lt; <span class="stringliteral">&quot;splitcalHit constructor called with empty splitcalPoint vector&quot;</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  }</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="comment">// Use first point for geometry lookup and detector ID</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">const</span> <span class="keyword">auto</span>&amp; firstPoint = points[0];</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">double</span> pointX = firstPoint.GetX();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">double</span> pointY = firstPoint.GetY();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">int</span> detID = firstPoint.GetDetectorID();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">// Sum energy from all points</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">double</span> pointE = 0.0;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; point : points) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    pointE += point.GetEnergyLoss();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_variable" href="classShipHit.html#a1353d789e08ea991cc25a3724131c8e9">fdigi</a> = t0 + firstPoint.GetTime();</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">// SetDigi(SetTimeRes(fdigi));</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <a class="code hl_function" href="classShipHit.html#a7be5496a0ce802332c685f59b75b7586">SetDetectorID</a>(detID);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
@@ -326,7 +326,7 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx_source.html',''); ini
 <div class="ttc" id="aclasssplitcalHit_html_a2e28dabcb887f2447e06cac87c30e87b"><div class="ttname"><a href="classsplitcalHit.html#a2e28dabcb887f2447e06cac87c30e87b">splitcalHit::GetPaddedString</a></div><div class="ttdeci">std::string GetPaddedString(int &amp;id)</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8cxx_source.html#l00125">splitcalHit.cxx:125</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_a33023ae785ce1a2257425bd95ccf980b"><div class="ttname"><a href="classsplitcalHit.html#a33023ae785ce1a2257425bd95ccf980b">splitcalHit::flag</a></div><div class="ttdeci">Float_t flag</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00089">splitcalHit.h:89</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_a4595af3819f408287fa6501e7ab9e354"><div class="ttname"><a href="classsplitcalHit.html#a4595af3819f408287fa6501e7ab9e354">splitcalHit::_x</a></div><div class="ttdeci">double _x</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00090">splitcalHit.h:90</a></div></div>
-<div class="ttc" id="aclasssplitcalHit_html_a45a1e208beb5e02858e35999b8ea8f2a"><div class="ttname"><a href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a></div><div class="ttdeci">splitcalHit()</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8cxx_source.html#l00032">splitcalHit.cxx:32</a></div></div>
+<div class="ttc" id="aclasssplitcalHit_html_a45a1e208beb5e02858e35999b8ea8f2a"><div class="ttname"><a href="classsplitcalHit.html#a45a1e208beb5e02858e35999b8ea8f2a">splitcalHit::splitcalHit</a></div><div class="ttdeci">splitcalHit()</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8cxx_source.html#l00033">splitcalHit.cxx:33</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_a4d1cf98969f6307434f09cf64df60ce7"><div class="ttname"><a href="classsplitcalHit.html#a4d1cf98969f6307434f09cf64df60ce7">splitcalHit::_z</a></div><div class="ttdeci">double _z</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00090">splitcalHit.h:90</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_a5ba4f7e882ed8d8022d690aeae9e5f5a"><div class="ttname"><a href="classsplitcalHit.html#a5ba4f7e882ed8d8022d690aeae9e5f5a">splitcalHit::_isPrecisionLayer</a></div><div class="ttdeci">int _isPrecisionLayer</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00092">splitcalHit.h:92</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_a6cd2f23c0bc01c6b10ea290ba2ad69be"><div class="ttname"><a href="classsplitcalHit.html#a6cd2f23c0bc01c6b10ea290ba2ad69be">splitcalHit::Print</a></div><div class="ttdeci">virtual void Print() const</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8cxx_source.html#l00194">splitcalHit.cxx:194</a></div></div>
@@ -345,9 +345,9 @@ $(document).ready(function(){initNavTree('splitcalHit_8cxx_source.html',''); ini
 <div class="ttc" id="aclasssplitcalHit_html_ad4667d0e4daa735d8688c199ff0c0496"><div class="ttname"><a href="classsplitcalHit.html#ad4667d0e4daa735d8688c199ff0c0496">splitcalHit::_nModuleX</a></div><div class="ttdeci">int _nModuleX</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00092">splitcalHit.h:92</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_ae09a12e91f934b717544028b102b115e"><div class="ttname"><a href="classsplitcalHit.html#ae09a12e91f934b717544028b102b115e">splitcalHit::_nStrip</a></div><div class="ttdeci">int _nStrip</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00092">splitcalHit.h:92</a></div></div>
 <div class="ttc" id="aclasssplitcalHit_html_ae84881050d4af6aa485f1f88346854d4"><div class="ttname"><a href="classsplitcalHit.html#ae84881050d4af6aa485f1f88346854d4">splitcalHit::_yError</a></div><div class="ttdeci">double _yError</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8h_source.html#l00090">splitcalHit.h:90</a></div></div>
-<div class="ttc" id="asplitcalHit_8cxx_html_a2a4e3defa01c68456688479ba32a6a02"><div class="ttname"><a href="splitcalHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a></div><div class="ttdeci">Double_t speedOfLight</div><div class="ttdef"><b>Definition</b> <a href="splitcalHit_8cxx_source.html#l00029">splitcalHit.cxx:29</a></div></div>
 <div class="ttc" id="asplitcalHit_8h_html"><div class="ttname"><a href="splitcalHit_8h.html">splitcalHit.h</a></div></div>
 <div class="ttc" id="asplitcal_8h_html"><div class="ttname"><a href="splitcal_8h.html">splitcal.h</a></div></div>
+<div class="ttc" id="astrawtubesHit_8cxx_html_a2a4e3defa01c68456688479ba32a6a02"><div class="ttname"><a href="strawtubesHit_8cxx.html#a2a4e3defa01c68456688479ba32a6a02">speedOfLight</a></div><div class="ttdeci">Double_t speedOfLight</div><div class="ttdef"><b>Definition</b> <a href="strawtubesHit_8cxx_source.html#l00026">strawtubesHit.cxx:26</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
