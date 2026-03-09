@@ -74,17 +74,10 @@ constexpr const int detPieces(std::string_view pieceName) noexcept{
 }
 
 UpstreamTagger::UpstreamTagger()
-    : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
+    : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
       det_zPos(0),
-      fUpstreamTaggerPoints(nullptr) {}
+      UpstreamTagger_fulldet(0),
+      scoringPlaneUBText(0) {}
 
 //UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
 UpstreamTagger::UpstreamTagger(std::string medium)
@@ -102,32 +95,10 @@ UpstreamTagger::UpstreamTagger(std::string medium)
     fUpstreamTaggerPoints(nullptr) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
-    : FairDetector(name, active, kUpstreamTagger),
-      fEventID(-1),
-      fTrackID(-1),
-      fVolumeID(-1),
-      fPos(),
-      fMom(),
-      fTime(-1.),
-      fLength(-1.),
-      fELoss(-1),
-      //
+    : Detector(name, active, kUpstreamTagger),
       det_zPos(0),
-      fUpstreamTaggerPoints(nullptr) {}
-
-
-void UpstreamTagger::Initialize()
-{
-  FairDetector::Initialize();
-}
-
-
-UpstreamTagger::~UpstreamTagger() {
-  if (fUpstreamTaggerPoints) {
-    fUpstreamTaggerPoints->clear();
-    delete fUpstreamTaggerPoints;
-  }
-}
+      UpstreamTagger_fulldet(0),
+      scoringPlaneUBText(0) {}
 
 Int_t UpstreamTagger::InitMedium(const char* name) {
   static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
@@ -209,36 +180,6 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
   return kTRUE;
 }
 
-void UpstreamTagger::EndOfEvent() { fUpstreamTaggerPoints->clear(); }
-
-void UpstreamTagger::Register() {
-  /** This will create a branch in the output tree called
-      UpstreamTaggerPoint, setting the last parameter to kFALSE means:
-      this collection will not be written to the file, it will exist
-      only during the simulation.
-  */
-  fUpstreamTaggerPoints = new std::vector<UpstreamTaggerPoint>();
-  FairRootManager::Instance()->RegisterAny("UpstreamTaggerPoint",
-                                           fUpstreamTaggerPoints, kTRUE);
-}
-
-TClonesArray* UpstreamTagger::GetCollection(Int_t iColl) const {
-  return nullptr;
-}
-
-void UpstreamTagger::UpdatePointTrackIndices(
-    const std::map<Int_t, Int_t>& indexMap) {
-  for (auto& point : *fUpstreamTaggerPoints) {
-    Int_t oldTrackID = point.GetTrackID();
-    auto iter = indexMap.find(oldTrackID);
-    if (iter != indexMap.end()) {
-      point.SetTrackID(iter->second);
-      point.SetLink(FairLink("MCTrack", iter->second));
-    }
-  }
-}
-
-void UpstreamTagger::Reset() { fUpstreamTaggerPoints->clear(); }
 
 void UpstreamTagger::SetzPositions(Double_t z1)
 {
@@ -485,14 +426,3 @@ void UpstreamTagger::ConstructGeometry()
     }
 }
 
-
-UpstreamTaggerPoint* UpstreamTagger::AddHit(Int_t eventID, Int_t trackID,
-                                            Int_t detID, TVector3 pos,
-                                            TVector3 mom, Double_t time,
-                                            Double_t length, Double_t eLoss,
-                                            Int_t pdgCode, TVector3 Lpos,
-                                            TVector3 Lmom) {
-  fUpstreamTaggerPoints->emplace_back(eventID, trackID, detID, pos, mom, time,
-                                      length, eLoss, pdgCode, Lpos, Lmom);
-  return &(fUpstreamTaggerPoints->back());
-}
