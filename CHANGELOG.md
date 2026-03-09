@@ -14,18 +14,33 @@ it in future.
 
 ### Fixed
 
+* Fix discarded `str(key)` result in `bookProf()` — TProfile name was not converted
+* Fix `os._exit()` bypassing cleanup in `rootUtils.checkFileExists()` — use `sys.exit()`
+* Fix mutable default arguments in `rootUtils.readHists()` and `geomGeant4.printWeightsandFields()`
+* Fix unclosed file handles in readDecayTable, pythia8_conf, and pythia8darkphoton_conf
+* Fix closure variable binding bug in event display toggle callbacks
 * Fix null dereference in ShipFieldMaker when VMCWORKDIR is unset
 * Fix uninitialised gField_ pointer in FairShipFields
 * Fix null dereference in FixedTargetGenerator on missing input file or histogram
 * Fix off-by-one in FixedTargetGenerator target node access
 * Fix uninitialised members in vetoHit, strawtubesHit, and ShipMuonShield
 * Change vetoHit and strawtubesHit flag member from Float_t to Bool_t to match actual usage
+* Fix NaN mass/energy for photons in ShipMCTrack due to floating-point rounding (#384)
+* Move TimeDetHit v_drift and par[] to static constexpr, saving 40 bytes per serialised hit (#685)
+* Fix event display errors for nonexistent MC point branches (#900)
+* Fix digitisation crash when optional detector branches are missing (#738)
+* Fix splitcalHit dropping MC point arrival time in digitisation (#925)
+* Fix argparse -f/subparser conflict in run_simScript.py by using action="append" (#1044)
 
 ### Changed
 
-* Modernise C++: replace NULL/0 with nullptr, add override on virtual destructors, use = default for trivial destructors
+* Expand ruff lint rules (B, C4, SIM, UP, RUF) and fix all detected issues
+* Replace bare `except:` with specific exception types in core modules
+* Expand mypy pre-commit coverage to rootUtils, geomGeant4, readDecayTable, geometry_config, shipDigiReco
+* Modernise C++: replace NULL with nullptr, C headers with C++ equivalents, normalise include guards, add override specifier, use = delete for non-copyable classes
 * Take vectors by const ref in ShipTargetStation::SetLayerPosMat; fix assert logic bug
 * Expand clang-tidy config with modernize-use-nullptr, modernize-use-override, modernize-use-equals-default, performance-unnecessary-value-param
+* Remove dead SND@LHC code from event display (#900)
 
 ### Added
 
@@ -46,7 +61,7 @@ it in future.
 
 
 
-* Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059
+* Add DetectorPoint base class for the various detector points. Adds EventID as well to each. #1059 #1075
 * Change a const char* in SHiP::Generator to optional<string>. #1053
 * Only get evtNo in ShipStack if there are tracks. Prevents seg faults from accessing empty events at the end of the run. #1051
 * makeGenieEvents: automatically set GXMLPATH to the genie_config folder. Remove option --nudet since now GXMLPATH always needs to be set.

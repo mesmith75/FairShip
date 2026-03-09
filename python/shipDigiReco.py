@@ -50,13 +50,16 @@ class ShipDigiReco:
         #
         self.strawtubes = strawtubesDetector("strawtubes", self.sTree, outtree=self.recoTree)
 
-        self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
-        self.digiSBT = SBTDetector("veto", self.sTree, "SBT", mcBranchName="digiSBT2MC", outtree=self.recoTree)
-        self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
-        self.vetoHitOnTrackBranch = self.recoTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
-
-        self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
-        self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
+        if self.sTree.GetBranch("MTCDetPoint"):
+            self.digiMTC = MTCDetector("MTCDet", self.sTree, "MTC", outtree=self.recoTree)
+        if self.sTree.GetBranch("vetoPoint"):
+            self.digiSBT = SBTDetector("veto", self.sTree, "SBT", mcBranchName="digiSBT2MC", outtree=self.recoTree)
+            self.vetoHitOnTrackArray = ROOT.std.vector("vetoHitOnTrack")()
+            self.vetoHitOnTrackBranch = self.recoTree.Branch("VetoHitOnTrack", self.vetoHitOnTrackArray)
+        if self.sTree.GetBranch("TimeDetPoint"):
+            self.timeDetector = timeDetector("TimeDet", self.sTree, outtree=self.recoTree)
+        if self.sTree.GetBranch("UpstreamTaggerPoint"):
+            self.upstreamTaggerDetector = UpstreamTaggerDetector("UpstreamTagger", self.sTree, outtree=self.recoTree)
 
         # for the digitizing step
         self.v_drift = global_variables.modules["strawtubes"].StrawVdrift()
@@ -101,7 +104,8 @@ class ShipDigiReco:
     def reconstruct(self) -> None:
         self.findTracks()
         self.findGoodTracks()
-        self.linkVetoOnTracks()
+        if hasattr(self, "digiSBT"):
+            self.linkVetoOnTracks()
         if global_variables.vertexing:
             # now go for 2-track combinations
             self.Vertexing.execute()
@@ -111,12 +115,14 @@ class ShipDigiReco:
         self.header.SetEventTime(self.sTree.t0)
         self.header.SetRunId(self.sTree.MCEventHeader.GetRunID())
         self.header.SetMCEntryNumber(self.sTree.MCEventHeader.GetEventID())  # counts from 1
-        self.digiSBT.process()
+        if hasattr(self, "digiSBT"):
+            self.digiSBT.process()
         self.strawtubes.process()
-        self.timeDetector.process()
-        self.upstreamTaggerDetector.process()
-        # adding digitization of SND/MTC
-        if self.sTree.GetBranch("MTCDetPoint"):
+        if hasattr(self, "timeDetector"):
+            self.timeDetector.process()
+        if hasattr(self, "upstreamTaggerDetector"):
+            self.upstreamTaggerDetector.process()
+        if hasattr(self, "digiMTC"):
             self.digiMTC.process()
         if self.sTree.GetBranch("splitcalPoint"):
             self.splitcalDetector.process()
@@ -124,8 +130,8 @@ class ShipDigiReco:
     def findTracks(self) -> int:
         hitPosLists = {}
         hit_detector_ids = {}
-        stationCrossed = {}
-        listOfIndices = {}
+        stationCrossed: dict[int, dict[int, int]] = {}
+        listOfIndices: dict[int, list[int]] = {}
         self.fGenFitArray.clear()
         self.fTrackletsArray.clear()
         self.fitTrack2MC.clear()
@@ -143,7 +149,7 @@ class ShipDigiReco:
             # Do real PatRec
             track_hits = shipPatRec.execute(self.SmearedHits, global_variables.ShipGeo, global_variables.realPR)
             # Create hitPosLists for track fit
-            for i_track in track_hits.keys():
+            for i_track in track_hits:
                 atrack = track_hits[i_track]
                 atrack_y12 = atrack["y12"]
                 atrack_stereo12 = atrack["stereo12"]
@@ -267,7 +273,7 @@ class ShipDigiReco:
             # do the fit
             try:
                 self.fitter.processTrack(theTrack)  # processTrackWithRep(theTrack,rep,True)
-            except:
+            except Exception:
                 if global_variables.debug:
                     print("genfit failed to fit track")
                 error = "genfit failed to fit track"
@@ -285,7 +291,7 @@ class ShipDigiReco:
             try:
                 fittedState = theTrack.getFittedState()
                 fittedState.getMomMag()
-            except:
+            except Exception:
                 error = "Problem with fittedstate"
                 ut.reportError(error)
                 continue
@@ -314,7 +320,7 @@ class ShipDigiReco:
             for index in listOfIndices[atrack]:
                 ahit = self.sTree.strawtubesPoint[index]
                 track_ids += [ahit.GetTrackID()]
-            frac, tmax = self.fracMCsame(track_ids)
+            _frac, tmax = self.fracMCsame(track_ids)
             self.fitTrack2MC.push_back(tmax)
             # Save hits indexes of the the fitted tracks
             indices = ROOT.std.vector("unsigned int")()
@@ -354,7 +360,7 @@ class ShipDigiReco:
             vetoHitPos = vetoHit.GetXYZ()
             try:
                 rep.extrapolateToPoint(state, vetoHitPos, False)
-            except:
+            except Exception:
                 error = "shipDigiReco::findVetoHitOnTrack extrapolation did not worked"
                 ut.reportError(error)
                 if global_variables.debug:

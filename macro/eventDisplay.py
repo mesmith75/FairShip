@@ -318,15 +318,13 @@ class DrawTracks(ROOT.FairTask):
     def ExecuteTask(self, option: str = "") -> None:
         self.comp.DestroyElements()
         self.comp.OpenCompound()
-        if sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR"):
-            if len(sTree.FitTracks) > 0:
-                self.DrawFittedTracks()
-        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0:
-            if globals()["withMCTracks"]:
-                if top.GetNode("Tunnel_1"):
-                    DrawSimpleMCTracks()  # for sndlhc, until more details are simulated
-                else:
-                    self.DrawMCTracks()
+        if (sTree.FindBranch("FitTracks") or sTree.FindBranch("FitTracks_PR")) and len(sTree.FitTracks) > 0:
+            self.DrawFittedTracks()
+        if not sTree.FindBranch("GeoTracks") and len(sTree.MCTrack) > 0 and globals()["withMCTracks"]:
+            if top.GetNode("Tunnel_1"):
+                DrawSimpleMCTracks()  # for sndlhc, until more details are simulated
+            else:
+                self.DrawMCTracks()
         self.comp.CloseCompound()
         gEve.ElementChanged(self.evscene, True, True)
 
@@ -493,7 +491,7 @@ class DrawTracks(ROOT.FairTask):
             pid = fstate.getPDG()
             zs = self.z_start
             for i in range(self.niter):
-                rc, newpos, newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
+                rc, newpos, _newmom = TrackExtrapolateTool.extrapolateToPlane(fT, zs)
                 if rc:
                     DTrack.SetNextPoint(newpos.X(), newpos.Y(), newpos.Z())
                 else:
@@ -593,7 +591,7 @@ class IO:
                 a.set(0)
             self.lbut[x] = tkinter.Checkbutton(self.master, text=x.replace("_1", ""), compound=tkinter.LEFT, variable=a)
             self.lbut[x].var = a
-            self.lbut[x]["command"] = lambda: self.toggle(x)
+            self.lbut[x]["command"] = lambda x=x: self.toggle(x)
             self.lbut[x].pack(side=tkinter.BOTTOM)
         self.fram1.pack()
         # add ship actions to eve display
@@ -667,7 +665,7 @@ class IO:
     def toggle(self, x) -> None:
         v = top.GetNode(x)
         assembly = "Assembly" in v.GetVolume().__str__()
-        if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
+        if v.IsVisible() > 0 or (assembly and v.IsVisDaughters() > 0):
             print("switch off ", x)
             v.SetVisibility(0)
             v.SetVisDaughters(0)
@@ -684,7 +682,7 @@ class IO:
             x = v.GetName()
             if x in self.lbut:
                 assembly = "Assembly" in v.GetVolume().__str__()
-                if v.IsVisible() > 0 or assembly and v.IsVisDaughters() > 0:
+                if v.IsVisible() > 0 or (assembly and v.IsVisDaughters() > 0):
                     self.lbut[x].var.set(1)
                 else:
                     self.lbut[x].var.set(0)
@@ -1192,20 +1190,26 @@ if withGeo:
 # Load Shipgeo dictionary written by run_simScript.py
 ShipGeo = load_from_root_file(fRun.GetGeoFile(), "ShipGeo")
 
-mcHits = {}
-if hasattr(ShipGeo, "MuFilter"):
-    mcHits["ScifiPoints"] = ROOT.FairMCPointDraw("ScifiPoint", ROOT.kRed, ROOT.kFullDiamond)
-    mcHits["MuFilterPoints"] = ROOT.FairMCPointDraw("MuFilterPoint", ROOT.kGreen, ROOT.kFullCircle)
-    mcHits["EmulsionDetPoints"] = ROOT.FairMCPointDraw("EmulsionDetPoint", ROOT.kMagenta, ROOT.kCircle)
-else:
-    mcHits["VetoPoints"] = ROOT.FairMCPointDraw("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond)
-    mcHits["TimeDetPoints"] = ROOT.FairMCPointDraw("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond)
-    mcHits["StrawPoints"] = ROOT.FairMCPointDraw("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle)
-    mcHits["RpcPoints"] = ROOT.FairMCPointDraw("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare)
-    mcHits["TargetPoints"] = ROOT.FairMCPointDraw("TargetPoint", ROOT.kRed, ROOT.kFullSquare)
-    mcHits["MTCDetPoint"] = ROOT.FairMCPointDraw("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare)
-    mcHits["SiliconTargetPoint"] = ROOT.FairMCPointDraw("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare)
+# Check which MC point branches exist in the input file
+_tmpFile = ROOT.TFile.Open(options.InputFile)
+_tmpTree = _tmpFile.Get("cbmsim") if _tmpFile else None
 
+mcHits = {}
+_candidates = {
+    "VetoPoints": ("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond),
+    "TimeDetPoints": ("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond),
+    "StrawPoints": ("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle),
+    "RpcPoints": ("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare),
+    "TargetPoints": ("TargetPoint", ROOT.kRed, ROOT.kFullSquare),
+    "MTCDetPoint": ("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare),
+    "SiliconTargetPoint": ("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare),
+}
+for key, (branch, colour, marker) in _candidates.items():
+    if _tmpTree and _tmpTree.GetBranch(branch):
+        mcHits[key] = ROOT.FairMCPointDraw(branch, colour, marker)
+
+if _tmpFile:
+    _tmpFile.Close()
 
 for x in mcHits:
     fMan.AddTask(mcHits[x])
@@ -1309,7 +1313,7 @@ def DrawSimpleMCTracks() -> None:
         z = fPos.Z() + delZ
         slx, sly = fMom.X() / fMom.Z(), fMom.Y() / fMom.Z()
         hitlist[z] = [fPos.X() + slx * delZ, fPos.Y() + sly * delZ]
-        for z in hitlist.keys():
+        for z in hitlist:
             DTrack.SetNextPoint(hitlist[z][0], hitlist[z][1], z)
         p = pdg.GetParticle(fT.GetPdgCode())
         if p:

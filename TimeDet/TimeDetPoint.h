@@ -3,7 +3,7 @@
 // Collaboration
 
 #ifndef TIMEDET_TIMEDETPOINT_H_
-#define TIMEDET_TIMEDETPOINT_H_ 1
+#define TIMEDET_TIMEDETPOINT_H_
 
 #include <array>
 
@@ -21,7 +21,7 @@ class TimeDetPoint : public SHiP::DetectorPoint {
   /** Destructor **/
   virtual ~TimeDetPoint();
 
-  void setDetectorName() override;
+  const char* DetectorName() const override { return "timeDetector"; }
   void extraPrintInfo() const override;
 
  private:

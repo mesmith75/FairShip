@@ -4,8 +4,7 @@
 
 #include "strawtubesPoint.h"
 
-#include <math.h>
-
+#include <cmath>
 #include <iostream>
 
 #include "FairLogger.h"
@@ -27,8 +26,6 @@ strawtubesPoint::strawtubesPoint(Int_t eventID, Int_t trackID, Int_t detID,
 // -----   Destructor   ----------------------------------------------------
 strawtubesPoint::~strawtubesPoint() {}
 // -------------------------------------------------------------------------
-
-void strawtubesPoint::setDetectorName() { fDetectorName = "UpstreamTagger"; }
 
 void strawtubesPoint::extraPrintInfo() const {
   LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ", "
