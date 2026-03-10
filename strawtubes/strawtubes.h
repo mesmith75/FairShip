@@ -58,14 +58,6 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
   /**      Create the detector geometry        */
   void ConstructGeometry() override;
 
-  /** The following methods can be implemented if you need to make
-   *  any optional action in your detector during the transport.
-   */
-
-  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
-    ;
-  }
-
  private:
   /** Track information to be stored until the track leaves the
   active volume.
@@ -95,7 +87,7 @@ class strawtubes : public SHiP::Detector<strawtubesPoint> {
 
   strawtubes(const strawtubes&) = delete;
   strawtubes& operator=(const strawtubes&) = delete;
-  Int_t InitMedium(const char* name);
+
   ClassDefOverride(strawtubes, 8)
 };
 

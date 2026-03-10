@@ -73,10 +73,6 @@ class veto : public SHiP::Detector<vetoPoint> {
    *  any optional action in your detector during the transport.
    */
 
-  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
-    ;
-  }
-
   void PreTrack() override;
 
   inline void SetUseSupport(Int_t use = 1) { fUseSupport = use; }
@@ -133,7 +129,6 @@ class veto : public SHiP::Detector<vetoPoint> {
 
   veto(const veto&) = delete;
   veto& operator=(const veto&) = delete;
-  Int_t InitMedium(const char* name);
   /** Adds a solid Trapezoid of thickness (along z) wz with start cross-section
    * dimensions of wX_start * wY_start and end cross-section dimensions of
    * wX_end *wY_end

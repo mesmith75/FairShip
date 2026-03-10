@@ -24,6 +24,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TClonesArray.h"
 #include "TGeoBBox.h"
@@ -42,6 +43,7 @@ using ShipUnit::cm;
 using ShipUnit::m;
 using std::cout;
 using std::endl;
+
 
 constexpr uint64_t hash(std::string_view str) {
     uint64_t hash = 0;
@@ -73,53 +75,21 @@ constexpr const int detPieces(std::string_view pieceName) noexcept{
     }
 }
 
+UpstreamTagger::UpstreamTagger(std::string medium)
+  : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
+    fMedium(medium),
+    det_zPos(0),
+    UpstreamTagger_fulldet(0) {}
+
 UpstreamTagger::UpstreamTagger()
     : Detector("UpstreamTagger", kTRUE, kUpstreamTagger),
       det_zPos(0),
-      UpstreamTagger_fulldet(0),
-      scoringPlaneUBText(0) {}
-
-//UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
-UpstreamTagger::UpstreamTagger(std::string medium)
-  : FairDetector("UpstreamTagger", kTRUE, kUpstreamTagger),
-    fMedium(medium),
-    fEventID(-1),
-    fTrackID(-1),
-    fVolumeID(-1),
-    fPos(),
-    fMom(),
-    fTime(-1.),
-    fLength(-1.),
-    fELoss(-1),
-    det_zPos(0),
-    fUpstreamTaggerPoints(nullptr) {}
+      UpstreamTagger_fulldet(0) {}
 
 UpstreamTagger::UpstreamTagger(const char* name, Bool_t active)
     : Detector(name, active, kUpstreamTagger),
       det_zPos(0),
-      UpstreamTagger_fulldet(0),
-      scoringPlaneUBText(0) {}
-
-Int_t UpstreamTagger::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-
-  return 0;
-}
-
+      UpstreamTagger_fulldet(0) {}
 
 Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
 {
@@ -179,7 +149,6 @@ Bool_t  UpstreamTagger::ProcessHits(FairVolume* vol)
 
   return kTRUE;
 }
-
 
 void UpstreamTagger::SetzPositions(Double_t z1)
 {
@@ -241,17 +210,17 @@ void UpstreamTagger::ConstructGeometry()
     std::cout<<"Making a geometry"<<std::endl;
 
     TGeoVolume *top               = gGeoManager->GetTopVolume();
-    InitMedium("air");
+    ShipGeo::InitMedium("air");
     TGeoMedium *air               = gGeoManager->GetMedium("air");
-    InitMedium("mylar");
+    ShipGeo::InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
-    InitMedium("STTmix8020_1bar");
+    ShipGeo::InitMedium("STTmix8020_1bar");
     TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("STTmix8020_1bar");
-    InitMedium("tungsten");
+    ShipGeo::InitMedium("tungsten");
     TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
-    InitMedium(f_frame_material);
+    ShipGeo::InitMedium(f_frame_material);
     TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(f_frame_material);
-    InitMedium(fMedium.c_str());
+    ShipGeo::InitMedium(fMedium.c_str());
     TGeoMedium* med = gGeoManager->GetMedium(fMedium.c_str());
 
     gGeoManager->SetVisLevel(4);
@@ -415,7 +384,7 @@ void UpstreamTagger::ConstructGeometry()
         // End of view loop
         }
     // A layer of plastic scintillator detector
-    InitMedium("polyvinyltoluene");
+    ShipGeo::InitMedium("polyvinyltoluene");
     TGeoMedium *Vacuum_box =gGeoManager->GetMedium("polyvinyltoluene");
     UpstreamTagger_plastic = gGeoManager->MakeBox("Upstream_Tagger_Plastic", Vacuum_box, straw_length, f_aperture_height, 1);
     UpstreamTagger_plastic->SetLineColor(kGreen);

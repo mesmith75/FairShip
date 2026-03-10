@@ -48,7 +48,7 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
    *               kFALSE for inactive detectors
    */
   UpstreamTagger(const char* Name, Bool_t Active);
-  UpstreamTagger& operator=(const UpstreamTagger&);
+  UpstreamTagger(std::string medium);
   /** default constructor */
   UpstreamTagger();
 
@@ -101,9 +101,14 @@ class UpstreamTagger : public SHiP::Detector<UpstreamTaggerPoint> {
  private:
   /** container for data points */
 
-  Int_t InitMedium(const char* name);
 
   TGeoVolume* UpstreamTagger_plastic;
+  TGeoVolume* UpstreamTagger_fulldet;
+
+
+
+  UpstreamTagger(const UpstreamTagger&) = delete;
+  UpstreamTagger& operator=(const UpstreamTagger&) = delete;
 
   ClassDefOverride(UpstreamTagger, 3)
 };

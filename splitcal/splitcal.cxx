@@ -18,6 +18,7 @@
 #include "FairRuntimeDb.h"
 #include "FairVolume.h"
 #include "ShipDetectorList.h"
+#include "ShipGeoUtil.h"
 #include "ShipStack.h"
 #include "TCanvas.h"
 #include "TClonesArray.h"
@@ -41,24 +42,6 @@ splitcal::splitcal() : Detector("splitcal", kTRUE, kSplitCal) {}
 splitcal::splitcal(const char* name, Bool_t active)
     : Detector(name, active, kSplitCal) {}
 
-// -----   Private method InitMedium
-Int_t splitcal::InitMedium(const char* name) {
-  static FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  static FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  static FairGeoMedia* media = geoFace->getMedia();
-  static FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
-
-  FairGeoMedium* ShipMedium = media->getMedium(name);
-
-  if (!ShipMedium) {
-    Fatal("InitMedium", "Material %s not defined in media file.", name);
-    return -1111;
-  }
-  TGeoMedium* medium = gGeoManager->GetMedium(name);
-  if (medium != nullptr) return ShipMedium->getMediumIndex();
-
-  return geoBuild->createMedium(ShipMedium);
-}
 Bool_t splitcal::ProcessHits(FairVolume* vol) {
   /** This method is called from the MC stepping */
   // Set parameters at entrance of volume. Reset ELoss.
@@ -78,27 +61,15 @@ Bool_t splitcal::ProcessHits(FairVolume* vol) {
       gMC->IsTrackDisappeared()) {
     fEventID = gMC->CurrentEvent();
     fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-    // fVolumeID = vol->getMCid();
-    // cout << "splitcal proc "<< fVolumeID<<" "<<vol->GetName()<<"
-    // "<<vol->getVolumeId() <<endl;
-    //    cout << " "<<
-    //    gGeoManager->FindVolumeFast(vol->GetName())->GetNumber()<< "  " <<
-    //    gMC->CurrentVolID() << endl;
-    ///  fVolumeID = gGeoManager->FindVolumeFast(vol->GetName())->GetNumber();
-    // VolumeID = vol->getMCid();
     Int_t detID = 0;
     gMC->CurrentVolID(detID);
 
-    // if (fVolumeID == detID) {
-    //   return kTRUE; }
     fVolumeID = detID;
-    //    cout << " "<<fVolumeID << endl;
     if (fELoss == 0.) {
       return kFALSE;
     }
     TParticle* p = gMC->GetStack()->GetCurrentTrack();
     Int_t pdgCode = p->GetPdgCode();
-    //    if(fVolumeID<405 && fTime<70){
     AddHit(fEventID, fTrackID, fVolumeID,
            TVector3(fPos.X(), fPos.Y(), fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss,
@@ -180,11 +151,11 @@ void splitcal::ConstructGeometry() {
   TGeoVolume* top = gGeoManager->GetTopVolume();
   TGeoVolume* tSplitCal = new TGeoVolumeAssembly("SplitCalDetector");
 
-  InitMedium("iron");
-  InitMedium("lead");
-  InitMedium("Scintillator");
-  InitMedium("argon");
-  InitMedium("GEMmixture");
+  ShipGeo::InitMedium("iron");
+  ShipGeo::InitMedium("lead");
+  ShipGeo::InitMedium("Scintillator");
+  ShipGeo::InitMedium("argon");
+  ShipGeo::InitMedium("GEMmixture");
 
   TGeoMedium* A2 = gGeoManager->GetMedium("iron");
   TGeoMedium* A3 = gGeoManager->GetMedium("lead");
@@ -252,11 +223,10 @@ void splitcal::ConstructGeometry() {
                          new TGeoTranslation(0, 0, z_splitcal));
       z_splitcal += fFilterECALThickness / 2;
     }
-    // std::cout<< "--- i_nlayECAL*1e5 = "<< i_nlayECAL*1e5 << std::endl;
 
     if (i_nlayECAL == 0)
-      z_splitcal += fEmpty;  // space after first layer? set to 0 in the config
-                             // file? for whar is it for?
+      z_splitcal += fEmpty;  // space after first layer? set to 0 in the
+                             // config file? for whar is it for?
     if (i_nlayECAL == 7) z_splitcal += fBigGap;
 
     // position high precision sensitive layers
@@ -275,8 +245,6 @@ void splitcal::ConstructGeometry() {
                            new TGeoTranslation(0, 0, z_splitcal));
         z_splitcal += fActiveECAL_gas_Thickness / 2;
       }
-      // std::cout<< "--- index high precision layer = "<<
-      // 1e8+(i_nlayECAL+1)*1e5 << std::endl;
     } else {
       // position sensitive layers
       z_splitcal += fActiveECALThickness / 2;
@@ -290,8 +258,8 @@ void splitcal::ConstructGeometry() {
               double xCoordinate =
                   -fXMax + (fNStripsPerModule * mx + j + 0.5) *
                                fStripHalfWidth *
-                               2;  // the times 2 is to get the total width from
-                                   // the half-width
+                               2;  // the times 2 is to get the total width
+                                   // from the half-width
               double yCoordinate =
                   -fYMax + (my + 0.5) * fStripHalfLength *
                                2;  // the times 2 is to get the total length
@@ -299,7 +267,7 @@ void splitcal::ConstructGeometry() {
               tSplitCal->AddNode(
                   stripGivingX, index,
                   new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
-              // std::cout<< "--- index = "<< index << std::endl;
+
             }  // end loop on strips
           }  // end loop on modules in y
         }  // end loop on modules in x
@@ -318,12 +286,12 @@ void splitcal::ConstructGeometry() {
               double yCoordinate =
                   -fYMax + (fNStripsPerModule * my + j + 0.5) *
                                fStripHalfWidth *
-                               2;  // the times 2 is to get the total width from
-                                   // the half-width
+                               2;  // the times 2 is to get the total width
+                                   // from the half-width
               tSplitCal->AddNode(
                   stripGivingY, index,
                   new TGeoTranslation(xCoordinate, yCoordinate, z_splitcal));
-              // std::cout<< "--- index = "<< index << std::endl;
+
             }  // end loop on strips
           }  // end loop on modules in y
         }  // end loop on modules in x
@@ -360,13 +328,12 @@ void splitcal::ConstructGeometry() {
     tSplitCal->AddNode(newHCALfilter[i_nlayHCAL], 1,
                        new TGeoTranslation(0, 0, z_splitcal));
     z_splitcal += fFilterHCALThickness / 2;
-    // z_splitcal+=fEmpty;
+
     z_splitcal += fActiveHCALThickness / 2;
     if (fActiveHCAL)
       tSplitCal->AddNode(newHCALdet[i_nlayHCAL], 1,
                          new TGeoTranslation(0, 0, z_splitcal));
     z_splitcal += fActiveHCALThickness / 2;
-    // z_splitcal+=fEmpty;
   }
 
   // finish assembly and position
@@ -375,17 +342,4 @@ void splitcal::ConstructGeometry() {
   Double_t totLength = asmb->GetDZ();
   top->AddNode(tSplitCal, 1,
                new TGeoTranslation(0, 0, zStartSplitCal + totLength));
-
-  // //gROOT->SetBatch(true);
-
-  //    TCanvas* c1 = new TCanvas("splitcalCanvas", "", 800, 800);
-  //    c1->cd();
-
-  //    TView3D* tview = (TView3D*) TView::CreateView();
-  //    tview->SetRange(-fXMax*1.2, -fYMax*1.2, 2500, fXMax*1.2, fYMax*1.2,
-  //    3800); tview->RotateView(0, 90, c1);
-
-  //    tSplitCal->Draw("ogle");
-  //    c1->SaveAs(TString("splitcal.eps"));
-  //    c1->SaveAs(TString("splitcal.pdf"));
 }

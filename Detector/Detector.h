@@ -20,7 +20,7 @@ template <typename PointType>
 class Detector : public FairDetector, public ISTLPointContainer {
  public:
   Detector() = default;
-  virtual ~Detector() { delete fDetPoints; };
+  ~Detector() override = default;
   Detector(const char* Name, Bool_t Active, Int_t detID)
       : FairDetector(Name, Active, detID),
         fEventID(-1),
@@ -32,13 +32,13 @@ class Detector : public FairDetector, public ISTLPointContainer {
         fLength(-1.),
         fELoss(-1) {};
 
-  Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {};
+  Detector(const char* Name, Bool_t Active) : Detector(Name, Active, 0) {}
 
   template <typename... Args>
   PointType* AddHit(Args&&... args) {
     fDetPoints->emplace_back(std::forward<Args>(args)...);
     return &(fDetPoints->back());
-  };
+  }
 
   /**  Create the detector geometry */
   void ConstructGeometry() override = 0;
@@ -51,8 +51,8 @@ class Detector : public FairDetector, public ISTLPointContainer {
 
   void Register() override {
     fDetPoints = new std::vector<PointType>();
-    FairRootManager::Instance()->RegisterAny(PointType::BranchName, fDetPoints,
-                                             kTRUE);
+    FairRootManager::Instance()->RegisterAny(PointType::Class()->GetName(),
+                                             fDetPoints, kTRUE);
   }
 
   TClonesArray* GetCollection(Int_t iColl) const override { return nullptr; }
@@ -76,6 +76,9 @@ class Detector : public FairDetector, public ISTLPointContainer {
   void PostTrack() override { ; }
   void PreTrack() override { ; }
   void BeginEvent() override { ; }
+  void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset) override {
+    ;
+  }
 
  protected:
   /** Track information to be stored until the track leaves the active volume.*/
@@ -87,7 +90,7 @@ class Detector : public FairDetector, public ISTLPointContainer {
   Double_t fTime;       //!  time
   Double_t fLength;     //!  length
   Double_t fELoss;      //!  energy loss
-  std::vector<PointType>* fDetPoints = nullptr;
+  std::vector<PointType>* fDetPoints;
 
   TGeoVolume* fDetector = nullptr;  // Detector object
 };
