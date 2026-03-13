@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+#include "FairLogger.h"
 #include "TRandom.h"
 #include "UpstreamTaggerPoint.h"
 
@@ -14,12 +15,16 @@ using std::endl;
 
 // -----   Default constructor   --------------
 UpstreamTaggerHit::UpstreamTaggerHit()
-    : ShipHit(), fX(0.), fY(0.), fZ(0.), fTime(0.) {}
+    : SHiP::DetectorHit(), fX(0.), fY(0.), fZ(0.), fTime(0.) {}
 
 // -----   Constructor from UpstreamTaggerPoint   --------------
 UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
                                      Double_t pos_res, Double_t time_res)
-    : ShipHit() {
+    : SHiP::DetectorHit() {
+  if (!p) {
+    LOG(error) << "UpstreamTaggerHit: null UpstreamTaggerPoint pointer";
+    return;
+  }
   fDetectorID = p->GetDetectorID();
 
   // Smear position with Gaussian resolution
@@ -32,9 +37,6 @@ UpstreamTaggerHit::UpstreamTaggerHit(UpstreamTaggerPoint* p, Double_t t0,
 
 //  fSubDetID = p->GetLayerID();
 }
-
-// -----   Destructor   -------------------------
-UpstreamTaggerHit::~UpstreamTaggerHit() {}
 
 // -----   Print   ------------------------------
 void UpstreamTaggerHit::Print() const {
