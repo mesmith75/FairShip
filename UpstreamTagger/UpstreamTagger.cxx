@@ -214,11 +214,13 @@ void UpstreamTagger::ConstructGeometry()
     TGeoMedium *air               = gGeoManager->GetMedium("air");
     ShipGeo::InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
+
     ShipGeo::InitMedium("STTmix8020_1bar");
-    TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("STTmix8020_1bar");
+    TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("STTmix8020_1bar"); //  Should be argon-ethane
     ShipGeo::InitMedium("tungsten");
-    TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");
+    TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");  // Should be tungsten rhenium
     ShipGeo::InitMedium(f_frame_material);
+
     TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(f_frame_material);
     ShipGeo::InitMedium(fMedium.c_str());
     TGeoMedium* med = gGeoManager->GetMedium(fMedium.c_str());
@@ -237,7 +239,7 @@ void UpstreamTagger::ConstructGeometry()
     TGeoBBox* detbox1 = new TGeoBBox(
         "ubt_detbox1",
         (straw_length + frame_width),
-        (f_aperture_height + 4*max_stereo_growth + frame_width - floor_offset / 2.),
+        (f_aperture_height + 4*max_stereo_growth /* + frame_width */ - floor_offset / 2.), // No top and bottom frame
         f_station_length);
     TGeoBBox* detbox2 = new TGeoBBox(
     	"ubt_detbox2",
@@ -249,7 +251,7 @@ void UpstreamTagger::ConstructGeometry()
     move_up->RegisterYourself();
 
     // Composite shape to create frame
-    TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("ubt_detcomp1", "ubt_detbox1:ubt_move_up - ubt_detbox2");
+    TGeoCompositeShape* detcomp1 = new TGeoCompositeShape("ubt_detcomp1", "ubt_detbox1:ubt_move_up - ubt_detbox2:ubt_move_up");
 
     // Volume: straw - Third argument is half-length of tube
     TGeoTube *straw_tube = new TGeoTube("ubt_straw",  f_inner_straw_diameter / 2., f_outer_straw_diameter / 2., straw_length);
