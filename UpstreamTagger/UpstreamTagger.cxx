@@ -215,10 +215,10 @@ void UpstreamTagger::ConstructGeometry()
     ShipGeo::InitMedium("mylar");
     TGeoMedium *mylar             = gGeoManager->GetMedium("mylar");
 
-    ShipGeo::InitMedium("STTmix8020_1bar");
-    TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("STTmix8020_1bar"); //  Should be argon-ethane
-    ShipGeo::InitMedium("tungsten");
-    TGeoMedium *tungsten          = gGeoManager->GetMedium("tungsten");  // Should be tungsten rhenium
+    ShipGeo::InitMedium("UBTMixture");
+    TGeoMedium *sttmix8020_1bar   = gGeoManager->GetMedium("UBTMixture"); 
+    ShipGeo::InitMedium("WReWire");
+    TGeoMedium *WReWire          = gGeoManager->GetMedium("WReWire");  
     ShipGeo::InitMedium(f_frame_material);
 
     TGeoMedium *FrameMatPtr       = gGeoManager->GetMedium(f_frame_material);
@@ -230,7 +230,7 @@ void UpstreamTagger::ConstructGeometry()
 
     Double_t eps = 0.0001; // Epsilon to avoid overlapping volumes
     Double_t straw_length = f_aperture_width;// + 2. * eps; // Straw (half) length
-    Double_t frame_width =  9.; // Width of frame metal
+    Double_t frame_width =  20.; // Width of frame metal
     Double_t floor_offset = 14.; // Offset due to floor space limitation
     Double_t rmin, rmax, T_station_z;
     Double_t max_stereo_growth = TMath::Tan(TMath::Abs(f_view_angle) * TMath::Pi() / 180.0) * straw_length;
@@ -264,7 +264,7 @@ void UpstreamTagger::ConstructGeometry()
 //    AddSensitiveVolume(gas);
     // Volume: wire
     TGeoTube *wire_tube = new TGeoTube("ubt_wire", 0., f_wire_thickness / 2., straw_length - 4. * eps);
-    TGeoVolume *wire = new TGeoVolume("ubt_wire", wire_tube, tungsten);
+    TGeoVolume *wire = new TGeoVolume("ubt_wire", wire_tube, WReWire);
     wire->SetLineColor(6);
 
     // Station box to contain all components
