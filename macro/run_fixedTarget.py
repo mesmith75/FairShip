@@ -505,7 +505,7 @@ fsr = {
     "script": "run_fixedTarget.py",
     "runNumber": args.runnr,
     "seed": seed,
-    "PoT":  args.nev,
+    "PoT": args.nev,
     "boostDiMuon": args.boostDiMuon,
     "boostFactor": args.boostFactor,
 }
