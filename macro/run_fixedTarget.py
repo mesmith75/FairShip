@@ -505,9 +505,9 @@ fsr = {
     "script": "run_fixedTarget.py",
     "runNumber": args.runnr,
     "seed": seed,
-    "PoT":  args.nev
-    "boostDiMuon", args.boostDiMuon,
-    "boostFactor", args.boostFactor,
+    "PoT":  args.nev,
+    "boostDiMuon": args.boostDiMuon,
+    "boostFactor": args.boostFactor,
 }
 
 with uproot.update(outFile) as _of:
