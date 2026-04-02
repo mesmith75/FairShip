@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import json
 import os
 
 import geometry_config
@@ -9,7 +10,6 @@ import ROOT
 import shipRoot_conf
 import shipunit as u
 import uproot
-import json
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
