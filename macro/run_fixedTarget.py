@@ -8,6 +8,7 @@ import geometry_config
 import ROOT
 import shipRoot_conf
 import shipunit as u
+import uproot
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -500,6 +501,18 @@ fout.Close()
 rc1 = os.system("rm  " + outFile)
 rc2 = os.system("mv " + tmpFile + " " + outFile)
 print("removed out file, moved tmpFile to out file", rc1, rc2)
+fsr = {
+    "script": "run_fixedTarget.py",
+    "runNumber": args.runnr,
+    "seed": seed,
+    "PoT":  args.nev
+    "boostDiMuon", args.boostDiMuon,
+    "boostFactor", args.boostFactor,
+}
+
+with uproot.update(outFile) as _of:
+    _of["FileSummary"] = fsr
+
 fin.SetWritable(False)  # bpyass flush error
 
 print(f"Number of events produced with activity after hadron absorber: {nEvents}")
