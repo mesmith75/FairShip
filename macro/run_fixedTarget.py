@@ -9,6 +9,7 @@ import ROOT
 import shipRoot_conf
 import shipunit as u
 import uproot
+import json
 
 mcEngine = "TGeant4"
 simEngine = "Pythia8"
@@ -511,7 +512,7 @@ fsr = {
 }
 
 with uproot.update(outFile) as _of:
-    _of["FileSummary"] = fsr
+    _of["FileSummary"] = json.dumps(fsr)
 
 fin.SetWritable(False)  # bpyass flush error
 
