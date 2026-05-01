@@ -23,6 +23,20 @@ shipRoot_conf.configure()
 decorators.apply_decorators()
 
 
+def _file_accessible(path: str) -> bool:
+    """Check whether a file exists (local or remote via XRootD)."""
+    if path.startswith("root://"):
+        from urllib.parse import urlparse
+
+        from XRootD import client as xrd_client
+
+        parsed = urlparse(path)
+        fs = xrd_client.FileSystem(f"{parsed.scheme}://{parsed.netloc}")
+        status, _ = fs.stat(parsed.path)
+        return status.ok
+    return os.path.exists(path)
+
+
 def evExit() -> None:
     """Prevent double delete due to a FairRoot bug."""
     # Check whether the Eve window was closed/destructed
@@ -34,12 +48,7 @@ def evExit() -> None:
 atexit.register(evExit)
 
 fMan = None
-
-fMan = ROOT.FairEventManager()
 fRun = None
-
-# -----   Reconstruction run   -------------------------------------------
-fRun = ROOT.FairRunAna()
 pdg = ROOT.TDatabasePDG.Instance()
 g = ROOT.gROOT
 gEnv = ROOT.gEnv
@@ -118,7 +127,9 @@ if not options.recoFile:
         options.recoFile = options.InputFile
         options.InputFile = options.InputFile.replace("_rec.root", ".root")
     else:
-        options.recoFile = options.InputFile.replace(".root", "_rec.root")
+        candidate = options.InputFile.replace(".root", "_rec.root")
+        if _file_accessible(candidate):
+            options.recoFile = candidate
 
 
 def printMCTrack(n: int, MCTrack) -> None:
@@ -1148,22 +1159,18 @@ def debugStraw(n) -> None:
 
 
 # ----Load the default libraries------
-# Load basic libraries used with both Geant3 and Geant4
-# For ROOT >= 6.32, TPythia6 is not included in ROOT and must be loaded from EGPythia6
-# For ROOT < 6.32, TPythia6 is built into libEG
-root_version = ROOT.gROOT.GetVersionInt()
-if root_version >= 63200:
-    # Load external EGPythia6 for ROOT >= 6.32
-    ROOT.gSystem.Load("libEGPythia6.so")
+ROOT.gSystem.Load("libEGPythia6.so")
 ROOT.gSystem.Load("libPythia6.so")
 ROOT.gSystem.Load("libpythia8.so")
 
+ROOT.gInterpreter.Declare('#include "VectorMCPointSource.h"')
+
+# -----   Reconstruction run   -------------------------------------------
+fRun = ROOT.FairRunAna()
 if options.geoFile:
     fRun.SetGeomFile(options.geoFile)
 
 inFile = ROOT.FairFileSource(options.InputFile)
-# Add reconstruction file as friend tree
-inFile.AddFriend(options.recoFile)
 fRun.SetSource(inFile)
 if options.OutputFile is None:
     options.OutputFile = ROOT.TMemFile("event_display_output", "recreate")
@@ -1174,6 +1181,8 @@ if options.ParFile:
     parInput1 = ROOT.FairParRootFileIo()
     parInput1.open(options.ParFile)
     rtdb.setFirstInput(parInput1)
+
+fMan = ROOT.FairEventManager()
 fMan.SetMaxEnergy(400.0)  # default is 25 GeV only !
 fMan.SetMinEnergy(0.1)  #  100 MeV
 fMan.SetEvtMaxEnergy(400.0)  # what is the difference between EvtMaxEnergy and MaxEnergy ?
@@ -1199,14 +1208,14 @@ _candidates = {
     "VetoPoints": ("vetoPoint", ROOT.kBlue, ROOT.kFullDiamond),
     "TimeDetPoints": ("TimeDetPoint", ROOT.kBlue, ROOT.kFullDiamond),
     "StrawPoints": ("strawtubesPoint", ROOT.kGreen, ROOT.kFullCircle),
-    "RpcPoints": ("ShipRpcPoint", ROOT.kOrange, ROOT.kFullSquare),
     "TargetPoints": ("TargetPoint", ROOT.kRed, ROOT.kFullSquare),
     "MTCDetPoint": ("MTCDetPoint", ROOT.kGreen, ROOT.kFullSquare),
     "SiliconTargetPoint": ("SiliconTargetPoint", ROOT.kCyan, ROOT.kFullSquare),
 }
 for key, (branch, colour, marker) in _candidates.items():
     if _tmpTree and _tmpTree.GetBranch(branch):
-        mcHits[key] = ROOT.FairMCPointDraw(branch, colour, marker)
+        source = ROOT.VectorMCPointSource[branch](branch)
+        mcHits[key] = ROOT.FairMCPointDraw(branch, source, colour, marker)
 
 if _tmpFile:
     _tmpFile.Close()
@@ -1223,6 +1232,8 @@ fMan.Init(1, 4, 10)  # default Init(visopt=1, vislvl=3, maxvisnds=10000), ecal d
 #
 fRman = ROOT.FairRootManager.Instance()
 sTree = fRman.GetInChain()
+if options.recoFile and _file_accessible(options.recoFile):
+    sTree.AddFriend("ship_reco_sim", options.recoFile)
 lsOfGlobals = ROOT.gROOT.GetListOfGlobals()
 lsOfGlobals.Add(sTree)
 sGeo = ROOT.gGeoManager

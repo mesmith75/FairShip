@@ -58,7 +58,7 @@ class UpstreamTaggerHit : public SHiP::DetectorHit {
   Double_t fTime;   ///< Smeared time (ns)
   Int_t fSubDetID;  ///< Which layer of the UBT is this
 
-  ClassDef(UpstreamTaggerHit, 2);
+  ClassDefOverride(UpstreamTaggerHit, 2);
 };
 
 #endif  // UPSTREAMTAGGER_UPSTREAMTAGGERHIT_H_
