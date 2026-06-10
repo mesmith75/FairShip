@@ -156,9 +156,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d010c61a8f2ade28562b7d1aad7dec2" id="r_a8d010c61a8f2ade28562b7d1aad7dec2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldMaker.html#a8d010c61a8f2ade28562b7d1aad7dec2">~ShipFieldMaker</a> () override</td></tr>
 <tr class="memdesc:a8d010c61a8f2ade28562b7d1aad7dec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <br /></td></tr>
 <tr class="separator:a8d010c61a8f2ade28562b7d1aad7dec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf937564fc0ec2b7acc56f01d0865b59" id="r_abf937564fc0ec2b7acc56f01d0865b59"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldMaker.html#abf937564fc0ec2b7acc56f01d0865b59">Construct</a> ()</td></tr>
-<tr class="memdesc:abf937564fc0ec2b7acc56f01d0865b59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set-up all local and regional fields and assign them to volumes.  <br /></td></tr>
-<tr class="separator:abf937564fc0ec2b7acc56f01d0865b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31fbffd21f890385616f60939ba812b8" id="r_a31fbffd21f890385616f60939ba812b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldMaker.html#a31fbffd21f890385616f60939ba812b8">Construct</a> () override</td></tr>
+<tr class="memdesc:a31fbffd21f890385616f60939ba812b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set-up all local and regional fields and assign them to volumes.  <br /></td></tr>
+<tr class="separator:a31fbffd21f890385616f60939ba812b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a701024f675b38d7077540377f371d631" id="r_a701024f675b38d7077540377f371d631"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classShipFieldMaker.html#a701024f675b38d7077540377f371d631">readInputFile</a> (const std::string &amp;inputFile)</td></tr>
 <tr class="memdesc:a701024f675b38d7077540377f371d631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read an input file to define fields and associated volumes.  <br /></td></tr>
 <tr class="separator:a701024f675b38d7077540377f371d631"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,7 +303,7 @@ Private Attributes</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+'arw'+'ic'+'k.a'+'c.'+'uk'; return false;">J.J.B<span class="obfuscator">.nosp@m.</span>ack@<span class="obfuscator">.nosp@m.</span>warwi<span class="obfuscator">.nosp@m.</span>ck.a<span class="obfuscator">.nosp@m.</span>c.uk</a></dd>
 <dd>
 John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+'arw'+'ic'+'k.a'+'c.'+'uk'; return false;">J.J.B<span class="obfuscator">.nosp@m.</span>ack@<span class="obfuscator">.nosp@m.</span>warwi<span class="obfuscator">.nosp@m.</span>ck.a<span class="obfuscator">.nosp@m.</span>c.uk</a></dd></dl>
-<p>This inherits from TG4VUserPostDetConstruction and overloads the <a class="el" href="classShipFieldMaker.html#abf937564fc0ec2b7acc56f01d0865b59" title="Set-up all local and regional fields and assign them to volumes.">Construct()</a> function so that the VMC (re)assigns the G4 magnetic fields to volumes using the input configuration file defined in this class constructor, together with the code below used in the addVMCFields function in <a class="el" href="geomGeant4_8py.html">python/geomGeant4.py</a>:</p>
+<p>This inherits from TG4VUserPostDetConstruction and overloads the <a class="el" href="classShipFieldMaker.html#a31fbffd21f890385616f60939ba812b8" title="Set-up all local and regional fields and assign them to volumes.">Construct()</a> function so that the VMC (re)assigns the G4 magnetic fields to volumes using the input configuration file defined in this class constructor, together with the code below used in the addVMCFields function in <a class="el" href="geomGeant4_8py.html">python/geomGeant4.py</a>:</p>
 <p>geom = ROOT.TG4GeometryManager.Instance() geom.SetUserPostDetConstruction(fieldMaker) geom.ConstructSDandField() </p>
 
 <p class="definition">Definition at line <a class="el" href="ShipFieldMaker_8h_source.html#l00038">38</a> of file <a class="el" href="ShipFieldMaker_8h_source.html">ShipFieldMaker.h</a>.</p>
@@ -630,8 +630,8 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 
 </div>
 </div>
-<a id="abf937564fc0ec2b7acc56f01d0865b59" name="abf937564fc0ec2b7acc56f01d0865b59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf937564fc0ec2b7acc56f01d0865b59">&#9670;&#160;</a></span>Construct()</h2>
+<a id="a31fbffd21f890385616f60939ba812b8" name="a31fbffd21f890385616f60939ba812b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31fbffd21f890385616f60939ba812b8">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -648,7 +648,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -735,7 +735,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aclassShipFieldMaker_html_ad4378f3a215dff42795254e8ae6a5c8e"><div class="ttname"><a href="classShipFieldMaker.html#ad4378f3a215dff42795254e8ae6a5c8e">ShipFieldMaker::defineBell</a></div><div class="ttdeci">void defineBell(const TString &amp;name, Double_t BPeak, Double_t zMiddle, Int_t orient=1, Double_t tubeR=500.0, Double_t xy=0.0, Double_t z=0.0, Double_t L=0.0)</div><div class="ttdoc">Define a Bell field.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l00327">ShipFieldMaker.cxx:327</a></div></div>
 <div class="ttc" id="anamespacemakeCascade_html_add259298592a80ac35262a17847aee2d"><div class="ttname"><a href="namespacemakeCascade.html#add259298592a80ac35262a17847aee2d">makeCascade.name</a></div><div class="ttdeci">name</div><div class="ttdef"><b>Definition</b> <a href="makeCascade_8py_source.html#l00245">makeCascade.py:245</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_ad598793694cecf28b7d4f3bdb1fb94df"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad598793694cecf28b7d4f3bdb1fb94df">run_fixedTarget.L</a></div><div class="ttdeci">L</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00287">run_fixedTarget.py:287</a></div></div>
-<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00617">run_simScript.py:617</a></div></div>
+<div class="ttc" id="anamespacerun__simScript_html_a90c25390918b8dd5a6f17d8efa00c9ed"><div class="ttname"><a href="namespacerun__simScript.html#a90c25390918b8dd5a6f17d8efa00c9ed">run_simScript.z</a></div><div class="ttdeci">z</div><div class="ttdef"><b>Definition</b> <a href="run__simScript_8py_source.html#l00629">run_simScript.py:629</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -2284,7 +2284,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="ttc" id="aShipBellField_8cxx_html_a42d42dd2c682d42f11de58e34c89f895"><div class="ttname"><a href="ShipBellField_8cxx.html#a42d42dd2c682d42f11de58e34c89f895">m</a></div><div class="ttdeci">Double_t m</div><div class="ttdef"><b>Definition</b> <a href="ShipBellField_8cxx_source.html#l00025">ShipBellField.cxx:25</a></div></div>
 <div class="ttc" id="aclassShipCompField_html_aeba8bafd6d805b8666cb072c463fba6b"><div class="ttname"><a href="classShipCompField.html#aeba8bafd6d805b8666cb072c463fba6b">ShipCompField::Field</a></div><div class="ttdeci">void Field(const Double_t *position, Double_t *B) override</div><div class="ttdef"><b>Definition</b> <a href="ShipCompField_8cxx_source.html#l00037">ShipCompField.cxx:37</a></div></div>
 <div class="ttc" id="anamespaceadd__noise__to__field_html_a96cf5cc2cc008d7422009cb2ad93cb51"><div class="ttname"><a href="namespaceadd__noise__to__field.html#a96cf5cc2cc008d7422009cb2ad93cb51">add_noise_to_field.step</a></div><div class="ttdeci">step</div><div class="ttdef"><b>Definition</b> <a href="add__noise__to__field_8py_source.html#l00079">add_noise_to_field.py:79</a></div></div>
-<div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00395">make_nTuple_SBT.py:395</a></div></div>
+<div class="ttc" id="anamespacemake__nTuple__SBT_html_ab46e9a5e01d6b550aa7a5315ba9d81cf"><div class="ttname"><a href="namespacemake__nTuple__SBT.html#ab46e9a5e01d6b550aa7a5315ba9d81cf">make_nTuple_SBT.y</a></div><div class="ttdeci">y</div><div class="ttdef"><b>Definition</b> <a href="make__nTuple__SBT_8py_source.html#l00399">make_nTuple_SBT.py:399</a></div></div>
 <div class="ttc" id="anamespacerunPythia8_html_a4cd74a33c53eaeef70fcb6b448b9b285"><div class="ttname"><a href="namespacerunPythia8.html#a4cd74a33c53eaeef70fcb6b448b9b285">runPythia8.k</a></div><div class="ttdeci">int k</div><div class="ttdef"><b>Definition</b> <a href="runPythia8_8py_source.html#l00168">runPythia8.py:168</a></div></div>
 <div class="ttc" id="anamespacerun__fixedTarget_html_a68f8e54ebe34ed88a1aff4505c32be7c"><div class="ttname"><a href="namespacerun__fixedTarget.html#a68f8e54ebe34ed88a1aff4505c32be7c">run_fixedTarget.x</a></div><div class="ttdeci">x</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00499">run_fixedTarget.py:499</a></div></div>
 </div><!-- fragment -->
@@ -2364,7 +2364,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno"> 1131</span> </div>
 <div class="line"><span class="lineno"> 1132</span>  <span class="keywordflow">return</span> theField;</div>
 <div class="line"><span class="lineno"> 1133</span>}</div>
-<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00044">extractNeutrinosAndUpdateWeight.py:44</a></div></div>
+<div class="ttc" id="anamespaceextractNeutrinosAndUpdateWeight_html_a47804d77c17d9de386802c99c350d7a8"><div class="ttname"><a href="namespaceextractNeutrinosAndUpdateWeight.html#a47804d77c17d9de386802c99c350d7a8">extractNeutrinosAndUpdateWeight.key</a></div><div class="ttdeci">int key</div><div class="ttdef"><b>Definition</b> <a href="extractNeutrinosAndUpdateWeight_8py_source.html#l00050">extractNeutrinosAndUpdateWeight.py:50</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -3075,7 +3075,7 @@ John Back <a href="#" onclick="location.href='mai'+'lto:'+'J.J'+'.B'+'ack'+'@w'+
 <div class="line"><span class="lineno">  179</span>  getData.close();</div>
 <div class="line"><span class="lineno">  180</span>}</div>
 <div class="ttc" id="aclassShipFieldMaker_html_ae27cc8750c597b88d37e30278179c353"><div class="ttname"><a href="classShipFieldMaker.html#ae27cc8750c597b88d37e30278179c353">ShipFieldMaker::splitString</a></div><div class="ttdeci">stringVect splitString(std::string &amp;theString, std::string &amp;splitter) const</div><div class="ttdoc">Split a string.</div><div class="ttdef"><b>Definition</b> <a href="ShipFieldMaker_8cxx_source.html#l01338">ShipFieldMaker.cxx:1338</a></div></div>
-<div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00115">hnl.py:115</a></div></div>
+<div class="ttc" id="anamespacehnl_html_adb7ba50b8941bf3badea16f97cb665d5"><div class="ttname"><a href="namespacehnl.html#adb7ba50b8941bf3badea16f97cb665d5">hnl.c</a></div><div class="ttdeci">c</div><div class="ttdef"><b>Definition</b> <a href="hnl_8py_source.html#l00117">hnl.py:117</a></div></div>
 <div class="ttc" id="anamespacerun__ACTSTracking_html_a644639bb4a0262c985c8ad859245e831"><div class="ttname"><a href="namespacerun__ACTSTracking.html#a644639bb4a0262c985c8ad859245e831">run_ACTSTracking.inputFile</a></div><div class="ttdeci">inputFile</div><div class="ttdef"><b>Definition</b> <a href="run__ACTSTracking_8py_source.html#l00048">run_ACTSTracking.py:48</a></div></div>
 </div><!-- fragment -->
 </div>
