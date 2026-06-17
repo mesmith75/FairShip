@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['g_0',['g',['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g'],['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g'],['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G']]],
+  ['g_0',['g',['../namespacerunPythia8.html#ae4f2d48afcb43c984c0c0689436bac6a',1,'runPythia8.G'],['../namespacerun__fixedTarget.html#a049620ba28aeb292c74bb28518aa6c2f',1,'run_fixedTarget.G'],['../namespaceshipunit.html#ab825ca3f0f33266692d396c00ba0cfaa',1,'shipunit.g'],['../namespacehepunit.html#a2fce90db6b981f1b770129bf9329d86e',1,'hepunit.g'],['../namespaceeventDisplay.html#a37c858074cda5ceaa4e360389e712bc2',1,'eventDisplay.g']]],
   ['g4only_1',['G4only',['../classFixedTargetGenerator.html#a577dfcc36a4f54e69ebec43be167359b',1,'FixedTargetGenerator']]],
   ['gamma_2',['gamma',['../namespacemakeCascade.html#a1954f4a40c77a4917a15955372b85700',1,'makeCascade']]],
   ['gapfromvacuum_3',['GapFromVacuum',['../classShipTAUMagneticSpectrometer.html#a8830b299f287f54198ff559416c58cae',1,'ShipTAUMagneticSpectrometer']]],
@@ -13,12 +13,12 @@ var searchData=
   ['geniegen_10',['Geniegen',['../namespacerun__simScript.html#a398412a7d37ba1709a08e7da785209eb',1,'run_simScript']]],
   ['genv_11',['gEnv',['../namespaceeventDisplay.html#acba1ca1a2b2e39597d0b99010efb9509',1,'eventDisplay']]],
   ['geo_5ffile_12',['geo_file',['../namespacerun__tracking__benchmark.html#a32eee4f2ac5f41021014c178917513ed',1,'run_tracking_benchmark']]],
-  ['geofile_13',['geofile',['../namespacerun__ACTSTracking.html#a4528b9c9df0a87dbad855fe6cdd82d92',1,'run_ACTSTracking.geoFile'],['../namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798',1,'ShipReco.geoFile'],['../namespaceSciFiMapping.html#a3963f93fd1393158dd0ecb6e55478e2f',1,'SciFiMapping.geoFile'],['../namespaceShipAna.html#a2c3960bd8b86c626939fc5ade63ff3a7',1,'ShipAna.geoFile']]],
+  ['geofile_13',['geofile',['../namespacerun__ACTSTracking.html#a4528b9c9df0a87dbad855fe6cdd82d92',1,'run_ACTSTracking.geoFile'],['../namespaceShipAna.html#a2c3960bd8b86c626939fc5ade63ff3a7',1,'ShipAna.geoFile'],['../namespaceSciFiMapping.html#a3963f93fd1393158dd0ecb6e55478e2f',1,'SciFiMapping.geoFile'],['../namespaceShipReco.html#a160a2a6f5f2f9e8b2f2569937f1df798',1,'ShipReco.geoFile']]],
   ['geofile_5fname_14',['geofile_name',['../namespacerun__simScript.html#a71febbcacc1bfb3c737de2f3599e1817',1,'run_simScript']]],
   ['geomat_15',['geomat',['../namespaceShipReco.html#a646b2a8b1509b520851460b3d587bedd',1,'ShipReco.geoMat'],['../namespaceShipAna.html#a5292f193841fd0be9f2450a1eb78d2b0',1,'ShipAna.geoMat'],['../namespaceeventDisplay.html#a2069af6c854bff3d01b689ca66f2a07b',1,'eventDisplay.geoMat'],['../classshipDigiReco_1_1ShipDigiReco.html#afd9920fe2cb6185d27c48b231f96a6e4',1,'shipDigiReco.ShipDigiReco.geoMat']]],
   ['geometry_5fmanager_16',['geometry_manager',['../classexperimental_1_1analysis__toolkit_1_1selection__check.html#a19fbb7aa2b7a1698c34572a5093131cd',1,'experimental::analysis_toolkit::selection_check']]],
   ['geoscene_17',['geoscene',['../classeventDisplay_1_1IO.html#a57cd8f57be7556a9428cd1367808b9d9',1,'eventDisplay::IO']]],
-  ['gerrorignorelevel_18',['gErrorIgnoreLevel',['../namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772',1,'convertToACTS']]],
+  ['gerrorignorelevel_18',['gerrorignorelevel',['../namespaceconvertToACTS.html#a33553589a15038ae28605f544a475772',1,'convertToACTS.gErrorIgnoreLevel'],['../namespacerun__simScript.html#a4a2c7d62cdeabab2c2a9e10cc0301312',1,'run_simScript.gErrorIgnoreLevel'],['../namespacerun__fixedTarget.html#a11b5b46e5234c652e24de4ee32caa056',1,'run_fixedTarget.gErrorIgnoreLevel']]],
   ['gev_19',['gev',['../namespaceshipunit.html#a67149621e9d50a72cbd03ed6d5c5f4bf',1,'shipunit.GeV'],['../namespacehepunit.html#ac9a9e477006f2a9172295c8b234b6b57',1,'hepunit.GeV']]],
   ['geve_20',['geve',['../namespaceevd__addParticleFollower.html#a1412b4683b4c39c3c1e5cd0123faa1d3',1,'evd_addParticleFollower.gEve'],['../namespaceeventDisplay.html#ae1f86819fc86d530c056ed77c60b5a38',1,'eventDisplay.gEve']]],
   ['gf_21',['gf',['../classhnl_1_1constants.html#a0474ba9c9b5126f414d0311ed0b37dea',1,'hnl.constants.GF'],['../classrpvsusy_1_1constants.html#acd18aad11e00b6fd0391a5ec277307a5',1,'rpvsusy.constants.GF']]],
