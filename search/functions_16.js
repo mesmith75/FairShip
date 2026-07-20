@@ -14,7 +14,7 @@ var searchData=
   ['width_5fnu_5ff_5ffbar_11',['Width_nu_f_fbar',['../classhnl_1_1HNLbranchings.html#a9dcc74b231abfd622f6a56afc2c260b7',1,'hnl::HNLbranchings']]],
   ['width_5fquarks_5flepton_12',['Width_quarks_lepton',['../classhnl_1_1HNLbranchings.html#afc3da0c7a4a43f46c442861556424f7f',1,'hnl::HNLbranchings']]],
   ['width_5fquarks_5fneutrino_13',['Width_quarks_neutrino',['../classhnl_1_1HNLbranchings.html#a0dd1a2b4398c558e8567107c6e3fcb33',1,'hnl::HNLbranchings']]],
-  ['wilson_5finterval_14',['wilson_interval',['../namespacetracking__benchmark.html#a43d849a9d7aa8a659be88622a393b1f2',1,'tracking_benchmark']]],
+  ['wilson_5finterval_14',['wilson_interval',['../namespacetracking__benchmark.html#a13e5805f3b5b1b02502a4509caa350b1',1,'tracking_benchmark']]],
   ['withevtgen_15',['WithEvtGen',['../classFixedTargetGenerator.html#a5ac1d30be0d2c97f573ba4bba3d3a919',1,'FixedTargetGenerator']]],
   ['witht0estimate_16',['withT0Estimate',['../classstrawtubesDetector_1_1strawtubesDetector.html#af526a9662b90f007e826bbe03be143cb',1,'strawtubesDetector::strawtubesDetector']]],
   ['wl_17',['wL',['../classTrackInfo.html#ad12e8894f804966d79ef97df812f35a8',1,'TrackInfo']]],

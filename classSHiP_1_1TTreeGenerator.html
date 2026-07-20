@@ -540,7 +540,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">   49</span>  <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a2f464cc0291f74aee321505513e854c7">fCurrentEvent</a> = 0;</div>
 <div class="line"><span class="lineno">   50</span> </div>
 <div class="line"><span class="lineno">   51</span>  <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> = TFile::Open(fileName, <span class="stringliteral">&quot;READ&quot;</span>);</div>
-<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> || <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>-&gt;IsZombie()) {</div>
+<div class="line"><span class="lineno">   52</span>  <span class="keywordflow">if</span> (!<a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>) {</div>
 <div class="line"><span class="lineno">   53</span>    LOG(error) &lt;&lt; <span class="stringliteral">&quot;TTreeGenerator: Cannot open file &quot;</span> &lt;&lt; fileName;</div>
 <div class="line"><span class="lineno">   54</span>    <span class="keyword">delete</span> <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a>;</div>
 <div class="line"><span class="lineno">   55</span>    <a class="code hl_variable" href="classSHiP_1_1TTreeGenerator.html#a0b3511138e99c292893120966e8ce0c5">fInputFile</a> = <span class="keyword">nullptr</span>;</div>
@@ -615,12 +615,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classSHiP_1_1Generator.html#a3f5d68b0b79dddffd25498e83c4e0542">SHiP::Generator</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00032">32</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   32</span>                                                           {</div>
-<div class="line"><span class="lineno">   33</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Multiple input files not implemented for this generator &quot;</span></div>
-<div class="line"><span class="lineno">   34</span>                    <span class="stringliteral">&quot;- only taking the first!&quot;</span>;</div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1TTreeGenerator.html#a8aedd9ac7b79ab2a8977b8e5a4e011f9">Init</a>(inFiles.at(0).c_str(), 0);</div>
-<div class="line"><span class="lineno">   36</span>  };</div>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00033">33</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   33</span>                                                           {</div>
+<div class="line"><span class="lineno">   34</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Multiple input files not implemented for this generator &quot;</span></div>
+<div class="line"><span class="lineno">   35</span>                    <span class="stringliteral">&quot;- only taking the first!&quot;</span>;</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1TTreeGenerator.html#a8aedd9ac7b79ab2a8977b8e5a4e011f9">Init</a>(inFiles.at(0).c_str(), 0);</div>
+<div class="line"><span class="lineno">   37</span>  };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -660,12 +660,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classSHiP_1_1Generator.html#a49e997f800bbb2c766ab9f93059a2c26">SHiP::Generator</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00026">26</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   27</span>                                       {</div>
-<div class="line"><span class="lineno">   28</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Multiple input files not implemented for this generator &quot;</span></div>
-<div class="line"><span class="lineno">   29</span>                    <span class="stringliteral">&quot;- only taking the first!&quot;</span>;</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1TTreeGenerator.html#a8aedd9ac7b79ab2a8977b8e5a4e011f9">Init</a>(inFiles.at(0).c_str(), startNumber);</div>
-<div class="line"><span class="lineno">   31</span>  };</div>
+<p class="definition">Definition at line <a class="el" href="Generator_8h_source.html#l00027">27</a> of file <a class="el" href="Generator_8h_source.html">Generator.h</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   28</span>                                       {</div>
+<div class="line"><span class="lineno">   29</span>    LOG(warning) &lt;&lt; <span class="stringliteral">&quot;Multiple input files not implemented for this generator &quot;</span></div>
+<div class="line"><span class="lineno">   30</span>                    <span class="stringliteral">&quot;- only taking the first!&quot;</span>;</div>
+<div class="line"><span class="lineno">   31</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classSHiP_1_1TTreeGenerator.html#a8aedd9ac7b79ab2a8977b8e5a4e011f9">Init</a>(inFiles.at(0).c_str(), startNumber);</div>
+<div class="line"><span class="lineno">   32</span>  };</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -760,7 +760,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="lineno">  112</span> </div>
 <div class="line"><span class="lineno">  113</span>  <span class="keywordflow">return</span> kTRUE;</div>
 <div class="line"><span class="lineno">  114</span>}</div>
-<div class="ttc" id="anamespacerun__fixedTarget_html_ad5019a2bfcd85504e1ed4b193811c920"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad5019a2bfcd85504e1ed4b193811c920">run_fixedTarget.primGen</a></div><div class="ttdeci">primGen</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00379">run_fixedTarget.py:379</a></div></div>
+<div class="ttc" id="anamespacerun__fixedTarget_html_ad5019a2bfcd85504e1ed4b193811c920"><div class="ttname"><a href="namespacerun__fixedTarget.html#ad5019a2bfcd85504e1ed4b193811c920">run_fixedTarget.primGen</a></div><div class="ttdeci">primGen</div><div class="ttdef"><b>Definition</b> <a href="run__fixedTarget_8py_source.html#l00399">run_fixedTarget.py:399</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
