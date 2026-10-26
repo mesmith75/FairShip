@@ -91,5 +91,5 @@ var searchData=
   ['pythiatimetos_88',['PythiaTimeToS',['../namespaceshipgen.html#a1712d3106f13d600a33e5016f447f592',1,'shipgen']]],
   ['pytr1rng_89',['PyTr1Rng',['../classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011',1,'PyTr1Rng']]],
   ['pytr3rng_90',['PyTr3Rng',['../classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349',1,'PyTr3Rng']]],
-  ['pz_91',['pz',['../classSHiP_1_1RecoTrack.html#ac9d0fe60559eb924b504093c87210e10',1,'SHiP::RecoTrack::pz()'],['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle::Pz()']]]
+  ['pz_91',['pz',['../classShipParticle.html#ac1740dece1991fe5b9f23b1369ef2338',1,'ShipParticle::Pz()'],['../classSHiP_1_1RecoTrack.html#ac9d0fe60559eb924b504093c87210e10',1,'SHiP::RecoTrack::pz()']]]
 ];
