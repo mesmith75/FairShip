@@ -1,9 +1,5 @@
 var NAVTREEINDEX40 =
 {
-"test__straw__reco_8py.html#ae9a96013c6a378eb0a33526fbb3aea21":[11,0,18,18,5],
-"test__straw__reco_8py_source.html":[11,0,18,18],
-"test__timedet__geometry_8cxx.html":[11,0,18,19],
-"test__timedet__geometry_8cxx.html#ae66f6b31b5ad750f1fe042a706a4e3d4":[11,0,18,19,0],
 "test__timedet__geometry_8cxx_source.html":[11,0,18,19],
 "timeDetector_8py.html":[11,0,13,0,5],
 "timeDetector_8py_source.html":[11,0,13,0,5],

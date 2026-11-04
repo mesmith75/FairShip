@@ -1,8 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"ShipUnit_8h.html#ac17805e2154634b45e0493e800208b29":[11,0,14,17,10],
-"ShipUnit_8h.html#ad57422e4724115feacf1cabfb637e3a5":[11,0,14,17,4],
-"ShipUnit_8h.html#adae44b3580098be2b6f2c6d514dc72dd":[11,0,14,17,12],
 "ShipUnit_8h.html#aeb2434130d4f4fe7921aa564c2965294":[11,0,14,17,5],
 "ShipUnit_8h.html#aed43d63d5e6d980f22bc345f7a562011":[11,0,14,17,3],
 "ShipUnit_8h.html#af5da50ee86db44fd81351c6c3a3dcf06":[11,0,14,17,11],
@@ -249,5 +246,8 @@ var NAVTREEINDEX2 =
 "canonicaliseFieldMap_8py.html#a66fbe4aa79e85762d10a11abcc0a2c7e":[11,0,5,1,5],
 "canonicaliseFieldMap_8py.html#a9bc5008d10df5cb547815292de620073":[11,0,5,1,1],
 "canonicaliseFieldMap_8py.html#a9d9f2eeb3d9dde2f6351198f2d830a32":[11,0,5,1,3],
-"canonicaliseFieldMap_8py.html#aee39c64be201696ec81ad442db44ea4d":[11,0,5,1,4]
+"canonicaliseFieldMap_8py.html#aee39c64be201696ec81ad442db44ea4d":[11,0,5,1,4],
+"canonicaliseFieldMap_8py.html#af0e2677b8c4e0ac366726b6d940dd0d6":[11,0,5,1,0],
+"canonicaliseFieldMap_8py_source.html":[11,0,5,1],
+"checkMagFields_8py.html":[11,0,13,5]
 };

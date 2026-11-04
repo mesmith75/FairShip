@@ -1,8 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"canonicaliseFieldMap_8py.html#af0e2677b8c4e0ac366726b6d940dd0d6":[11,0,5,1,0],
-"canonicaliseFieldMap_8py_source.html":[11,0,5,1],
-"checkMagFields_8py.html":[11,0,13,5],
 "checkMagFields_8py.html#a65e69e17f1b05eb283a8bb6d5d695249":[11,0,13,5,0],
 "checkMagFields_8py_source.html":[11,0,13,5],
 "checkZpositions_8py.html":[11,0,8,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX3 =
 "classEventHistogram.html#a09c26c5e8872a62e666d54d299828f1f":[10,0,43,25],
 "classEventHistogram.html#a1ebae41bf44d493af6d631ad587f64b1":[10,0,43,17],
 "classEventHistogram.html#a2d4da9c7fef646fe5848ef9af1abbcdd":[10,0,43,4],
-"classEventHistogram.html#a300d33110c4e8b6213d08cc577a35373":[10,0,43,2]
+"classEventHistogram.html#a300d33110c4e8b6213d08cc577a35373":[10,0,43,2],
+"classEventHistogram.html#a32d6420371c3d6e31cbc7b90700686ab":[10,0,43,9],
+"classEventHistogram.html#a333161e4eda9c98cce7cdb9387cb1fe5":[10,0,43,23],
+"classEventHistogram.html#a34a9ec95511ed91a9aab8a5c822788a6":[10,0,43,12]
 };
