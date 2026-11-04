@@ -17,6 +17,8 @@
 #pragma link C++ class std::vector<UpstreamTaggerHit>+;
 #pragma link C++ class SHiP::Detector<UpstreamTaggerScoringPoint>-;
 #pragma link C++ class SHiP::ScoringPlane<UpstreamTaggerScoringPoint>-;
+#pragma link C++ class UpstreamTaggerScoringPlaneHit+;
+#pragma link C++ class std::vector<UpstreamTaggerScoringPlaneHit>+;
 #pragma link C++ class UpstreamTaggerScoringPlane-;
 #pragma link C++ class UpstreamTaggerScoringPoint+;
 #pragma link C++ class std::vector<UpstreamTaggerScoringPoint>+;
