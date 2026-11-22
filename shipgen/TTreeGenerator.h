@@ -47,14 +47,14 @@ class TTreeGenerator : public Generator {
   Long64_t fNEvents;       //!< Total number of events in the tree
   Long64_t fCurrentEvent;  //!< Current event index (0-based)
 
-  Double_t fPx;      //!< Particle momentum x-component (GeV/c)
-  Double_t fPy;      //!< Particle momentum y-component (GeV/c)
-  Double_t fPz;      //!< Particle momentum z-component (GeV/c)
-  Double_t fX;       //!< Particle position x-coordinate (cm)
-  Double_t fY;       //!< Particle position y-coordinate (cm)
-  Double_t fZ;       //!< Particle position z-coordinate (cm)
+  Float_t fPx;      //!< Particle momentum x-component (GeV/c)
+  Float_t fPy;      //!< Particle momentum y-component (GeV/c)
+  Float_t fPz;      //!< Particle momentum z-component (GeV/c)
+  Float_t fX;       //!< Particle position x-coordinate (cm)
+  Float_t fY;       //!< Particle position y-coordinate (cm)
+  Float_t fZ;       //!< Particle position z-coordinate (cm)
   Int_t fPdgId;      //!< PDG particle identification code
-  Double_t fWeight;  //!< Event weight factor
+  Float_t fWeight;  //!< Event weight factor
 
   Bool_t InitBranches();
 };

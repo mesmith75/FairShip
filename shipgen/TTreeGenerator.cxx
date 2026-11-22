@@ -103,6 +103,7 @@ Bool_t TTreeGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     LOG(error) << "TTreeGenerator: Failed to read entry " << fCurrentEvent;
     return kFALSE;
   }
+  fPdgId *= 13;
 
   // Position in cm, momentum in GeV/c. e < 0 makes FairPrimaryGenerator
   // compute the energy from the momentum and PDG mass.

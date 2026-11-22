@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 # SPDX-FileCopyrightText: Copyright CERN for the benefit of the SHiP Collaboration
 
+import ctypes
 import logging
 import math
 from array import array
@@ -14,6 +15,7 @@ import shipPatRec
 import shipunit as u
 import shipVertex
 import validationTools as validation_tools
+from detectors.UpstreamTaggerScoringPlaneDetector import UpstreamTaggerScoringPlaneDetector
 from detectors.CaloScoringPlaneDetector import CaloScoringPlaneDetector
 from detectors.MTCDetector import MTCDetector
 from detectors.SBTDetector import SBTDetector
@@ -32,6 +34,14 @@ MIN_STATIONS_CROSSED = 3
 
 # Mass assumed for the daughters of ACTS vertex candidates (GeV)
 MUON_MASS = 0.1056583755
+
+
+def _plane_z(ship_geo, detector: str) -> float | None:
+    """z (cm) of a detector in the geometry config, or None if it has none."""
+    try:
+        return float(getattr(ship_geo, detector).z)
+    except (AttributeError, KeyError, TypeError):
+        return None
 
 
 class ShipDigiReco:
@@ -110,6 +120,10 @@ class ShipDigiReco:
                 )
             except UBTGeometryMismatch as error:
                 logger.warning("%s: %s; the UBT is not digitized.", fgeo.GetName(), error)
+        if self.sTree.GetBranch("UpstreamTaggerScoringPoint"):
+            self.upstreamTaggerScoringPlaneDetector = UpstreamTaggerScoringPlaneDetector(
+                "UpstreamTaggerScoringPlane", self.sTree, outtree=self.recoTree
+            )
         if self.sTree.GetBranch("CaloScoringPlanePoint"):
             self.caloScoringPlaneDetector = CaloScoringPlaneDetector(
                 "CaloScoringPlane", self.sTree, outtree=self.recoTree
@@ -138,6 +152,12 @@ class ShipDigiReco:
         if self.trackFitter == "acts":
             # straw surfaces from the loaded geometry, and the simulation field
             self.actsTracker = make_tracker(ROOT.gGeoManager, global_variables.fieldMaker.getGlobalField())
+            # z (cm) of the UBT and the timing detector, which every fitted
+            # track is propagated to through the field (None: not stored)
+            self.actsUBTZ = _plane_z(global_variables.ShipGeo, "UpstreamTagger")
+            self.actsTDZ = _plane_z(global_variables.ShipGeo, "TimeDet")
+            logger.info("ACTS tracks are extrapolated to the UBT at z = %s cm and the TD at z = %s cm",
+                        self.actsUBTZ, self.actsTDZ)
         else:
             # init geometry and mag. field
             self.geoMat = ROOT.genfit.TGeoMaterialInterface()
@@ -208,7 +228,9 @@ class ShipDigiReco:
 
         tracks, vertices, track_hit_indices = self.actsTracks()
 
-        for track, hit_indices in zip(tracks, track_hit_indices, strict=True):
+        for itrk, (track, hit_indices) in enumerate(zip(tracks, track_hit_indices, strict=True)):
+            # before push_back, which stores a copy
+            self.addActsExtrapolations(itrk, track)
             self.fACTSArray.push_back(track)
 
             nmeas = track.nDoF()
@@ -288,6 +310,29 @@ class ShipDigiReco:
                 validation_tools.record_event_stat(
                     self.validation_stats, "event_veto_links", len(self.vetoHitOnTrackArray)
                 )
+
+    def addActsExtrapolations(self, itrk: int, track) -> None:
+        """Store on ``track`` the propagation of tracker track ``itrk`` through the field.
+
+        UBT from the first fitted hit, timing detector from the last one, and
+        the path length from the first to the last hit.
+        """
+        position, momentum = ROOT.TVector3(), ROOT.TVector3()
+        covariance = ROOT.std.vector("double")()
+        path_length = ctypes.c_double()
+        for z, from_last_hit, store in (
+            (self.actsUBTZ, False, track.SetUBTExtrapolation),
+            (self.actsTDZ, True, track.SetTDExtrapolation),
+        ):
+            if z is None:
+                continue
+            if self.actsTracker.ExtrapolateToZ(itrk, z, from_last_hit, position, momentum, covariance, path_length):
+                store(position, momentum, covariance, path_length.value)
+            else:
+                logger.debug("Track %d could not be extrapolated to z = %.1f cm", itrk, z)
+        length = self.actsTracker.TrackLength(itrk)
+        if length >= 0:
+            track.SetTrackLength(length)
 
     def actsTracks(self) -> tuple:
         """Collect this event's straw hits and fit track candidates with ACTS.
@@ -376,6 +421,8 @@ class ShipDigiReco:
             self.timeDetector.process()
         if hasattr(self, "upstreamTaggerDetector"):
             self.upstreamTaggerDetector.process()
+        if hasattr(self, "upstreamTaggerScoringPlaneDetector"):
+            self.upstreamTaggerScoringPlaneDetector.process()
         if hasattr(self, "caloScoringPlaneDetector"):
             self.caloScoringPlaneDetector.process()
         if hasattr(self, "digiMTC"):
