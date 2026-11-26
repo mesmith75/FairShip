@@ -1,5 +1,6 @@
 var NAVTREEINDEX29 =
 {
+"shipDet__conf_8py.html":[7,0,13,35],
 "shipDet__conf_8py_source.html":[7,0,13,35],
 "shipDigiReco_8py.html":[7,0,13,36],
 "shipDigiReco_8py_source.html":[7,0,13,36],
@@ -127,8 +128,6 @@ var NAVTREEINDEX29 =
 "structParticleGunParticle.html#ade36653b94889f5aa7e49873d2e3c47b":[6,0,65,0],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html":[5,0,92,4,0],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html":[6,0,16,3,0],
-"structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967":[5,0,92,4,0,22],
-"structSHiP_1_1ActsStrawTracker_1_1Impl.html#a09c7cc4ace025dded3895b72b014b967":[6,0,16,3,0,22],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a0da100fce69ecb63c1c5173e4927f1c3":[5,0,92,4,0,24],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a0da100fce69ecb63c1c5173e4927f1c3":[6,0,16,3,0,24],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#a1c46bbe3e642b143cd377c09e8096759":[5,0,92,4,0,3],
@@ -171,6 +170,8 @@ var NAVTREEINDEX29 =
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ac015b7a500daef23e3270394401636e0":[6,0,16,3,0,7],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ac0d048cecc57489fd24223dc717576b0":[5,0,92,4,0,14],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ac0d048cecc57489fd24223dc717576b0":[6,0,16,3,0,14],
+"structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb09b0ec316a281bcc3045770deea4dd":[5,0,92,4,0,22],
+"structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb09b0ec316a281bcc3045770deea4dd":[6,0,16,3,0,22],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb0fd73ef6de21cc48e6fc7f0a9c0b78":[5,0,92,4,0,18],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#acb0fd73ef6de21cc48e6fc7f0a9c0b78":[6,0,16,3,0,18],
 "structSHiP_1_1ActsStrawTracker_1_1Impl.html#ad05e86dd28819bbb17b87fd741b4c971":[5,0,92,4,0,23],
@@ -248,6 +249,5 @@ var NAVTREEINDEX29 =
 "structSHiP_1_1StrawPatRec_1_1Config.html#a25e3767d6f36e3077cd3e611e7c6ff3f":[5,0,92,8,0,2],
 "structSHiP_1_1StrawPatRec_1_1Config.html#a25e3767d6f36e3077cd3e611e7c6ff3f":[6,0,16,7,0,2],
 "structSHiP_1_1StrawPatRec_1_1Config.html#a3e3a429e0bcf5fc24820972ba59757c8":[5,0,92,8,0,0],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a3e3a429e0bcf5fc24820972ba59757c8":[6,0,16,7,0,0],
-"structSHiP_1_1StrawPatRec_1_1Config.html#a414fce57ced98dc30aefc1dec7033cc9":[5,0,92,8,0,3]
+"structSHiP_1_1StrawPatRec_1_1Config.html#a3e3a429e0bcf5fc24820972ba59757c8":[6,0,16,7,0,0]
 };
